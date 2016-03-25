@@ -357,7 +357,6 @@ input[type=submit]:active {
 }
 
 #wrapper {
-    
     position:relative; 
     z-index: 99;
 }
