@@ -45,6 +45,8 @@ namespace Accounts
         {
             app.UseIISPlatformHandler();
 
+            app.UseStaticFiles();
+
             app.UseOwin(a => a.UseNancy());
             
         }
