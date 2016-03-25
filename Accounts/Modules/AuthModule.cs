@@ -1,6 +1,7 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections;
+using System.Collections.Generic;
+using accounts.Models;
 using Nancy;
-using Nancy.Security;
 
 namespace Accounts.Modules
 {
@@ -10,8 +11,8 @@ namespace Accounts.Modules
         {
             Get[""] = Get["/"] = Get["/login"] = parameters =>
             {
-                var model = new {title = "Hello, world!"};
-                return View["login", model];
+                IEnumerable<SelectOption> tnsNames = new [] { new SelectOption("AQL.ECO"), new SelectOption("AQL.KPI") };
+                return View["login", tnsNames];
             };
 
             Get["/logout"] = _ => View["home"];

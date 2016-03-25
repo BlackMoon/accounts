@@ -1,8 +1,8 @@
 {
-  "version": "1.0.0-*",
-  "compilationOptions": {
-    "emitEntryPoint": true
-  },
+    "version": "1.0.0-*",
+    "compilationOptions": {
+        "emitEntryPoint": true
+    },
 
     "dependencies": {
         "Microsoft.AspNet.IISPlatformHandler": "1.0.0-rc1-final",
@@ -13,20 +13,23 @@
         "Nancy.Owin": "1.4.1"
     },
 
-  "commands": {
-    "web": "Microsoft.AspNet.Server.Kestrel"
-  },
+    "commands": {
+        "web": "Microsoft.AspNet.Server.Kestrel"
+    },
 
-  "frameworks": {
-    "dnx451": { }
-  },
+    "frameworks": {
+        "dnx451": { }
+    },
 
-  "exclude": [
-    "wwwroot",
-    "node_modules"
-  ],
-  "publishExclude": [
-    "**.user",
-    "**.vspscc"
-  ]
+    "exclude": [
+        "wwwroot",
+        "node_modules"
+    ],
+    "publishExclude": [
+        "**.user",
+        "**.vspscc"
+    ],
+    "scripts": {
+        "prepublish": [ "npm install", "bower install", "gulp clean", "gulp min" ]
+    }
 }
