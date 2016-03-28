@@ -1,54 +1,73 @@
-﻿using Microsoft.AspNet.Builder;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.PlatformAbstractions;
-using Nancy.Owin;
+using Microsoft.Extensions.Logging;
 
-namespace Accounts
+namespace accounts
 {
     public class Startup
     {
-        internal static IApplicationEnvironment AppEnvironment { get; private set; }
-
-        public IConfigurationRoot Configuration { get; set; }
-
-        public Startup(IHostingEnvironment hostEnv, IApplicationEnvironment appEnv)
+        public Startup(IHostingEnvironment env)
         {
-            AppEnvironment = appEnv;
-            
             // Set up configuration sources.
-
             var builder = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")
-                .AddJsonFile($"appsettings.{hostEnv.EnvironmentName}.json", true);
+                .AddEnvironmentVariables();
 
-            if (hostEnv.IsDevelopment())
+            if (env.IsDevelopment())
             {
                 // This will push telemetry data through Application Insights pipeline faster, allowing you to view results immediately.
-                //builder.AddApplicationInsightsSettings(true);
-
+                builder.AddApplicationInsightsSettings(developerMode: true);
             }
-
-            builder.AddEnvironmentVariables();
             Configuration = builder.Build();
         }
 
+        public IConfigurationRoot Configuration { get; set; }
+
         // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit http://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            // Add framework services.
+            services.AddApplicationInsightsTelemetry(Configuration);
+
+            services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
+            loggerFactory.AddDebug();
+
+            app.UseApplicationInsightsRequestTelemetry();
+
+            if (env.IsDevelopment())
+            {
+                app.UseBrowserLink();
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseExceptionHandler("/Home/Error");
+            }
+
             app.UseIISPlatformHandler();
+
+            app.UseApplicationInsightsExceptionTelemetry();
 
             app.UseStaticFiles();
 
-            app.UseOwin(a => a.UseNancy());
-            
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Auth}/{action=Login}");
+            });
         }
 
         // Entry point for the application.
