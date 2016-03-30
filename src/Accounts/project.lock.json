@@ -3,6 +3,40 @@
   "version": 2,
   "targets": {
     "DNX,Version=v4.5.1": {
+      "DryIoc.Dnx/2.2.2-rc1": {
+        "type": "package",
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "mscorlib",
+          "System",
+          "System.Core"
+        ],
+        "compile": {
+          "lib/dnx451/DryIoc.Dnx.dll": {}
+        },
+        "runtime": {
+          "lib/dnx451/DryIoc.Dnx.dll": {}
+        }
+      },
+      "DryIoc.Dnx.DependencyInjection/1.4.0-rc1": {
+        "type": "package",
+        "dependencies": {
+          "DryIoc.Dnx": "2.2.2-rc1",
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "1.0.0-rc1-final"
+        },
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "mscorlib",
+          "System",
+          "System.Core"
+        ],
+        "compile": {
+          "lib/dnx451/DryIoc.Dnx.DependencyInjection.dll": {}
+        },
+        "runtime": {
+          "lib/dnx451/DryIoc.Dnx.DependencyInjection.dll": {}
+        }
+      },
       "Microsoft.ApplicationInsights/1.1.1-beta": {
         "type": "package",
         "compile": {
@@ -1719,6 +1753,40 @@
       }
     },
     "DNX,Version=v4.5.1/win7-x86": {
+      "DryIoc.Dnx/2.2.2-rc1": {
+        "type": "package",
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "mscorlib",
+          "System",
+          "System.Core"
+        ],
+        "compile": {
+          "lib/dnx451/DryIoc.Dnx.dll": {}
+        },
+        "runtime": {
+          "lib/dnx451/DryIoc.Dnx.dll": {}
+        }
+      },
+      "DryIoc.Dnx.DependencyInjection/1.4.0-rc1": {
+        "type": "package",
+        "dependencies": {
+          "DryIoc.Dnx": "2.2.2-rc1",
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "1.0.0-rc1-final"
+        },
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "mscorlib",
+          "System",
+          "System.Core"
+        ],
+        "compile": {
+          "lib/dnx451/DryIoc.Dnx.DependencyInjection.dll": {}
+        },
+        "runtime": {
+          "lib/dnx451/DryIoc.Dnx.DependencyInjection.dll": {}
+        }
+      },
       "Microsoft.ApplicationInsights/1.1.1-beta": {
         "type": "package",
         "compile": {
@@ -3438,6 +3506,40 @@
       }
     },
     "DNX,Version=v4.5.1/win7-x64": {
+      "DryIoc.Dnx/2.2.2-rc1": {
+        "type": "package",
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "mscorlib",
+          "System",
+          "System.Core"
+        ],
+        "compile": {
+          "lib/dnx451/DryIoc.Dnx.dll": {}
+        },
+        "runtime": {
+          "lib/dnx451/DryIoc.Dnx.dll": {}
+        }
+      },
+      "DryIoc.Dnx.DependencyInjection/1.4.0-rc1": {
+        "type": "package",
+        "dependencies": {
+          "DryIoc.Dnx": "2.2.2-rc1",
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "1.0.0-rc1-final"
+        },
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "mscorlib",
+          "System",
+          "System.Core"
+        ],
+        "compile": {
+          "lib/dnx451/DryIoc.Dnx.DependencyInjection.dll": {}
+        },
+        "runtime": {
+          "lib/dnx451/DryIoc.Dnx.DependencyInjection.dll": {}
+        }
+      },
       "Microsoft.ApplicationInsights/1.1.1-beta": {
         "type": "package",
         "compile": {
@@ -5158,6 +5260,32 @@
     }
   },
   "libraries": {
+    "DryIoc.Dnx/2.2.2-rc1": {
+      "type": "package",
+      "sha512": "oREscWEu5OK3UJrwThWH1WU/+uhCYOVkNCSJHpxy23kD4QDFsy23kkdgrTsm2DHh7qigqz/OG3rzKEkVSPH2MQ==",
+      "files": [
+        "DryIoc.Dnx.2.2.2-rc1.nupkg",
+        "DryIoc.Dnx.2.2.2-rc1.nupkg.sha512",
+        "DryIoc.Dnx.nuspec",
+        "lib/dnx451/DryIoc.Dnx.dll",
+        "lib/dnx451/DryIoc.Dnx.xml",
+        "lib/dotnet5.4/DryIoc.Dnx.dll",
+        "lib/dotnet5.4/DryIoc.Dnx.xml"
+      ]
+    },
+    "DryIoc.Dnx.DependencyInjection/1.4.0-rc1": {
+      "type": "package",
+      "sha512": "aEdxdX+/1OIv++ya7i78W2q5zsV7sN8UF0B7i3p7O68PH3lh/RrD8rh4D8kwanH/kxi+oHgON2+jko5F6WqK/Q==",
+      "files": [
+        "DryIoc.Dnx.DependencyInjection.1.4.0-rc1.nupkg",
+        "DryIoc.Dnx.DependencyInjection.1.4.0-rc1.nupkg.sha512",
+        "DryIoc.Dnx.DependencyInjection.nuspec",
+        "lib/dnx451/DryIoc.Dnx.DependencyInjection.dll",
+        "lib/dnx451/DryIoc.Dnx.DependencyInjection.xml",
+        "lib/dotnet5.4/DryIoc.Dnx.DependencyInjection.dll",
+        "lib/dotnet5.4/DryIoc.Dnx.DependencyInjection.xml"
+      ]
+    },
     "Microsoft.ApplicationInsights/1.1.1-beta": {
       "type": "package",
       "sha512": "aqtQ8KNFMGBFCmU3kkkEM7PlyPFvfh/1uKTxixD+myMzB9EjYeGOf0LvFnpkT1sp3voXfU8MUN+eYets8TutdQ==",
@@ -7121,6 +7249,7 @@
   },
   "projectFileDependencyGroups": {
     "": [
+      "DryIoc.Dnx.DependencyInjection >= 1.4.0-rc1",
       "Microsoft.ApplicationInsights.AspNet >= 1.0.0-rc1",
       "Microsoft.AspNet.Diagnostics >= 1.0.0-rc1-final",
       "Microsoft.AspNet.IISPlatformHandler >= 1.0.0-rc1-final",
