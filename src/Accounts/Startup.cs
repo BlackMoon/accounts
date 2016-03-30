@@ -1,17 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using DryIoc;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using DryIoc.Dnx.DependencyInjection;
 
 namespace accounts
 {
     public class Startup
     {
+        private IContainer ConfigureDependencies(IServiceCollection services)
+        {
+            IContainer container = new Container().WithDependencyInjectionAdapter(services);
+            //container.RegisterMany(new[] { ass });    
+            return container;
+        }
+
         public Startup(IHostingEnvironment env)
         {
             // Set up configuration sources.
@@ -30,13 +36,15 @@ namespace accounts
         public IConfigurationRoot Configuration { get; set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
             services.AddApplicationInsightsTelemetry(Configuration);
             services.AddMvc();
-
-
+            
+            // Add dependencies
+            IContainer container = ConfigureDependencies(services);
+            return container.Resolve<IServiceProvider>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -54,7 +62,7 @@ namespace accounts
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/Auth/Error");
             }
 
             app.UseIISPlatformHandler();
