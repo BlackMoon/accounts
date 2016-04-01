@@ -2,12 +2,13 @@
     "version": "1.0.0-*",
     "compilationOptions": {
         "emitEntryPoint": true
-    },   
+    },
 
     "dependencies": {
         "DryIoc.Dnx.DependencyInjection": "1.4.0-rc1",
-        "Kit.Dal": "1.0.0-*",        
+        "Kit.Dal": "1.0.0-*",
         "Microsoft.ApplicationInsights.AspNet": "1.0.0-rc1",
+        "Microsoft.AspNet.Authentication.Cookies": "1.0.0-rc1-final",
         "Microsoft.AspNet.Diagnostics": "1.0.0-rc1-final",
         "Microsoft.AspNet.IISPlatformHandler": "1.0.0-rc1-final",
         "Microsoft.AspNet.Mvc": "6.0.0-rc1-final",
@@ -45,6 +46,7 @@
         "**.vspscc"
     ],
     "scripts": {
-        "prepublish": [ "npm install", "bower install", "gulp clean", "gulp min" ]
+        "prepublish": [ "npm install", "bower install", "gulp clean", "gulp min" ]        
     }
+    
 }

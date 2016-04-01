@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using DryIoc;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
@@ -10,9 +12,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using DryIoc.Dnx.DependencyInjection;
+using Kit.Dal.Configuration;
 using Kit.Dal.DbManager;
 using Kit.Kernel.CQRS.Command;
 using Kit.Kernel.CQRS.Query;
+using Kit.Kernel.Web;
+using Microsoft.AspNet.Authentication.Cookies;
+using Microsoft.AspNet.Identity;
 
 namespace accounts
 {
@@ -33,16 +39,20 @@ namespace accounts
             {
                 implTypeAssemblies.Add(Assembly.Load(an));
             }
-
+            
             IContainer container = new Container().WithDependencyInjectionAdapter(services);
             container.RegisterMany(implTypeAssemblies);
-
-            // dispatchers
-            /*
-            container.Register<IQueryDispatcher, QueryDispatcher>(reuse: Reuse.Singleton, ifAlreadyRegistered: IfAlreadyRegistered.Replace);
-            container.Register<ICommandDispatcher, CommandDispatcher>(reuse: Reuse.Singleton, ifAlreadyRegistered: IfAlreadyRegistered.Replace);*/
             
-            container.Register(reuse: Reuse.InWebRequest, made: Made.Of(() => DbManagerFactory.CreateDbManager("Oracle.Data.Access")));
+            // dispatchers
+            container.Register<IQueryDispatcher, QueryDispatcher>(Reuse.InCurrentScope, ifAlreadyRegistered: IfAlreadyRegistered.Replace);
+            container.Register<ICommandDispatcher, CommandDispatcher>(Reuse.InCurrentScope, ifAlreadyRegistered: IfAlreadyRegistered.Replace);
+
+            // IDbManager
+            container.RegisterInstance(Configuration["Data:DefaultConnection:ProviderName"], serviceKey: "ProviderName");
+            container.Register(
+                reuse: Reuse.InWebRequest, 
+                made: Made.Of(() => DbManagerFactory.CreateDbManager(Arg.Of<string>("ProviderName")), requestIgnored => string.Empty)
+                );
             
             return container;
         }
@@ -89,10 +99,23 @@ namespace accounts
         {
             // Add framework services.
             services.AddApplicationInsightsTelemetry(Configuration);
+
+            services.AddAuthorization();
+            
             services.AddMvc();
             
+            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+            services.Configure<ConnectionStringSettings>(Configuration.GetSection("Data:DefaultConnection"));
+
             // Add dependencies
             IContainer container = ConfigureDependencies(services);
+
+            // TODO Startup Tasks
+            /*foreach (var dbManager in app.ApplicationServices.GetServices<ICommandDispatcher>())
+            {
+                              
+            }*/
+
             return container.Resolve<IServiceProvider>(); 
         }
 
@@ -101,7 +124,7 @@ namespace accounts
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
-
+            
             app.UseApplicationInsightsRequestTelemetry();
 
             if (env.IsDevelopment())
@@ -113,19 +136,38 @@ namespace accounts
             {
                 app.UseExceptionHandler("/Auth/Error");
             }
-
+            
             app.UseIISPlatformHandler();
 
             app.UseApplicationInsightsExceptionTelemetry();
 
             app.UseStaticFiles();
 
+            app.UseCookieAuthentication(o =>
+            {
+                o.AuthenticationScheme = "Cookies";
+                o.AutomaticAuthenticate = true;
+                o.AutomaticChallenge = true;
+                
+                //o.CookieName = "NTC." + Path.GetRandomFileName();
+
+                o.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+                o.Events = new CookieAuthenticationEvents()
+                {
+                    OnSignedIn = context =>
+                    {
+                        return Task.FromResult(0);
+                    }
+                };
+            });
+
+            
+
             app.UseMvc(routes =>
             {
-                routes.MapRoute(
-                    name: "Login",
-                    template: "{controller=Auth}/{action=Login}");
+                routes.MapRoute("Login", "{controller=Auth}/{action=Login}");
             });
+            
         }
 
         // Entry point for the application.
