@@ -1,5 +1,10 @@
 {
-    "projects": [ "src", "test", "../kit" ],
+  "projects": [
+    "src",
+    "test",
+    "../kit/src",
+    "wrap"
+  ],
   "sdk": {
     "version": "1.0.0-rc1-update1"
   }

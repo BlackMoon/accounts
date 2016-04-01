@@ -37,12 +37,39 @@
           "lib/dnx451/DryIoc.Dnx.DependencyInjection.dll": {}
         }
       },
+      "EntityFramework/6.1.3": {
+        "type": "package",
+        "frameworkAssemblies": [
+          "System.ComponentModel.DataAnnotations"
+        ],
+        "compile": {
+          "lib/net45/EntityFramework.dll": {},
+          "lib/net45/EntityFramework.SqlServer.dll": {}
+        },
+        "runtime": {
+          "lib/net45/EntityFramework.dll": {},
+          "lib/net45/EntityFramework.SqlServer.dll": {}
+        }
+      },
+      "Kit.Dal/1.0.0": {
+        "type": "project",
+        "framework": "DNX,Version=v4.5.1",
+        "dependencies": {
+          "EntityFramework": "6.1.3",
+          "Kit.Kernel": "1.0.0",
+          "Microsoft.Owin": "3.0.1",
+          "odac12": "12.10.24"
+        },
+        "frameworkAssemblies": [
+          "System.Data",
+          "System.Xml"
+        ]
+      },
       "Kit.Kernel/1.0.0": {
         "type": "project",
-        "framework": ".NETFramework,Version=v4.5.1",
+        "framework": "DNX,Version=v4.5.1",
         "dependencies": {
-          "PostSharp": "4.2.22",
-          "System.Xml.XDocument": "4.0.11-beta-23516"
+          "ServiceProviderExtensions": "1.0.0"
         }
       },
       "Microsoft.ApplicationInsights/1.1.1-beta": {
@@ -1518,6 +1545,18 @@
           "lib/net451/Microsoft.Net.Http.Headers.dll": {}
         }
       },
+      "Microsoft.Owin/3.0.1": {
+        "type": "package",
+        "dependencies": {
+          "Owin": "1.0.0"
+        },
+        "compile": {
+          "lib/net45/Microsoft.Owin.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Microsoft.Owin.dll": {}
+        }
+      },
       "Microsoft.VisualStudio.Web.BrowserLink.Loader/14.0.0-rc1-final": {
         "type": "package",
         "dependencies": {
@@ -1548,13 +1587,31 @@
           "lib/net45/Newtonsoft.Json.dll": {}
         }
       },
-      "PostSharp/4.2.22": {
+      "odac12/12.10.24": {
         "type": "package",
         "compile": {
-          "lib/net35-client/PostSharp.dll": {}
+          "lib/net40/Oracle.DataAccess.dll": {}
         },
         "runtime": {
-          "lib/net35-client/PostSharp.dll": {}
+          "lib/net40/Oracle.DataAccess.dll": {}
+        }
+      },
+      "Owin/1.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/net40/Owin.dll": {}
+        },
+        "runtime": {
+          "lib/net40/Owin.dll": {}
+        }
+      },
+      "ServiceProviderExtensions/1.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/net40/ServiceProviderExtensions.dll": {}
+        },
+        "runtime": {
+          "lib/net40/ServiceProviderExtensions.dll": {}
         }
       },
       "System.Collections/4.0.0": {
@@ -1767,15 +1824,6 @@
         "runtime": {
           "lib/net45/_._": {}
         }
-      },
-      "System.Xml.XDocument/4.0.11-beta-23516": {
-        "type": "package",
-        "compile": {
-          "ref/net45/_._": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
-        }
       }
     },
     "DNX,Version=v4.5.1/win7-x86": {
@@ -1813,12 +1861,39 @@
           "lib/dnx451/DryIoc.Dnx.DependencyInjection.dll": {}
         }
       },
+      "EntityFramework/6.1.3": {
+        "type": "package",
+        "frameworkAssemblies": [
+          "System.ComponentModel.DataAnnotations"
+        ],
+        "compile": {
+          "lib/net45/EntityFramework.dll": {},
+          "lib/net45/EntityFramework.SqlServer.dll": {}
+        },
+        "runtime": {
+          "lib/net45/EntityFramework.dll": {},
+          "lib/net45/EntityFramework.SqlServer.dll": {}
+        }
+      },
+      "Kit.Dal/1.0.0": {
+        "type": "project",
+        "framework": "DNX,Version=v4.5.1",
+        "dependencies": {
+          "EntityFramework": "6.1.3",
+          "Kit.Kernel": "1.0.0",
+          "Microsoft.Owin": "3.0.1",
+          "odac12": "12.10.24"
+        },
+        "frameworkAssemblies": [
+          "System.Data",
+          "System.Xml"
+        ]
+      },
       "Kit.Kernel/1.0.0": {
         "type": "project",
-        "framework": ".NETFramework,Version=v4.5.1",
+        "framework": "DNX,Version=v4.5.1",
         "dependencies": {
-          "PostSharp": "4.2.22",
-          "System.Xml.XDocument": "4.0.11-beta-23516"
+          "ServiceProviderExtensions": "1.0.0"
         }
       },
       "Microsoft.ApplicationInsights/1.1.1-beta": {
@@ -3297,6 +3372,18 @@
           "lib/net451/Microsoft.Net.Http.Headers.dll": {}
         }
       },
+      "Microsoft.Owin/3.0.1": {
+        "type": "package",
+        "dependencies": {
+          "Owin": "1.0.0"
+        },
+        "compile": {
+          "lib/net45/Microsoft.Owin.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Microsoft.Owin.dll": {}
+        }
+      },
       "Microsoft.VisualStudio.Web.BrowserLink.Loader/14.0.0-rc1-final": {
         "type": "package",
         "dependencies": {
@@ -3327,13 +3414,31 @@
           "lib/net45/Newtonsoft.Json.dll": {}
         }
       },
-      "PostSharp/4.2.22": {
+      "odac12/12.10.24": {
         "type": "package",
         "compile": {
-          "lib/net35-client/PostSharp.dll": {}
+          "lib/net40/Oracle.DataAccess.dll": {}
         },
         "runtime": {
-          "lib/net35-client/PostSharp.dll": {}
+          "lib/net40/Oracle.DataAccess.dll": {}
+        }
+      },
+      "Owin/1.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/net40/Owin.dll": {}
+        },
+        "runtime": {
+          "lib/net40/Owin.dll": {}
+        }
+      },
+      "ServiceProviderExtensions/1.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/net40/ServiceProviderExtensions.dll": {}
+        },
+        "runtime": {
+          "lib/net40/ServiceProviderExtensions.dll": {}
         }
       },
       "System.Collections/4.0.0": {
@@ -3546,15 +3651,6 @@
         "runtime": {
           "lib/net45/_._": {}
         }
-      },
-      "System.Xml.XDocument/4.0.11-beta-23516": {
-        "type": "package",
-        "compile": {
-          "ref/net45/_._": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
-        }
       }
     },
     "DNX,Version=v4.5.1/win7-x64": {
@@ -3592,12 +3688,39 @@
           "lib/dnx451/DryIoc.Dnx.DependencyInjection.dll": {}
         }
       },
+      "EntityFramework/6.1.3": {
+        "type": "package",
+        "frameworkAssemblies": [
+          "System.ComponentModel.DataAnnotations"
+        ],
+        "compile": {
+          "lib/net45/EntityFramework.dll": {},
+          "lib/net45/EntityFramework.SqlServer.dll": {}
+        },
+        "runtime": {
+          "lib/net45/EntityFramework.dll": {},
+          "lib/net45/EntityFramework.SqlServer.dll": {}
+        }
+      },
+      "Kit.Dal/1.0.0": {
+        "type": "project",
+        "framework": "DNX,Version=v4.5.1",
+        "dependencies": {
+          "EntityFramework": "6.1.3",
+          "Kit.Kernel": "1.0.0",
+          "Microsoft.Owin": "3.0.1",
+          "odac12": "12.10.24"
+        },
+        "frameworkAssemblies": [
+          "System.Data",
+          "System.Xml"
+        ]
+      },
       "Kit.Kernel/1.0.0": {
         "type": "project",
-        "framework": ".NETFramework,Version=v4.5.1",
+        "framework": "DNX,Version=v4.5.1",
         "dependencies": {
-          "PostSharp": "4.2.22",
-          "System.Xml.XDocument": "4.0.11-beta-23516"
+          "ServiceProviderExtensions": "1.0.0"
         }
       },
       "Microsoft.ApplicationInsights/1.1.1-beta": {
@@ -5076,6 +5199,18 @@
           "lib/net451/Microsoft.Net.Http.Headers.dll": {}
         }
       },
+      "Microsoft.Owin/3.0.1": {
+        "type": "package",
+        "dependencies": {
+          "Owin": "1.0.0"
+        },
+        "compile": {
+          "lib/net45/Microsoft.Owin.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Microsoft.Owin.dll": {}
+        }
+      },
       "Microsoft.VisualStudio.Web.BrowserLink.Loader/14.0.0-rc1-final": {
         "type": "package",
         "dependencies": {
@@ -5106,13 +5241,31 @@
           "lib/net45/Newtonsoft.Json.dll": {}
         }
       },
-      "PostSharp/4.2.22": {
+      "odac12/12.10.24": {
         "type": "package",
         "compile": {
-          "lib/net35-client/PostSharp.dll": {}
+          "lib/net40/Oracle.DataAccess.dll": {}
         },
         "runtime": {
-          "lib/net35-client/PostSharp.dll": {}
+          "lib/net40/Oracle.DataAccess.dll": {}
+        }
+      },
+      "Owin/1.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/net40/Owin.dll": {}
+        },
+        "runtime": {
+          "lib/net40/Owin.dll": {}
+        }
+      },
+      "ServiceProviderExtensions/1.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/net40/ServiceProviderExtensions.dll": {}
+        },
+        "runtime": {
+          "lib/net40/ServiceProviderExtensions.dll": {}
         }
       },
       "System.Collections/4.0.0": {
@@ -5325,22 +5478,17 @@
         "runtime": {
           "lib/net45/_._": {}
         }
-      },
-      "System.Xml.XDocument/4.0.11-beta-23516": {
-        "type": "package",
-        "compile": {
-          "ref/net45/_._": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
-        }
       }
     }
   },
   "libraries": {
+    "Kit.Dal/1.0.0": {
+      "type": "project",
+      "path": "../../../kit/src/Kit.Dal/project.json"
+    },
     "Kit.Kernel/1.0.0": {
       "type": "project",
-      "path": "../../../kit/Kit.Kernel/project.json"
+      "path": "../../../kit/src/Kit.Kernel/project.json"
     },
     "DryIoc.Dnx/2.2.2-rc1": {
       "type": "package",
@@ -5366,6 +5514,34 @@
         "lib/dnx451/DryIoc.Dnx.DependencyInjection.xml",
         "lib/dotnet5.4/DryIoc.Dnx.DependencyInjection.dll",
         "lib/dotnet5.4/DryIoc.Dnx.DependencyInjection.xml"
+      ]
+    },
+    "EntityFramework/6.1.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "2xzFHAF3VVdmTR3//MygtQpwfbDjeaq+nQwCcokLzen7MKHOojPaxNPQPa4diHY1QtcR7zlHAJHNRqPB7W2Syw==",
+      "files": [
+        "content/App.config.transform",
+        "content/Web.config.transform",
+        "EntityFramework.6.1.3.nupkg",
+        "EntityFramework.6.1.3.nupkg.sha512",
+        "EntityFramework.nuspec",
+        "lib/net40/EntityFramework.dll",
+        "lib/net40/EntityFramework.SqlServer.dll",
+        "lib/net40/EntityFramework.SqlServer.xml",
+        "lib/net40/EntityFramework.xml",
+        "lib/net45/EntityFramework.dll",
+        "lib/net45/EntityFramework.SqlServer.dll",
+        "lib/net45/EntityFramework.SqlServer.xml",
+        "lib/net45/EntityFramework.xml",
+        "tools/about_EntityFramework.help.txt",
+        "tools/EntityFramework.PowerShell.dll",
+        "tools/EntityFramework.PowerShell.Utility.dll",
+        "tools/EntityFramework.psd1",
+        "tools/EntityFramework.psm1",
+        "tools/init.ps1",
+        "tools/install.ps1",
+        "tools/migrate.exe"
       ]
     },
     "Microsoft.ApplicationInsights/1.1.1-beta": {
@@ -6517,6 +6693,18 @@
         "Microsoft.Net.Http.Headers.nuspec"
       ]
     },
+    "Microsoft.Owin/3.0.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "64yZsGN9uRnXNVAyAT4F6KWmdDUJ6yX4uqzxKTdGANKH1oMt0IKZ7THRRa3mXIOo8iSu4tq/DCBUycUY9pXZzw==",
+      "files": [
+        "lib/net45/Microsoft.Owin.dll",
+        "lib/net45/Microsoft.Owin.XML",
+        "Microsoft.Owin.3.0.1.nupkg",
+        "Microsoft.Owin.3.0.1.nupkg.sha512",
+        "Microsoft.Owin.nuspec"
+      ]
+    },
     "Microsoft.VisualStudio.Web.BrowserLink.Loader/14.0.0-rc1-final": {
       "type": "package",
       "sha512": "L8QBjp1tfPA3j+r9eKtMlebX/k+7pIGxeHZ/ZjkNgt8RLVEOyw9HPMs2Wetav0P3gCIM7YIfIzXV22c19yI83Q==",
@@ -6554,25 +6742,35 @@
         "tools/install.ps1"
       ]
     },
-    "PostSharp/4.2.22": {
+    "odac12/12.10.24": {
       "type": "package",
-      "sha512": "+Gt/nENJBFKSr8l9Z+zr0P1FpDvI3kUtRDz3CXiRHppbyTCwVPa3XZivKPdfikNANf8/wXB62F9rYKo/3WDI/Q==",
+      "sha512": "izvVTSAE+Jn/0lpLyHvKVql0ibIvsWJKgfqi3xiYdp8tsMXiMvnzzidUqzUpiA+ybbPsAaD/3T5tS95KjWT5Ow==",
       "files": [
-        "lib/net35-client/PostSharp.dll",
-        "lib/net35-client/PostSharp.xml",
-        "lib/portable-net4+sl5+netcore45+wpa81+wp8/PostSharp.dll",
-        "lib/portable-net4+sl5+netcore45+wpa81+wp8/PostSharp.xml",
-        "PostSharp.4.2.22.nupkg",
-        "PostSharp.4.2.22.nupkg.sha512",
-        "PostSharp.nuspec",
-        "tools/install.ps1",
-        "tools/PostSharp.MSBuild.v4.2.22.Release.dll",
-        "tools/PostSharp.properties",
-        "tools/PostSharp.targets",
-        "tools/PostSharp.tasks",
-        "tools/PostSharp.Version.properties",
-        "tools/PostSharp-Tools.exe",
-        "tools/uninstall.ps1"
+        "content/net40/OraOps12.dll",
+        "lib/net40/Oracle.DataAccess.dll",
+        "odac12.12.10.24.nupkg",
+        "odac12.12.10.24.nupkg.sha512",
+        "odac12.nuspec"
+      ]
+    },
+    "Owin/1.0.0": {
+      "type": "package",
+      "sha512": "OseTFniKmyp76mEzOBwIKGBRS5eMoYNkMKaMXOpxx9jv88+b6mh1rSaw43vjBOItNhaLFG3d0a20PfHyibH5sw==",
+      "files": [
+        "lib/net40/Owin.dll",
+        "OWIN.1.0.0.nupkg",
+        "OWIN.1.0.0.nupkg.sha512",
+        "OWIN.nuspec"
+      ]
+    },
+    "ServiceProviderExtensions/1.0.0": {
+      "type": "package",
+      "sha512": "Sk++yxuJuS2MMPQHB+pR4l/Q1jn7kb1oYS70FDIgG5vd57bhvJRQIHB1lQprE8K0yhnzPLu9WwtY2ER/cIKZyg==",
+      "files": [
+        "lib/net40/ServiceProviderExtensions.dll",
+        "ServiceProviderExtensions.1.0.0.nupkg",
+        "ServiceProviderExtensions.1.0.0.nupkg.sha512",
+        "ServiceProviderExtensions.nuspec"
       ]
     },
     "System.Collections/4.0.0": {
@@ -7348,73 +7546,12 @@
         "System.Threading.4.0.0.nupkg.sha512",
         "System.Threading.nuspec"
       ]
-    },
-    "System.Xml.XDocument/4.0.11-beta-23516": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sVbIsIQ8c3UnhnV9a8/J1boDVLpfqVsolNJ/nIvrU4g3TE0RpC2yFkivPmXYpwllsa1b6ajxZcZ+ItMhhXy8vA==",
-      "files": [
-        "lib/dotnet5.4/System.Xml.XDocument.dll",
-        "lib/MonoAndroid10/_._",
-        "lib/MonoTouch10/_._",
-        "lib/net45/_._",
-        "lib/netcore50/System.Xml.XDocument.dll",
-        "lib/win8/_._",
-        "lib/wp80/_._",
-        "lib/wpa81/_._",
-        "lib/xamarinios10/_._",
-        "lib/xamarinmac20/_._",
-        "ref/dotnet5.1/de/System.Xml.XDocument.xml",
-        "ref/dotnet5.1/es/System.Xml.XDocument.xml",
-        "ref/dotnet5.1/fr/System.Xml.XDocument.xml",
-        "ref/dotnet5.1/it/System.Xml.XDocument.xml",
-        "ref/dotnet5.1/ja/System.Xml.XDocument.xml",
-        "ref/dotnet5.1/ko/System.Xml.XDocument.xml",
-        "ref/dotnet5.1/ru/System.Xml.XDocument.xml",
-        "ref/dotnet5.1/System.Xml.XDocument.dll",
-        "ref/dotnet5.1/System.Xml.XDocument.xml",
-        "ref/dotnet5.1/zh-hans/System.Xml.XDocument.xml",
-        "ref/dotnet5.1/zh-hant/System.Xml.XDocument.xml",
-        "ref/dotnet5.4/de/System.Xml.XDocument.xml",
-        "ref/dotnet5.4/es/System.Xml.XDocument.xml",
-        "ref/dotnet5.4/fr/System.Xml.XDocument.xml",
-        "ref/dotnet5.4/it/System.Xml.XDocument.xml",
-        "ref/dotnet5.4/ja/System.Xml.XDocument.xml",
-        "ref/dotnet5.4/ko/System.Xml.XDocument.xml",
-        "ref/dotnet5.4/ru/System.Xml.XDocument.xml",
-        "ref/dotnet5.4/System.Xml.XDocument.dll",
-        "ref/dotnet5.4/System.Xml.XDocument.xml",
-        "ref/dotnet5.4/zh-hans/System.Xml.XDocument.xml",
-        "ref/dotnet5.4/zh-hant/System.Xml.XDocument.xml",
-        "ref/MonoAndroid10/_._",
-        "ref/MonoTouch10/_._",
-        "ref/net45/_._",
-        "ref/netcore50/de/System.Xml.XDocument.xml",
-        "ref/netcore50/es/System.Xml.XDocument.xml",
-        "ref/netcore50/fr/System.Xml.XDocument.xml",
-        "ref/netcore50/it/System.Xml.XDocument.xml",
-        "ref/netcore50/ja/System.Xml.XDocument.xml",
-        "ref/netcore50/ko/System.Xml.XDocument.xml",
-        "ref/netcore50/ru/System.Xml.XDocument.xml",
-        "ref/netcore50/System.Xml.XDocument.dll",
-        "ref/netcore50/System.Xml.XDocument.xml",
-        "ref/netcore50/zh-hans/System.Xml.XDocument.xml",
-        "ref/netcore50/zh-hant/System.Xml.XDocument.xml",
-        "ref/win8/_._",
-        "ref/wp80/_._",
-        "ref/wpa81/_._",
-        "ref/xamarinios10/_._",
-        "ref/xamarinmac20/_._",
-        "System.Xml.XDocument.4.0.11-beta-23516.nupkg",
-        "System.Xml.XDocument.4.0.11-beta-23516.nupkg.sha512",
-        "System.Xml.XDocument.nuspec"
-      ]
     }
   },
   "projectFileDependencyGroups": {
     "": [
       "DryIoc.Dnx.DependencyInjection >= 1.4.0-rc1",
-      "Kit.Kernel >= 1.0.0-*",
+      "Kit.Dal >= 1.0.0-*",
       "Microsoft.ApplicationInsights.AspNet >= 1.0.0-rc1",
       "Microsoft.AspNet.Diagnostics >= 1.0.0-rc1-final",
       "Microsoft.AspNet.IISPlatformHandler >= 1.0.0-rc1-final",
@@ -7431,6 +7568,8 @@
       "Microsoft.Extensions.Logging.Debug >= 1.0.0-rc1-final",
       "Microsoft.VisualStudio.Web.BrowserLink.Loader >= 14.0.0-rc1-final"
     ],
-    "DNX,Version=v4.5.1": []
+    "DNX,Version=v4.5.1": [
+      "fx/System.configuration >= 4.0.0"
+    ]
   }
 }
