@@ -10,8 +10,11 @@ using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.Rendering;
 using Kit.Kernel.CQRS.Command;
 using Kit.Kernel.CQRS.Query;
+using Kit.Kernel.Web.Ajax;
 using Microsoft.AspNet.Authorization;
+using Microsoft.AspNet.Server.Kestrel.Http;
 using Microsoft.Extensions.OptionsModel;
+using Newtonsoft.Json;
 
 namespace accounts
 {
@@ -33,6 +36,7 @@ namespace accounts
         //[/*Authorize,*/]
         public IActionResult ChangePassword(string returnUrl = null)
         {
+            ModelState.AddModelError("expired", "Срок действия Вашего пароля истек");
             return View();
         }
 
@@ -54,26 +58,38 @@ namespace accounts
         [AllowAnonymous, HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginCommand command, string returnUrl = null)
         {
+            string msg = string.Empty;
+            LoginStatus status = LoginStatus.Failure;
+
             if (ModelState.IsValid)
             {
-
                 LoginCommandResult result = _commandDispatcher.Dispatch<LoginCommand, LoginCommandResult>(command);
+                status = result.Status;
 
-                IList<Claim> claims = new List<Claim>
+                if (status != LoginStatus.Failure)
                 {
-                    new Claim(ClaimTypes.Name, command.Login),
-                    new Claim("password", command.Password),
-                    new Claim("datasource", command.DataSource),
-                    new Claim("lastlogindate", DateTime.UtcNow.ToString("dd.MM.yyyy HH:mm:ss.f")),
-                };
+                    IList<Claim> claims = new List<Claim>
+                    {
+                        new Claim(ClaimTypes.Name, command.Login),
+                        new Claim("password", command.Password),
+                        new Claim("datasource", command.DataSource),
+                        new Claim("lastlogindate", DateTime.UtcNow.ToString("dd.MM.yyyy HH:mm:ss.f")),
+                    };
 
-                var id = new ClaimsIdentity(claims, "local");
-                await HttpContext.Authentication.SignInAsync("Cookies", new ClaimsPrincipal(id));
+                    var id = new ClaimsIdentity(claims, "local");
+                    Task task = HttpContext.Authentication.SignInAsync("Cookies", new ClaimsPrincipal(id));
+                    
+                    // смена пароля 
+                    if (status == LoginStatus.Expired || status == LoginStatus.Expiring)
+                        returnUrl = "/change?" + returnUrl;
 
-                return Redirect(returnUrl);
+                    await task;
+                }
             }
-            
-            return View(command);
+            else
+                msg = string.Join("</li><li>", ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
+
+            return new JsonResult(new { status, message = msg, returnUrl });
         }
     }
 }

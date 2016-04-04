@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using System.Reflection;
 using DryIoc;
@@ -18,6 +17,8 @@ using Kit.Kernel.CQRS.Job;
 using Kit.Kernel.CQRS.Query;
 using Kit.Kernel.Interception;
 using Microsoft.AspNet.Authentication.Cookies;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace accounts
 {
@@ -80,7 +81,10 @@ namespace accounts
         {
             // Add framework services.
             services.AddApplicationInsightsTelemetry(Configuration);
-            services.AddMvc();
+            services
+                .AddMvc()
+                .AddJsonOptions(option => option.SerializerSettings.NullValueHandling = NullValueHandling.Ignore)
+                .AddJsonOptions(option => option.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver());
 
             services.ConfigureRouting(
                 routeOptions =>
@@ -96,7 +100,7 @@ namespace accounts
             // Add dependencies
             IContainer container = ConfigureDependencies(services);
 
-            // Startup Tasks
+            // Startup Jobs
             IJobDispatcher dispatcher = container.Resolve<IJobDispatcher>();
             dispatcher.Dispatch<IStartupJob>();
 

@@ -83,7 +83,7 @@
           "DryIoc.Dnx.DependencyInjection": "1.4.0-rc1",
           "Microsoft.AspNet.Http.Extensions": "1.0.0-rc1-final",
           "Microsoft.AspNet.Identity.Owin": "2.2.1",
-          "Microsoft.AspNet.Mvc.Core": "6.0.0-rc1-final",
+          "Microsoft.AspNet.Mvc.TagHelpers": "6.0.0-rc1-final",
           "ServiceProviderExtensions": "1.0.0"
         },
         "frameworkAssemblies": [
@@ -2048,7 +2048,7 @@
           "DryIoc.Dnx.DependencyInjection": "1.4.0-rc1",
           "Microsoft.AspNet.Http.Extensions": "1.0.0-rc1-final",
           "Microsoft.AspNet.Identity.Owin": "2.2.1",
-          "Microsoft.AspNet.Mvc.Core": "6.0.0-rc1-final",
+          "Microsoft.AspNet.Mvc.TagHelpers": "6.0.0-rc1-final",
           "ServiceProviderExtensions": "1.0.0"
         },
         "frameworkAssemblies": [
@@ -4016,7 +4016,7 @@
           "DryIoc.Dnx.DependencyInjection": "1.4.0-rc1",
           "Microsoft.AspNet.Http.Extensions": "1.0.0-rc1-final",
           "Microsoft.AspNet.Identity.Owin": "2.2.1",
-          "Microsoft.AspNet.Mvc.Core": "6.0.0-rc1-final",
+          "Microsoft.AspNet.Mvc.TagHelpers": "6.0.0-rc1-final",
           "ServiceProviderExtensions": "1.0.0"
         },
         "frameworkAssemblies": [
