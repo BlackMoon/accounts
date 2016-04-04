@@ -1,25 +1,19 @@
-﻿@using System.Threading.Tasks
-@using Kit.Dal.Command.Login
-@model Kit.Dal.Command.Login.LoginCommand
+﻿@model Kit.Dal.CQRS.Command.Login.LoginCommand
 
-<section class="container">
-    <div class="login">
-        <h1>Авторизация</h1>
-        <form asp-controller="Auth" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
-            <p>
-                <input asp-for="Login" placeholder="Имя пользователя" />
-            </p>
-            <p>
-                <input asp-for="Password" placeholder="Пароль" />
-            </p>
-            <p class="contact-input">
-                <label asp-for="DataSource" class="select">
-                    <select asp-for="DataSource" asp-items="ViewBag.TnsNames"></select>
-                </label>
-            </p>
-            <p class="submit">
-                <input type="submit" name="commit" value="Вход">
-            </p>
-        </form>
-    </div>
-</section>
+<h1>Авторизация</h1>
+<form asp-controller="Auth" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+    <p>
+        <input asp-for="Login" placeholder="Имя пользователя"/>
+    </p>
+    <p>
+        <input asp-for="Password" placeholder="Пароль"/>
+    </p>
+    <p class="contact-input">
+        <label asp-for="DataSource" class="select">
+            <select asp-for="DataSource" asp-items="ViewBag.TnsNames"></select>
+        </label>
+    </p>
+    <p class="submit">
+        <input type="submit" name="commit" value="Вход">
+    </p>
+</form>

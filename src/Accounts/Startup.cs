@@ -1,24 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 using DryIoc;
+using DryIoc.Dnx.DependencyInjection;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using DryIoc.Dnx.DependencyInjection;
-using Kit.Dal.Configuration;
+using Kit.Dal.Configurations;
 using Kit.Dal.DbManager;
+using Kit.Kernel.Configuration;
 using Kit.Kernel.CQRS.Command;
 using Kit.Kernel.CQRS.Query;
-using Kit.Kernel.Web;
+using Kit.Kernel.Interception;
 using Microsoft.AspNet.Authentication.Cookies;
-using Microsoft.AspNet.Identity;
 
 namespace accounts
 {
@@ -46,7 +44,7 @@ namespace accounts
             // dispatchers
             container.Register<IQueryDispatcher, QueryDispatcher>(Reuse.InCurrentScope, ifAlreadyRegistered: IfAlreadyRegistered.Replace);
             container.Register<ICommandDispatcher, CommandDispatcher>(Reuse.InCurrentScope, ifAlreadyRegistered: IfAlreadyRegistered.Replace);
-
+            container.RegisterInterfaceInterceptor<ICommandDispatcher, FooLoggingInterceptor>();
             // IDbManager
             container.RegisterInstance(Configuration["Data:DefaultConnection:ProviderName"], serviceKey: "ProviderName");
             container.Register(
@@ -99,11 +97,15 @@ namespace accounts
         {
             // Add framework services.
             services.AddApplicationInsightsTelemetry(Configuration);
-
-            services.AddAuthorization();
-            
             services.AddMvc();
-            
+
+            services.ConfigureRouting(
+                routeOptions =>
+                {
+                    routeOptions.LowercaseUrls = true;
+                    routeOptions.AppendTrailingSlash = true;
+                });
+
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
             services.Configure<ConnectionStringSettings>(Configuration.GetSection("Data:DefaultConnection"));
 
@@ -111,12 +113,12 @@ namespace accounts
             IContainer container = ConfigureDependencies(services);
 
             // TODO Startup Tasks
-            /*foreach (var dbManager in app.ApplicationServices.GetServices<ICommandDispatcher>())
+            /*foreach (var dbManager in container.ResolveMany<ICommandDispatcher>())
             {
                               
             }*/
 
-            return container.Resolve<IServiceProvider>(); 
+            return container.Resolve<IServiceProvider>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -133,41 +135,30 @@ namespace accounts
                 app.UseDeveloperExceptionPage();
             }
             else
-            {
                 app.UseExceptionHandler("/Auth/Error");
-            }
             
             app.UseIISPlatformHandler();
-
             app.UseApplicationInsightsExceptionTelemetry();
 
-            app.UseStaticFiles();
-
-            app.UseCookieAuthentication(o =>
+            app.UseCookieAuthentication(new CookieAuthenticationOptions()
             {
-                o.AuthenticationScheme = "Cookies";
-                o.AutomaticAuthenticate = true;
-                o.AutomaticChallenge = true;
-                
+                AuthenticationScheme = "Cookies",
+                AutomaticAuthenticate = true,
+                AutomaticChallenge = true,
                 //o.CookieName = "NTC." + Path.GetRandomFileName();
-
-                o.ExpireTimeSpan = TimeSpan.FromMinutes(20);
-                o.Events = new CookieAuthenticationEvents()
-                {
-                    OnSignedIn = context =>
-                    {
-                        return Task.FromResult(0);
-                    }
-                };
+                LoginPath = "/auth/login",
+                ExpireTimeSpan = TimeSpan.FromMinutes(20),
+                SlidingExpiration = true
             });
-
             
-
+            //app.UseForceHttps(new ForceHttpsOptions() { SecurePort = 44354, Paths = new []{"/auth/index"}});
+            app.UseStaticFiles();
             app.UseMvc(routes =>
             {
-                routes.MapRoute("Login", "{controller=Auth}/{action=Login}");
+                routes.MapRoute("ChangePassword", "change", new { controller = "Auth", action = "ChangePassword" });
+                routes.MapRoute("Login", "login", new { controller = "Auth", action = "Login" });
+                routes.MapRoute("Default", "{controller=Auth}/{action=Login}");
             });
-            
         }
 
         // Entry point for the application.
