@@ -14,6 +14,7 @@ using Kit.Dal.Configurations;
 using Kit.Dal.DbManager;
 using Kit.Kernel.Configuration;
 using Kit.Kernel.CQRS.Command;
+using Kit.Kernel.CQRS.Job;
 using Kit.Kernel.CQRS.Query;
 using Kit.Kernel.Interception;
 using Microsoft.AspNet.Authentication.Cookies;
@@ -42,8 +43,10 @@ namespace accounts
             container.RegisterMany(implTypeAssemblies);
             
             // dispatchers
-            container.Register<IQueryDispatcher, QueryDispatcher>(Reuse.InCurrentScope, ifAlreadyRegistered: IfAlreadyRegistered.Replace);
             container.Register<ICommandDispatcher, CommandDispatcher>(Reuse.InCurrentScope, ifAlreadyRegistered: IfAlreadyRegistered.Replace);
+            container.Register<IJobDispatcher, JobDispatcher>(Reuse.InCurrentScope, ifAlreadyRegistered: IfAlreadyRegistered.Replace);
+            container.Register<IQueryDispatcher, QueryDispatcher>(Reuse.InCurrentScope, ifAlreadyRegistered: IfAlreadyRegistered.Replace);
+
             container.RegisterInterfaceInterceptor<ICommandDispatcher, FooLoggingInterceptor>();
             // IDbManager
             container.RegisterInstance(Configuration["Data:DefaultConnection:ProviderName"], serviceKey: "ProviderName");
@@ -68,26 +71,6 @@ namespace accounts
                 builder.AddApplicationInsightsSettings(true);
             }
             Configuration = builder.Build();
-
-            DataSet ds = (DataSet)System.Configuration.ConfigurationManager.GetSection("system.data");
-            if (ds?.Tables.Count > 0)
-            {
-                DataTable dt = ds.Tables[0];
-
-                bool invariantNameExists = dt.Columns.Contains("InvariantName");
-                if (invariantNameExists)
-                {
-                    DataRow[] rows = dt.Select("InvariantName = 'Oracle.DataAccess.Client'");
-
-                    foreach (DataRow row in rows)
-                    {
-                        dt.Rows.Remove(row);
-                    }
-                }
-
-                dt.Rows.Add("Oracle Data Provider", "Oracle Data Provider for .NET", "Oracle.DataAccess.Client",
-                    typeof (Oracle.DataAccess.Client.OracleClientFactory).AssemblyQualifiedName);
-            }
         }
 
         public IConfigurationRoot Configuration { get; set; }
@@ -108,15 +91,14 @@ namespace accounts
 
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
             services.Configure<ConnectionStringSettings>(Configuration.GetSection("Data:DefaultConnection"));
+            services.Configure<OracleEnvironmentSettings>(Configuration.GetSection("OracleEnvironment"));
 
             // Add dependencies
             IContainer container = ConfigureDependencies(services);
 
-            // TODO Startup Tasks
-            /*foreach (var dbManager in container.ResolveMany<ICommandDispatcher>())
-            {
-                              
-            }*/
+            // Startup Tasks
+            IJobDispatcher dispatcher = container.Resolve<IJobDispatcher>();
+            dispatcher.Dispatch<IStartupJob>();
 
             return container.Resolve<IServiceProvider>();
         }

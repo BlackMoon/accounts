@@ -70,6 +70,7 @@
           "odac.x86": "12.1.2400"
         },
         "frameworkAssemblies": [
+          "System.configuration",
           "System.Data",
           "System.Xml"
         ]
@@ -2034,6 +2035,7 @@
           "odac.x86": "12.1.2400"
         },
         "frameworkAssemblies": [
+          "System.configuration",
           "System.Data",
           "System.Xml"
         ]
@@ -4001,6 +4003,7 @@
           "odac.x86": "12.1.2400"
         },
         "frameworkAssemblies": [
+          "System.configuration",
           "System.Data",
           "System.Xml"
         ]
