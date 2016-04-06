@@ -1,0 +1,74 @@
+﻿@using System.Threading.Tasks
+@using Kit.Kernel.Configuration
+@using Microsoft.Extensions.OptionsModel
+@inject IOptions<AppSettings> appSettings
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>@appSettings.Value.Title</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+
+    <link rel="stylesheet" href="~/css/demo.css">
+    <link rel="stylesheet" href="~/css/sky-forms.css">
+    <!--[if lt IE 9]>
+        <link rel="stylesheet" href="~/css/sky-forms-ie8.css">
+    <![endif]-->
+    <!--[if lt IE 10]>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script src="~/lib/jquery.placeholder/jquery.placeholder.js"></script>
+    <![endif]-->
+    <!--[if lt IE 9]>
+        <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <script src="~/js/sky-forms-ie8.js"></script>
+    <![endif]-->
+   
+</head>
+<body class="bg-cyan">
+    <div class="body body-s">
+
+        <form action="" class="sky-form">
+            <header>Авторизация</header>
+
+            <fieldset>
+                <section>
+                    <label class="input">
+                        <i class="icon-append icon-user"></i>
+                        <input placeholder="Пользователь" type="text">
+                        <b class="tooltip tooltip-bottom-right">Пользователь</b>
+                    </label>
+                </section>
+
+                <section>
+                    <label class="input">
+                        <i class="icon-append icon-lock"></i>
+                        <input placeholder="Пароль" type="password">
+                        <b class="tooltip tooltip-bottom-right">Пароль</b>
+                    </label>
+                </section>
+
+                <section>
+                    <label class="select">
+                        <i></i>
+                        <select>
+                            <option value="" selected="selected">Источник данных</option>
+                            <option value="1">Male</option>
+                            <option value="2">Female</option>
+                            <option value="3">Other</option>
+                        </select>
+                    </label>
+                </section>
+            </fieldset>
+          
+            <footer>
+                <button type="submit" class="button">Вход</button>
+            </footer>
+        </form>
+
+    </div>
+
+</body>
+</html>
