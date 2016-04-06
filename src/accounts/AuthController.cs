@@ -67,7 +67,7 @@ namespace accounts
                 new TnsNamesQuery() { ProviderInvariantName = _connectionStringSettings.ProviderName });
             
             ViewBag.TnsNames =
-                new List<SelectListItem>() { new SelectListItem() { Text = "Источник данных", Value = string.Empty, Selected = true } }
+                new List<SelectListItem>() { new SelectListItem() { Text = "Сервер", Value = string.Empty, Selected = true } }
                 .Union(result.Select(t => new SelectListItem() { Text = t, Value = t }));
             
             return View();
@@ -84,7 +84,7 @@ namespace accounts
             if (ModelState.IsValid)
             {
                 LoginCommandResult commandResult = _commandDispatcher.Dispatch<LoginCommand, LoginCommandResult>(command);
-                result.Status = commandResult.Status;
+                result.Status = LoginStatus.Expiring;//commandResult.Status;
 
                 if (result.Status != LoginStatus.Failure)
                 {
@@ -106,7 +106,7 @@ namespace accounts
             return new JsonResult(result);
         }
 
-        public IActionResult Login1(string returnUrl = null)
+        public IActionResult Login2(string returnUrl = null)
         {
             return View();
         }
