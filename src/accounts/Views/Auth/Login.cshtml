@@ -5,6 +5,7 @@
 @using Microsoft.Extensions.OptionsModel
 
 @inject IOptions<AppSettings> appSettings
+@model LoginCommand
 
 <!DOCTYPE html>
 <!--[if lt IE 7]> <html class="lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
@@ -31,7 +32,23 @@
     <div id="wrapper">
         <section class="block">
             <div id="divLogin" class="login">
-                @await Html.PartialAsync("_Login")
+                <h1>Авторизация</h1>
+                <form asp-controller="Auth" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" data-ajax="true" data-ajax-method="POST" data-ajax-success="onSuccess">
+                    <p>
+                        <input asp-for="Login" placeholder="Имя пользователя" />
+                    </p>
+                    <p>
+                        <input asp-for="Password" placeholder="Пароль" />
+                    </p>
+                    <p class="contact-input">
+                        <label asp-for="DataSource" class="select">
+                            <select asp-for="DataSource" asp-items="ViewBag.TnsNames"></select>
+                        </label>
+                    </p>
+                    <p class="submit">
+                        <input type="submit" name="commit" value="Вход">
+                    </p>
+                </form>
             </div>
         </section>
         <section class="validation">

@@ -6,6 +6,7 @@
     "jquery-validation": "1.14.0",
     "jquery-validation-unobtrusive": "3.2.4",
     "Microsoft.jQuery.Unobtrusive.Ajax": "~3.2.3",
-    "jquery-confirm": "~2.5.2"
+    "jquery-confirm": "~2.5.2",
+    "jquery.placeholder": "0.2.4"
   }
 }

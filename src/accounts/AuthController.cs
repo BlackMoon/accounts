@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Kit.Dal.Configurations;
+using Kit.Dal.CQRS.Command.ChangePassword;
 using Kit.Dal.CQRS.Command.Login;
 using Kit.Dal.CQRS.Query.TnsNames;
 using Kit.Kernel.Configuration;
@@ -49,6 +50,14 @@ namespace accounts
             return PartialView("_ChangePassword");
         }
 
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangePassword(ChangePasswordCommand command, string returnUrl = null)
+        {
+            ViewData["ReturnUrl"] = !string.IsNullOrEmpty(returnUrl) ? returnUrl : _appSettings.ReturnUrl;
+
+            return PartialView("_ChangePassword");
+        }
+
         [AllowAnonymous]
         public IActionResult Login(string returnUrl = null)
         {
@@ -76,24 +85,6 @@ namespace accounts
             {
                 LoginCommandResult commandResult = _commandDispatcher.Dispatch<LoginCommand, LoginCommandResult>(command);
                 result.Status = commandResult.Status;
-                result.Status = LoginStatus.Expiring;
-                switch (result.Status)
-                {
-                    // требуется смена пароля 
-                    case LoginStatus.Expired:
-                        result.ReturnUrl = "/change?" + returnUrl;
-                        result.Data = this.RenderPartialViewToString("_ChangePassword");
-                        break;
-
-                    // требуется смена пароля 
-                    case LoginStatus.Expiring:
-                        result.ReturnUrl = "/change?" + returnUrl;
-                        break;
-
-                    case LoginStatus.Success:
-                        result.ReturnUrl = returnUrl;
-                        break;
-                }
 
                 if (result.Status != LoginStatus.Failure)
                 {
@@ -113,6 +104,11 @@ namespace accounts
                 result.Message = string.Join("</li><li>", ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
 
             return new JsonResult(result);
+        }
+
+        public IActionResult Login1(string returnUrl = null)
+        {
+            return View();
         }
     }
 
