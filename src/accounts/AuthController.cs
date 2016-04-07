@@ -69,7 +69,7 @@ namespace accounts
             return new JsonResult(result);
         }
 
-        [AllowAnonymous]
+        [AllowAnonymous, ResponseCache(Duration = 100)]
         public IActionResult Login(string returnUrl = null)
         {
             string theme = _appSettings.Theme;
