@@ -15,8 +15,10 @@ using Kit.Kernel.CQRS.Query;
 using Kit.Kernel.Web;
 using Kit.Kernel.Web.Ajax;
 using Microsoft.AspNet.Authorization;
+using Microsoft.AspNet.Hosting;
 using Microsoft.AspNet.Server.Kestrel.Http;
 using Microsoft.Extensions.OptionsModel;
+using Microsoft.Extensions.PlatformAbstractions;
 using Newtonsoft.Json;
 
 namespace accounts
@@ -61,13 +63,23 @@ namespace accounts
         [AllowAnonymous]
         public IActionResult Login(string returnUrl = null)
         {
+            string theme = _appSettings.Theme;
+            if (string.IsNullOrEmpty(theme))
+            {
+                string[] themes = {"red", "yellow", "orange", "green", "cyan", "blue", "pink", "pirple", "black"};
+
+                int len = themes.Count(), month = DateTime.Today.Month;
+                theme = themes[month % len];
+            }
+
+            ViewData["Theme"] = theme;
             ViewData["ReturnUrl"] = !string.IsNullOrEmpty(returnUrl) ? returnUrl : _appSettings.ReturnUrl;
 
             TnsNamesQueryResult result = _queryDispatcher.Dispatch<TnsNamesQuery, TnsNamesQueryResult>(
                 new TnsNamesQuery() { ProviderInvariantName = _connectionStringSettings.ProviderName });
             
             ViewBag.TnsNames =
-                new List<SelectListItem>() { new SelectListItem() { Text = "Сервер", Value = string.Empty, Selected = true } }
+                new List<SelectListItem>() { new SelectListItem() { Text = "Сервер", Value = string.Empty, Selected = true, Disabled = true } }
                 .Union(result.Select(t => new SelectListItem() { Text = t, Value = t }));
             
             return View();
