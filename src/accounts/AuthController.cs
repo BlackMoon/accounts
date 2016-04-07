@@ -55,9 +55,18 @@ namespace accounts
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> ChangePassword(ChangePasswordCommand command, string returnUrl = null)
         {
-            ViewData["ReturnUrl"] = !string.IsNullOrEmpty(returnUrl) ? returnUrl : _appSettings.ReturnUrl;
+            LoginResult result = new LoginResult() { Status = LoginStatus.Failure };
 
-            return PartialView("_ChangePassword");
+            if (ModelState.IsValid)
+            {
+                LoginCommandResult commandResult = _commandDispatcher.Dispatch<ChangePasswordCommand, LoginCommandResult>(command);
+                
+                result.Status = commandResult.Status;
+                result.Message = commandResult.Message;
+                result.ReturnUrl = returnUrl;
+            }
+
+            return new JsonResult(result);
         }
 
         [AllowAnonymous]
@@ -96,7 +105,8 @@ namespace accounts
             if (ModelState.IsValid)
             {
                 LoginCommandResult commandResult = _commandDispatcher.Dispatch<LoginCommand, LoginCommandResult>(command);
-                result.Status = LoginStatus.Expiring;//commandResult.Status;
+                result.Status = commandResult.Status;
+                result.Message = commandResult.Message;
 
                 if (result.Status != LoginStatus.Failure)
                 {
@@ -112,9 +122,7 @@ namespace accounts
                     await HttpContext.Authentication.SignInAsync("Cookies", new ClaimsPrincipal(id));
                 }
             }
-            else
-                result.Message = string.Join("</li><li>", ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
-
+            
             return new JsonResult(result);
         }
 
@@ -134,7 +142,5 @@ namespace accounts
         public string Message { get; set; }
 
         public string ReturnUrl { get; set; }
-
-        public string Data { get; set; }
     }
 }

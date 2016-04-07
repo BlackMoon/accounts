@@ -16,9 +16,9 @@
 
     <environment names="Development">
         <link rel="stylesheet" href="~/css/open-sans.css" />
-        <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
         <link rel="stylesheet" href="~/css/sky-forms.css">
-
+        <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         @{
             string theme = (string)ViewData["Theme"];
             if (theme != "cyan")
@@ -29,7 +29,7 @@
         }
     </environment>
     <environment names="Staging,Production">
-        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true"/>
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
         <link rel="stylesheet" href="~/css/sky-forms.min.css">
         <link rel="stylesheet" href="~/css/open-sans.min.css" />
     </environment>
@@ -39,7 +39,7 @@
 </head>
 <body class="bg-@ViewData["Theme"]">
     <div class="body body-s">
-        <form asp-controller="Auth" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" data-ajax="true" data-ajax-method="POST" data-ajax-success="onSuccess" class="sky-form">
+        <form asp-controller="Auth" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" data-ajax="true" data-ajax-method="POST" data-ajax-begin="onBegin" data-ajax-complete="onComplete" class="sky-form">
             <header>Войти в систему</header>
 
             <fieldset>
@@ -67,6 +67,7 @@
                 </section>
             </fieldset>
             <footer>
+                <img id="imgLoader" src="~/images/loader.gif" />
                 <button type="submit" class="button">Вход</button>
             </footer>
         </form>
@@ -101,58 +102,84 @@
         <script src="~/js/sky-forms-ie8.js"></script>
     <![endif]-->
     <script type="text/javascript">
+        var $divBody, $imgLoader;
+
         $.ajaxSetup({
             beforeSend: function () {
-                console.log(1);
+                $imgLoader.show();
             }
         });
-
-        var $ul;
+       
         $(function () {
             $divBody = $('div.body');
-            $ul = $('section.validation ul');
+            $imgLoader = $('#imgLoader');
         });
 
         @Html.EnumToJs(typeof(LoginStatus))
-        onSuccess = function (result, status, xhr) {
 
+        onBegin = function() {
+            $imgLoader.show();
+        }
+
+        onComplete = function (event, xhr) {
+            $imgLoader.hide();
             debugger;
-            switch (result.status) {
-                case LoginStatus.Success:
-                    window.location = result.returnUrl;
-                    break;
+            if (xhr === 'success')
+            {
+                var result = event.responseJSON;
+                switch (result.status)
+                {
+                    case LoginStatus.Success:
+                        window.location = result.returnUrl;
+                        break;
 
-                case LoginStatus.Expired:
-                    $divLogin.html(result.data);
-                    break;
+                    case LoginStatus.Expired:
 
-                case LoginStatus.Expiring:
-                    $.confirm({
-                        confirmButton: "Да",
-                        cancelButton: "Нет",
-                        text: result.message,
-                        confirm: function () {
-                            $.get('/change?' + result.returnUrl, function(data) {
-                                $divBody.html(data);
-                            });
-                        },
-                        cancel: function () { window.location = result.returnUrl; }
-                    });
+                        $.confirm({
+                            confirmButton: "Ok",
+                            cancelButton: null,
+                            text: result.message
+                        });
 
-                    break;
+                        $.get('/change?' + result.returnUrl, function (data) {
+                            $divBody.html(data);
+                        });
 
-                default:
+                        break;
 
-                    $('.validation div')
-                        .addClass('validation-summary-errors')
-                        .removeClass('validation-summary-valid');
+                    case LoginStatus.Expiring:
 
-                    $ul.empty()
-                        .append('<li>' + result.message + '</li>');
-                    break;
+                        $.confirm({
+                            confirmButton: "Да",
+                            cancelButton: "Нет",
+                            text: result.message,
+                            confirm: function () {
+                                $.get('/change?' + result.returnUrl, function (data) {
+                                    $divBody.html(data);
+                                });
+                            },
+                            cancel: function () { window.location = result.returnUrl; }
+                        });
+
+                        break;
+
+                    default:
+
+                        $.confirm({
+                            confirmButton: "Ok",
+                            cancelButton: null,
+                            text: result.message
+                        });
+
+                        break;
+                }
             }
-
-
+            else
+                $.confirm({
+                    confirmButton: "Ok",
+                    cancelButton: null,
+                    text: 'Error'
+                });
         }
     </script>
 </body>

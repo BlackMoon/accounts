@@ -66,6 +66,7 @@ namespace accounts
             // Set up configuration sources.
             var builder = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")
+                .AddJsonFile("cachesettings.json", true)
                 .AddEnvironmentVariables();
 
             if (env.IsDevelopment())

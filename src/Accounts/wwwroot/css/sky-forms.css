@@ -113,15 +113,15 @@
 /* file inputs */
 /**/
 .sky-form .input-file .button {
-position: absolute;
-top: 4px;
-right: 4px;
-float: none;
-height: 31px;
-margin: 0;
-padding: 0 20px;
-font-size: 13px;
-line-height: 31px;
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    float: none;
+    height: 31px;
+    margin: 0;
+    padding: 0 20px;
+    font-size: 13px;
+    line-height: 31px;
 }
 
 .sky-form .input-file .button:hover {

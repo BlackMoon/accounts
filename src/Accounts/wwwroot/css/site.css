@@ -14,10 +14,14 @@ html, body {
 }
 
 .body {
-	max-width: 600px;
+    max-width: 600px;
 	margin: 0 auto;
 	padding: 40px;
+    -webkit-box-sizing: initial;
+    -moz-box-sizing: initial;
+    box-sizing: initial;
 }
+
 .body-s {
 	max-width: 400px;
 }
@@ -55,4 +59,10 @@ a:hover {
 }
 .bg-black {
 	background-image: url(../images/bg-black.jpg);
+}
+
+#imgLoader {
+    display: none;
+    float: left;
+    margin: 16px 0 0 2px;
 }

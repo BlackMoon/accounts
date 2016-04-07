@@ -83,7 +83,7 @@
             },
             button: null
         }, dataOptions, options);
-
+       
         // Modal
         var modalHeader = '';
         if (settings.title !== '') {
@@ -93,6 +93,7 @@
                     '<h4 class="modal-title">' + settings.title+'</h4>' +
                 '</div>';
         }
+        
         var modalHTML =
                 '<div class="confirmation-modal modal fade" tabindex="-1" role="dialog">' +
                     '<div class="'+ settings.dialogClass +'">' +
@@ -103,9 +104,7 @@
                                 '<button class="confirm btn ' + settings.confirmButtonClass + '" type="button" data-dismiss="modal">' +
                                     settings.confirmButton +
                                 '</button>' +
-                                '<button class="cancel btn ' + settings.cancelButtonClass + '" type="button" data-dismiss="modal">' +
-                                    settings.cancelButton +
-                                '</button>' +
+                                (settings.cancelButton ? '<button class="cancel btn ' + settings.cancelButtonClass + '" type="button" data-dismiss="modal">' + settings.cancelButton + '</button>' : '') +
                             '</div>' +
                         '</div>' +
                     '</div>' +
