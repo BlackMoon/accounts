@@ -2,19 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using DryIoc;
 using DryIoc.Dnx.DependencyInjection;
-using Kit.Dal;
-using Microsoft.AspNet.Builder;
-using Microsoft.AspNet.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Kit.Dal.Configurations;
-using Kit.Dal.CQRS.Command.Login;
-using Kit.Dal.CQRS.Query.TnsNames;
 using Kit.Dal.DbManager;
-using Kit.Kernel.Cache;
 using Kit.Kernel.Configuration;
 using Kit.Kernel.CQRS.Command;
 using Kit.Kernel.CQRS.Job;
@@ -25,8 +18,14 @@ using Kit.Kernel.Web.Configuration;
 using Kit.Kernel.Web.Filter;
 using Kit.Kernel.Web.ForceHttpsMiddleware;
 using Kit.Kernel.Web.Job;
+using Mapster;
 using Microsoft.AspNet.Authentication.Cookies;
+using Microsoft.AspNet.Builder;
+using Microsoft.AspNet.Hosting;
 using Microsoft.AspNet.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.OptionsModel;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -111,6 +110,7 @@ namespace accounts
 
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
             services.Configure<ConnectionStringSettings>(Configuration.GetSection("Data:DefaultConnection"));
+            services.Configure<CookieAuthenticationConfiguration>(Configuration.GetSection("CookieAuthentication"));
             services.Configure<ForceHttpsOptions>(Configuration.GetSection("HttpsOptions"));
             services.Configure<OracleEnvironmentSettings>(Configuration.GetSection("OracleEnvironment"));
 
@@ -160,28 +160,34 @@ namespace accounts
             
             app.UseIISPlatformHandler();
             app.UseApplicationInsightsExceptionTelemetry();
-            
-
-            // Request Jobs
-            IJobDispatcher dispatcher = app.ApplicationServices.GetRequiredService<IJobDispatcher>();
-            dispatcher.Dispatch<IRequestJob>();
-
-            //CookieAuthentificationSettings cas = new CookieAuthenticationSettings();
-
-            app.UseCookieAuthentication(new CookieAuthenticationOptions()
+           
+            // cookie configuration
+            CookieAuthenticationOptions options = new CookieAuthenticationOptions()
             {
                 AuthenticationScheme = "Cookies",
                 AutomaticAuthenticate = true,
                 AutomaticChallenge = true,
-                //o.CookieName = "NTC." + Path.GetRandomFileName();
                 LoginPath = "/auth/login",
-                ExpireTimeSpan = TimeSpan.FromMinutes(20),
-                SlidingExpiration = true
-            });
-            /*
-            CookieAuthenticationSettings cas = app.ApplicationServices.GetService<CookieAuthenticationSettings>();
-            CookieAuthenticationOptions options = FastMapper.TypeAdapter.Adapt<CookieAuthenticationSettings, CookieAuthenticationOptions>(cas);
-            app.UseCookieAuthentication(options);*/
+                SlidingExpiration = true,
+                Events = new CookieAuthenticationEvents()
+                {
+                    OnSigningIn = context =>
+                    {
+                        return Task.FromResult(0);
+                    },
+
+                    OnSignedIn = context =>
+                    {
+                        ClaimsPrincipal p = context.Principal;
+                        return Task.FromResult(0);
+                    } 
+                }
+            };
+
+            IOptions<CookieAuthenticationConfiguration> config = app.ApplicationServices.GetService<IOptions<CookieAuthenticationConfiguration>>();
+            options = config.Value.Adapt(options);
+            options.ExpireTimeSpan = TimeSpan.FromMinutes(config.Value.TimeOut);            // TimeSpan Type cant' auto map
+            app.UseCookieAuthentication(options);
 
             // https
             if (Configuration.Get<bool>("HttpsOptions:Enabled"))
@@ -198,7 +204,9 @@ namespace accounts
                 routes.MapRoute("Default", "{controller=Auth}/{action=Login}");
             });
 
-            
+            // Request Jobs
+            IJobDispatcher dispatcher = app.ApplicationServices.GetRequiredService<IJobDispatcher>();
+            dispatcher.Dispatch<IRequestJob>();
         }
 
         // Entry point for the application.
