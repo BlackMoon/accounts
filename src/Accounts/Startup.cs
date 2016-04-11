@@ -4,19 +4,30 @@ using System.Linq;
 using System.Reflection;
 using DryIoc;
 using DryIoc.Dnx.DependencyInjection;
+using Kit.Dal;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Kit.Dal.Configurations;
+using Kit.Dal.CQRS.Command.Login;
+using Kit.Dal.CQRS.Query.TnsNames;
 using Kit.Dal.DbManager;
+using Kit.Kernel.Cache;
 using Kit.Kernel.Configuration;
 using Kit.Kernel.CQRS.Command;
 using Kit.Kernel.CQRS.Job;
 using Kit.Kernel.CQRS.Query;
 using Kit.Kernel.Interception;
+using Kit.Kernel.Interception.Attribute;
+using Kit.Kernel.Web.Configuration;
+using Kit.Kernel.Web.Filter;
+using Kit.Kernel.Web.ForceHttpsMiddleware;
+using Kit.Kernel.Web.Job;
 using Microsoft.AspNet.Authentication.Cookies;
+using Microsoft.AspNet.Mvc;
+using Microsoft.Extensions.OptionsModel;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
@@ -43,21 +54,34 @@ namespace accounts
             }
             
             IContainer container = new Container().WithDependencyInjectionAdapter(services);
-            container.RegisterMany(implTypeAssemblies);
-            
-            // dispatchers
-            container.Register<ICommandDispatcher, CommandDispatcher>(Reuse.InCurrentScope, ifAlreadyRegistered: IfAlreadyRegistered.Replace);
-            container.Register<IJobDispatcher, JobDispatcher>(Reuse.InCurrentScope, ifAlreadyRegistered: IfAlreadyRegistered.Replace);
-            container.Register<IQueryDispatcher, QueryDispatcher>(Reuse.InCurrentScope, ifAlreadyRegistered: IfAlreadyRegistered.Replace);
+            container.RegisterMany(implTypeAssemblies, (registrator, types, type) =>
+            {
+                // all dispatchers --> currentScope
+                IReuse reuse = type.IsAssignableTo(typeof(ICommandDispatcher)) || type.IsAssignableTo(typeof(IJobDispatcher)) || type.IsAssignableTo(typeof(IQueryDispatcher))
+                    ? Reuse.InCurrentScope
+                    : Reuse.Transient;
 
-            container.RegisterInterfaceInterceptor<ICommandDispatcher, FooLoggingInterceptor>();
+                registrator.RegisterMany(types, type, reuse);
+
+                // interceptors
+                if (type.IsClass)
+                {
+                    InterceptedObjectAttribute attr = (InterceptedObjectAttribute)type.GetCustomAttribute(typeof(InterceptedObjectAttribute));
+                    if (attr != null)
+                    {
+                        Type serviceType = attr.ServiceInterfaceType ?? type.GetImplementedInterfaces().FirstOrDefault();
+                        registrator.RegisterInterfaceInterceptor(serviceType, attr.InterceptorType);
+                    }
+                }
+            });
+
             // IDbManager
             container.RegisterInstance(Configuration["Data:DefaultConnection:ProviderName"], serviceKey: "ProviderName");
             container.Register(
                 reuse: Reuse.InWebRequest, 
                 made: Made.Of(() => DbManagerFactory.CreateDbManager(Arg.Of<string>("ProviderName")), requestIgnored => string.Empty)
                 );
-            
+
             return container;
         }
 
@@ -82,10 +106,24 @@ namespace accounts
         {
             // Add framework services.
             services.AddApplicationInsightsTelemetry(Configuration);
+
+            services.AddOptions();
+
+            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+            services.Configure<ConnectionStringSettings>(Configuration.GetSection("Data:DefaultConnection"));
+            services.Configure<ForceHttpsOptions>(Configuration.GetSection("HttpsOptions"));
+            services.Configure<OracleEnvironmentSettings>(Configuration.GetSection("OracleEnvironment"));
+
             services
                 .AddMvc()
-                .AddJsonOptions(option => option.SerializerSettings.NullValueHandling = NullValueHandling.Ignore)
-                .AddJsonOptions(option => option.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver());
+                .AddJsonOptions(option =>
+                {
+                    option.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+                    option.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                });
+
+            // Global exceptions' filter
+            services.Configure<MvcOptions>(options => options.Filters.Add(new GlobalExceptionFilter()));
 
             services.ConfigureRouting(
                 routeOptions =>
@@ -93,10 +131,6 @@ namespace accounts
                     routeOptions.LowercaseUrls = true;
                     routeOptions.AppendTrailingSlash = true;
                 });
-
-            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
-            services.Configure<ConnectionStringSettings>(Configuration.GetSection("Data:DefaultConnection"));
-            services.Configure<OracleEnvironmentSettings>(Configuration.GetSection("OracleEnvironment"));
 
             // Add dependencies
             IContainer container = ConfigureDependencies(services);
@@ -126,6 +160,13 @@ namespace accounts
             
             app.UseIISPlatformHandler();
             app.UseApplicationInsightsExceptionTelemetry();
+            
+
+            // Request Jobs
+            IJobDispatcher dispatcher = app.ApplicationServices.GetRequiredService<IJobDispatcher>();
+            dispatcher.Dispatch<IRequestJob>();
+
+            //CookieAuthentificationSettings cas = new CookieAuthenticationSettings();
 
             app.UseCookieAuthentication(new CookieAuthenticationOptions()
             {
@@ -137,8 +178,18 @@ namespace accounts
                 ExpireTimeSpan = TimeSpan.FromMinutes(20),
                 SlidingExpiration = true
             });
-            
-            //app.UseForceHttps(new ForceHttpsOptions() { SecurePort = 44354, Paths = new []{"/auth/index"}});
+            /*
+            CookieAuthenticationSettings cas = app.ApplicationServices.GetService<CookieAuthenticationSettings>();
+            CookieAuthenticationOptions options = FastMapper.TypeAdapter.Adapt<CookieAuthenticationSettings, CookieAuthenticationOptions>(cas);
+            app.UseCookieAuthentication(options);*/
+
+            // https
+            if (Configuration.Get<bool>("HttpsOptions:Enabled"))
+            {
+                IOptions<ForceHttpsOptions> httpsOptions = app.ApplicationServices.GetService<IOptions<ForceHttpsOptions>>();
+                app.UseForceHttps(httpsOptions.Value);
+            }
+
             app.UseStaticFiles();
             app.UseMvc(routes =>
             {
@@ -146,6 +197,8 @@ namespace accounts
                 routes.MapRoute("Login", "login", new { controller = "Auth", action = "Login" });
                 routes.MapRoute("Default", "{controller=Auth}/{action=Login}");
             });
+
+            
         }
 
         // Entry point for the application.

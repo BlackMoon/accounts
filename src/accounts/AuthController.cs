@@ -12,14 +12,8 @@ using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.Rendering;
 using Kit.Kernel.CQRS.Command;
 using Kit.Kernel.CQRS.Query;
-using Kit.Kernel.Web;
-using Kit.Kernel.Web.Ajax;
 using Microsoft.AspNet.Authorization;
-using Microsoft.AspNet.Hosting;
-using Microsoft.AspNet.Server.Kestrel.Http;
 using Microsoft.Extensions.OptionsModel;
-using Microsoft.Extensions.PlatformAbstractions;
-using Newtonsoft.Json;
 
 namespace accounts
 {
@@ -65,6 +59,12 @@ namespace accounts
                 result.Message = commandResult.Message;
                 result.ReturnUrl = returnUrl;
             }
+            else
+                result.Message = string.Join("; ",
+                    ModelState.Values
+                    .SelectMany(x => x.Errors)
+                    .Select(x => x.ErrorMessage)
+                );
 
             return new JsonResult(result);
         }
@@ -86,11 +86,14 @@ namespace accounts
 
             TnsNamesQueryResult result = _queryDispatcher.Dispatch<TnsNamesQuery, TnsNamesQueryResult>(
                 new TnsNamesQuery() { ProviderInvariantName = _connectionStringSettings.ProviderName });
-            
+
             ViewBag.TnsNames =
-                new List<SelectListItem>() { new SelectListItem() { Text = "Сервер", Value = string.Empty, Selected = true, Disabled = true } }
+                new List<SelectListItem>()
+                {
+                    new SelectListItem() {Text = "Сервер", Value = string.Empty, Selected = true, Disabled = true}
+                }
                 .Union(result.Select(t => new SelectListItem() { Text = t, Value = t }));
-            
+          
             return View();
         }
 
@@ -122,25 +125,14 @@ namespace accounts
                     await HttpContext.Authentication.SignInAsync("Cookies", new ClaimsPrincipal(id));
                 }
             }
+            else 
+                result.Message = string.Join("; ", 
+                    ModelState.Values
+                    .SelectMany(x => x.Errors)
+                    .Select(x => x.ErrorMessage)
+                );
             
             return new JsonResult(result);
         }
-
-        public IActionResult Login2(string returnUrl = null)
-        {
-            return View();
-        }
-    }
-
-    /// <summary>
-    /// Результат операции [Login]
-    /// </summary>
-    internal class LoginResult
-    {
-        public LoginStatus Status { get; set; }
-
-        public string Message { get; set; }
-
-        public string ReturnUrl { get; set; }
     }
 }

@@ -39,15 +39,15 @@
 </head>
 <body class="bg-@ViewData["Theme"]">
     <div class="body body-s">
-        <form asp-controller="Auth" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" class="sky-form"
-              data-ajax="true" data-ajax-method="POST" data-ajax-begin="onBegin" data-ajax-complete="onComplete">
+        <form asp-route="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" class="sky-form"
+              data-ajax="true" data-ajax-method="POST" data-ajax-complete="onComplete" data-ajax-loading="#imgLoader">
+            
             <header>Войти в систему</header>
-
             <fieldset>
                 <section>
                     <label class="input">
                         <i class="icon-append icon-user"></i>
-                        <input asp-for="Login" placeholder="Пользователь"/>
+                        <input asp-for="Login" placeholder="Пользователь" />
                         <b class="tooltip tooltip-bottom-right">Пользователь</b>
                     </label>
                     <span asp-validation-for="Login" class="note note-error"></span>
@@ -56,7 +56,7 @@
                 <section>
                     <label class="input">
                         <i class="icon-append icon-lock"></i>
-                        <input asp-for="Password" placeholder="Пароль"/>
+                        <input asp-for="Password" placeholder="Пароль" />
                         <b class="tooltip tooltip-bottom-right">Пароль</b>
                     </label>
                     <span asp-validation-for="Password" class="note note-error"></span>
@@ -97,7 +97,11 @@
         <script src="https://ajax.aspnetcdn.com/ajax/mvc/5.2.3/jquery.validate.unobtrusive.min.js"
                 asp-fallback-src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"
                 asp-fallback-test="window.jQuery && window.jQuery.validator && window.jQuery.validator.unobtrusive">
+        
         </script>
+        <script src="~/lib/microsoft.jquery.unobtrusive.ajax/jquery.unobtrusive-ajax.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="~/lib/jquery-confirm/jquery.confirm.js"></script>
     </environment>
     <!--[if lt IE 10]>
         <script src="~/lib/jquery.placeholder/jquery.placeholder.js"></script>
@@ -108,12 +112,6 @@
     <![endif]-->
     <script type="text/javascript">
         var $divBody, $imgLoader;
-
-        $.ajaxSetup({
-            beforeSend: function () {
-                $imgLoader.show();
-            }
-        });
        
         $(function () {
             $divBody = $('div.body');
@@ -121,14 +119,25 @@
         });
 
         @Html.EnumToJs(typeof(LoginStatus))
-        
-        onBegin = function(event, xhr) {
 
-            $imgLoader.show();
+        getChangePasswordView = function(url) {
+            $.ajax({
+                url: url,
+                beforeSend: function() { $imgLoader.show(); },
+                complete: function (event, xhr) {
+                    $imgLoader.hide();
+
+                    if (xhr === 'success')
+                    {
+                        $divBody.html(event.responseText);
+                        $.validator.unobtrusive.parse($divBody);
+                    }
+                }
+            });
         }
 
         onComplete = function (event, xhr) {
-            $imgLoader.hide();
+            
             debugger;
             if (xhr === 'success')
             {
@@ -146,10 +155,7 @@
                             cancelButton: null,
                             text: result.message
                         });
-
-                        $.get('/change?' + result.returnUrl, function (data) {
-                            $divBody.html(data);
-                        });
+                        getChangePasswordView('/change?returnurl=' + result.returnUrl);
 
                         break;
 
@@ -159,11 +165,7 @@
                             confirmButton: "Да",
                             cancelButton: "Нет",
                             text: result.message,
-                            confirm: function () {
-                                $.get('/change?' + result.returnUrl, function (data) {
-                                    $divBody.html(data);
-                                });
-                            },
+                            confirm: function () { getChangePasswordView('/change?returnurl=' + result.returnUrl) },
                             cancel: function () { window.location = result.returnUrl; }
                         });
 

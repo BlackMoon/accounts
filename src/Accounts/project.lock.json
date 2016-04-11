@@ -60,6 +60,15 @@
           "lib/net45/EntityFramework.SqlServer.dll": {}
         }
       },
+      "FastMapper/1.2.0": {
+        "type": "package",
+        "compile": {
+          "lib/net40/FastMapper.dll": {}
+        },
+        "runtime": {
+          "lib/net40/FastMapper.dll": {}
+        }
+      },
       "Kit.Dal/1.0.0": {
         "type": "project",
         "framework": "DNX,Version=v4.5.1",
@@ -81,6 +90,7 @@
         "dependencies": {
           "Castle.Core": "3.3.3",
           "DryIoc.Dnx.DependencyInjection": "1.4.0-rc1",
+          "FastMapper": "1.2.0",
           "Microsoft.AspNet.Http.Extensions": "1.0.0-rc1-final",
           "Microsoft.AspNet.Identity.Owin": "2.2.1",
           "Microsoft.AspNet.Mvc.TagHelpers": "6.0.0-rc1-final",
@@ -2025,6 +2035,15 @@
           "lib/net45/EntityFramework.SqlServer.dll": {}
         }
       },
+      "FastMapper/1.2.0": {
+        "type": "package",
+        "compile": {
+          "lib/net40/FastMapper.dll": {}
+        },
+        "runtime": {
+          "lib/net40/FastMapper.dll": {}
+        }
+      },
       "Kit.Dal/1.0.0": {
         "type": "project",
         "framework": "DNX,Version=v4.5.1",
@@ -2046,6 +2065,7 @@
         "dependencies": {
           "Castle.Core": "3.3.3",
           "DryIoc.Dnx.DependencyInjection": "1.4.0-rc1",
+          "FastMapper": "1.2.0",
           "Microsoft.AspNet.Http.Extensions": "1.0.0-rc1-final",
           "Microsoft.AspNet.Identity.Owin": "2.2.1",
           "Microsoft.AspNet.Mvc.TagHelpers": "6.0.0-rc1-final",
@@ -3993,6 +4013,15 @@
           "lib/net45/EntityFramework.SqlServer.dll": {}
         }
       },
+      "FastMapper/1.2.0": {
+        "type": "package",
+        "compile": {
+          "lib/net40/FastMapper.dll": {}
+        },
+        "runtime": {
+          "lib/net40/FastMapper.dll": {}
+        }
+      },
       "Kit.Dal/1.0.0": {
         "type": "project",
         "framework": "DNX,Version=v4.5.1",
@@ -4014,6 +4043,7 @@
         "dependencies": {
           "Castle.Core": "3.3.3",
           "DryIoc.Dnx.DependencyInjection": "1.4.0-rc1",
+          "FastMapper": "1.2.0",
           "Microsoft.AspNet.Http.Extensions": "1.0.0-rc1-final",
           "Microsoft.AspNet.Identity.Owin": "2.2.1",
           "Microsoft.AspNet.Mvc.TagHelpers": "6.0.0-rc1-final",
@@ -5989,6 +6019,17 @@
         "tools/init.ps1",
         "tools/install.ps1",
         "tools/migrate.exe"
+      ]
+    },
+    "FastMapper/1.2.0": {
+      "type": "package",
+      "sha512": "z5nIR7yiFsn6fxPM3VCl+LKX/4CbLT9dsVt7qWEpP6wPhNraZgpks/9Kk30Ue2T/1KgHdPij0wK2DTd0xa1OOA==",
+      "files": [
+        "FastMapper.1.2.0.nupkg",
+        "FastMapper.1.2.0.nupkg.sha512",
+        "FastMapper.nuspec",
+        "lib/net40/FastMapper.dll",
+        "NuGet.exe"
       ]
     },
     "Microsoft.ApplicationInsights/1.1.1-beta": {
