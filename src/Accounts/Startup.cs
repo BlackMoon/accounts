@@ -16,6 +16,7 @@ using Kit.Kernel.Identity;
 using Kit.Kernel.Interception;
 using Kit.Kernel.Interception.Attribute;
 using Kit.Kernel.Web.Configuration;
+using Kit.Kernel.Web.EncryptData;
 using Kit.Kernel.Web.Filter;
 using Kit.Kernel.Web.ForceHttpsMiddleware;
 using Kit.Kernel.Web.Job;
@@ -25,6 +26,7 @@ using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
 using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Mvc;
+using Microsoft.AspNet.Mvc.ModelBinding;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -130,7 +132,13 @@ namespace accounts
             services.Configure<OracleEnvironmentSettings>(Configuration.GetSection("OracleEnvironment"));
 
             services
-                .AddMvc()
+                .AddMvc(options =>
+                {
+                    IModelBinder originalBinder = options.ModelBinders.FirstOrDefault(x => x.GetType() == typeof(MutableObjectModelBinder));
+                    int ix = options.ModelBinders.IndexOf(originalBinder);
+                    options.ModelBinders.Remove(originalBinder);
+                    options.ModelBinders.Insert(ix, new EncryptModelBinder());
+                })
                 .AddJsonOptions(option =>
                 {
                     option.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
