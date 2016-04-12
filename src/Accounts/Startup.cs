@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Security.Claims;
-using System.Threading.Tasks;
+using System.Security.Principal;
 using DryIoc;
 using DryIoc.Dnx.DependencyInjection;
 using Kit.Dal.Configurations;
@@ -12,6 +12,7 @@ using Kit.Kernel.Configuration;
 using Kit.Kernel.CQRS.Command;
 using Kit.Kernel.CQRS.Job;
 using Kit.Kernel.CQRS.Query;
+using Kit.Kernel.Identity;
 using Kit.Kernel.Interception;
 using Kit.Kernel.Interception.Attribute;
 using Kit.Kernel.Web.Configuration;
@@ -22,6 +23,7 @@ using Mapster;
 using Microsoft.AspNet.Authentication.Cookies;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
+using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -34,6 +36,8 @@ namespace accounts
 {
     public class Startup
     {
+        public const string AuthenticationSchemeName = "Cookies";
+
         public IConfigurationRoot Configuration { get; set; }
 
         private IContainer ConfigureDependencies(IServiceCollection services)
@@ -59,7 +63,7 @@ namespace accounts
                 IReuse reuse = type.IsAssignableTo(typeof(ICommandDispatcher)) || type.IsAssignableTo(typeof(IJobDispatcher)) || type.IsAssignableTo(typeof(IQueryDispatcher))
                     ? Reuse.InCurrentScope
                     : Reuse.Transient;
-
+                
                 registrator.RegisterMany(types, type, reuse);
 
                 // interceptors
@@ -73,14 +77,25 @@ namespace accounts
                     }
                 }
             });
-
+            
             // IDbManager
+            container.RegisterDelegate(delegate(IResolver resolver)
+            {
+                string connectionString = null;
+                HttpContext httpContext = resolver.Resolve<IHttpContextAccessor>().HttpContext;
+
+                if (httpContext != null && httpContext.User.Identity.IsAuthenticated)
+                    connectionString = httpContext.User.GetConnectionString();
+                
+                return connectionString;
+            }, serviceKey: "ConnectionString");
+
             container.RegisterInstance(Configuration["Data:DefaultConnection:ProviderName"], serviceKey: "ProviderName");
             container.Register(
                 reuse: Reuse.InWebRequest, 
-                made: Made.Of(() => DbManagerFactory.CreateDbManager(Arg.Of<string>("ProviderName")), requestIgnored => string.Empty)
+                made: Made.Of(() => DbManagerFactory.CreateDbManager(Arg.Of<string>("ProviderName"), Arg.Of<string>("ConnectionString")), requestIgnored => string.Empty)
                 );
-
+            
             return container;
         }
 
@@ -164,24 +179,11 @@ namespace accounts
             // cookie configuration
             CookieAuthenticationOptions options = new CookieAuthenticationOptions()
             {
-                AuthenticationScheme = "Cookies",
+                AuthenticationScheme = AuthenticationSchemeName,
                 AutomaticAuthenticate = true,
                 AutomaticChallenge = true,
                 LoginPath = "/auth/login",
-                SlidingExpiration = true,
-                Events = new CookieAuthenticationEvents()
-                {
-                    OnSigningIn = context =>
-                    {
-                        return Task.FromResult(0);
-                    },
-
-                    OnSignedIn = context =>
-                    {
-                        ClaimsPrincipal p = context.Principal;
-                        return Task.FromResult(0);
-                    } 
-                }
+                SlidingExpiration = true
             };
 
             IOptions<CookieAuthenticationConfiguration> config = app.ApplicationServices.GetService<IOptions<CookieAuthenticationConfiguration>>();

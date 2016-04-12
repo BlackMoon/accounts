@@ -57,7 +57,31 @@ namespace accounts
                 
                 result.Status = commandResult.Status;
                 result.Message = commandResult.Message;
-                result.ReturnUrl = returnUrl;
+
+                if (result.Status != LoginStatus.Failure)
+                {
+                    result.ReturnUrl = returnUrl;
+
+                    await HttpContext.Authentication.SignOutAsync(Startup.AuthenticationSchemeName);
+
+                    ClaimsIdentity id = HttpContext.User.Identity as ClaimsIdentity;
+                    if (id != null)
+                    {
+                        Claim loginClaim = id.FindFirst("lastlogindate"),
+                              pswClaim = id.FindFirst("password");
+
+                        id.TryRemoveClaim(loginClaim);
+                        id.TryRemoveClaim(pswClaim);
+
+                        id.AddClaims(new[]
+                        {
+                            new Claim("password", command.NewPassword),
+                            new Claim("lastlogindate", DateTime.UtcNow.ToString("dd.MM.yyyy HH:mm:ss.f"))
+                        });
+
+                        await HttpContext.Authentication.SignInAsync(Startup.AuthenticationSchemeName, new ClaimsPrincipal(id));
+                    }
+                }
             }
             else
                 result.Message = string.Join("; ",
@@ -65,7 +89,7 @@ namespace accounts
                     .SelectMany(x => x.Errors)
                     .Select(x => x.ErrorMessage)
                 );
-
+            
             return new JsonResult(result);
         }
 
@@ -113,6 +137,8 @@ namespace accounts
 
                 if (result.Status != LoginStatus.Failure)
                 {
+                    result.ReturnUrl = returnUrl;
+
                     IList<Claim> claims = new List<Claim>
                     {
                         new Claim(ClaimTypes.Name, command.Login),
@@ -122,7 +148,7 @@ namespace accounts
                     };
 
                     ClaimsIdentity id = new ClaimsIdentity(claims, "local");
-                    await HttpContext.Authentication.SignInAsync("Cookies", new ClaimsPrincipal(id));
+                    await HttpContext.Authentication.SignInAsync(Startup.AuthenticationSchemeName, new ClaimsPrincipal(id));
                 }
             }
             else 
