@@ -41,8 +41,8 @@
 <body class="bg-@ViewData["Theme"]">
     <div class="body body-s">
         <form asp-route="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" class="sky-form"
-              data-ajax="true" data-ajax-method="POST" data-ajax-begin="onBegin" data-ajax-complete="onComplete" data-ajax-loading="#imgLoader">
-            
+              data-ajax="true" data-ajax-method="POST" data-ajax-begin="onBegin" data-ajax-failure="onFailure" data-ajax-success="onSuccess" data-ajax-loading="#imgLoader">
+
             <header>Войти в систему</header>
             <fieldset>
                 <section>
@@ -72,12 +72,12 @@
                 </section>
             </fieldset>
             <footer>
-                <img id="imgLoader" src="~/images/loader.gif"/>
+                <img id="imgLoader" src="~/images/loader.gif" />
                 <button type="submit" class="button">Вход</button>
             </footer>
         </form>
     </div>
-
+    @Html.EnumToJs(typeof(LoginStatus), true)
     <environment names="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
@@ -85,6 +85,7 @@
         <script src="~/lib/microsoft.jquery.unobtrusive.ajax/jquery.unobtrusive-ajax.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
         <script src="~/lib/jquery-confirm/jquery.confirm.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
     </environment>
     <environment names="Staging,Production">
         <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.5/bootstrap.min.js"
@@ -98,7 +99,7 @@
         <script src="https://ajax.aspnetcdn.com/ajax/mvc/5.2.3/jquery.validate.unobtrusive.min.js"
                 asp-fallback-src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"
                 asp-fallback-test="window.jQuery && window.jQuery.validator && window.jQuery.validator.unobtrusive">
-        
+
         </script>
         <script src="~/lib/microsoft.jquery.unobtrusive.ajax/jquery.unobtrusive-ajax.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
@@ -111,103 +112,5 @@
         <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
         <script src="~/js/sky-forms-ie8.js"></script>
     <![endif]-->
-    <script type="text/javascript">
-        var $divBody, $imgLoader;
-       
-        $(function () {
-            $divBody = $('div.body');
-            $imgLoader = $('#imgLoader');
-        });
-
-        @Html.EnumToJs(typeof(LoginStatus))
-
-        getChangePasswordView = function(url) {
-            $.ajax({
-                url: url,
-                beforeSend: function() { $imgLoader.show(); },
-                complete: function (event, xhr) {
-                    $imgLoader.hide();
-
-                    if (xhr === 'success')
-                    {
-                        $divBody.html(event.responseText);
-                        $.validator.unobtrusive.parse($divBody);
-                    }
-                }
-            });
-        }
-
-        onBegin = function (xhr, settings) {
-            var needToUpdate = 0;
-            $(this).find(':input:not([type=hidden])').each(function (ix, el) {
-                
-                var $el = $(el);
-                if ($el.attr('data-encrypt'))
-                {
-                    var val = $el.val(), len = val.length, xor = '';
-                    for (var i = 0; i < len; ++i) { xor += String.fromCharCode(val.charCodeAt(i) ^ 128); }            
-                    $el.val(xor);
-
-                    needToUpdate = 1;
-                }
-            });
-
-            needToUpdate && (settings.data = $(this).serialize());
-        }
-
-        onComplete = function (event, xhr) {
-            
-            debugger;
-            if (xhr === 'success')
-            {
-                var result = event.responseJSON;
-                switch (result.status)
-                {
-                    case LoginStatus.Success:
-                        window.location = result.returnUrl;
-                        break;
-
-                    case LoginStatus.Expired:
-
-                        $.confirm({
-                            confirmButton: "Ok",
-                            cancelButton: null,
-                            text: result.message
-                        });
-                        getChangePasswordView('/change?returnurl=' + result.returnUrl);
-
-                        break;
-
-                    case LoginStatus.Expiring:
-
-                        $.confirm({
-                            confirmButton: "Да",
-                            cancelButton: "Нет",
-                            text: result.message,
-                            confirm: function () { getChangePasswordView('/change?returnurl=' + result.returnUrl) },
-                            cancel: function () { window.location = result.returnUrl; }
-                        });
-
-                        break;
-
-                    default:
-
-                        $.confirm({
-                            confirmButton: "Ok",
-                            cancelButton: null,
-                            text: result.message
-                        });
-
-                        break;
-                }
-            }
-            else
-                $.confirm({
-                    confirmButton: "Ok",
-                    cancelButton: null,
-                    text: 'Error'
-                });
-        }
-    </script>
 </body>
 </html>

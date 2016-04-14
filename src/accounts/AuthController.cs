@@ -12,6 +12,7 @@ using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.Rendering;
 using Kit.Kernel.CQRS.Command;
 using Kit.Kernel.CQRS.Query;
+using Kit.Kernel.Identity;
 using Microsoft.AspNet.Authorization;
 using Microsoft.Extensions.OptionsModel;
 
@@ -50,7 +51,7 @@ namespace accounts
         public async Task<IActionResult> ChangePassword(ChangePasswordCommand command, string returnUrl = null)
         {
             LoginResult result = new LoginResult() { Status = LoginStatus.Failure };
-
+            
             if (ModelState.IsValid)
             {
                 LoginCommandResult commandResult = _commandDispatcher.Dispatch<ChangePasswordCommand, LoginCommandResult>(command);
@@ -134,7 +135,7 @@ namespace accounts
                 LoginCommandResult commandResult = _commandDispatcher.Dispatch<LoginCommand, LoginCommandResult>(command);
                 result.Status = commandResult.Status;
                 result.Message = commandResult.Message;
-
+               
                 if (result.Status != LoginStatus.Failure)
                 {
                     result.ReturnUrl = returnUrl;
@@ -157,7 +158,7 @@ namespace accounts
                     .SelectMany(x => x.Errors)
                     .Select(x => x.ErrorMessage)
                 );
-            
+           
             return new JsonResult(result);
         }
     }

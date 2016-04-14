@@ -67,7 +67,7 @@
           "EntityFramework": "6.1.3",
           "Kit.Kernel": "1.0.0",
           "Microsoft.Owin": "3.0.1",
-          "odac.x86": "12.1.2400"
+          "odac.x64": "12.1.2400"
         },
         "frameworkAssemblies": [
           "System.configuration",
@@ -1744,7 +1744,7 @@
           "lib/net45/Newtonsoft.Json.dll": {}
         }
       },
-      "odac.x86/12.1.2400": {
+      "odac.x64/12.1.2400": {
         "type": "package",
         "compile": {
           "lib/net40/Oracle.DataAccess.dll": {}
@@ -2048,7 +2048,7 @@
           "EntityFramework": "6.1.3",
           "Kit.Kernel": "1.0.0",
           "Microsoft.Owin": "3.0.1",
-          "odac.x86": "12.1.2400"
+          "odac.x64": "12.1.2400"
         },
         "frameworkAssemblies": [
           "System.configuration",
@@ -3728,7 +3728,7 @@
           "lib/net45/Newtonsoft.Json.dll": {}
         }
       },
-      "odac.x86/12.1.2400": {
+      "odac.x64/12.1.2400": {
         "type": "package",
         "compile": {
           "lib/net40/Oracle.DataAccess.dll": {}
@@ -4032,7 +4032,7 @@
           "EntityFramework": "6.1.3",
           "Kit.Kernel": "1.0.0",
           "Microsoft.Owin": "3.0.1",
-          "odac.x86": "12.1.2400"
+          "odac.x64": "12.1.2400"
         },
         "frameworkAssemblies": [
           "System.configuration",
@@ -5712,7 +5712,7 @@
           "lib/net45/Newtonsoft.Json.dll": {}
         }
       },
-      "odac.x86/12.1.2400": {
+      "odac.x64/12.1.2400": {
         "type": "package",
         "compile": {
           "lib/net40/Oracle.DataAccess.dll": {}
@@ -7352,15 +7352,15 @@
         "tools/install.ps1"
       ]
     },
-    "odac.x86/12.1.2400": {
+    "odac.x64/12.1.2400": {
       "type": "package",
-      "sha512": "6SgDoenT1vUxKgjXWodDlIgbMR34hidzMXNuWz5x5cIjKs9qn2r42dbxJo0R81cUyrvfWwaf5rxd+eXcRVsZMg==",
+      "sha512": "UwqnawDGF3Vf/f0Vtxf/IZ7QOaxwktyv5TiZ0iFiPbW96PLhGEGdzqgPBFspCr3yzo3FlhbZcdyl9jDVFz1pqg==",
       "files": [
         "build/OraOps12.dll",
         "lib/net40/Oracle.DataAccess.dll",
-        "odac.x86.12.1.2400.nupkg",
-        "odac.x86.12.1.2400.nupkg.sha512",
-        "odac.x86.nuspec"
+        "odac.x64.12.1.2400.nupkg",
+        "odac.x64.12.1.2400.nupkg.sha512",
+        "odac.x64.nuspec"
       ]
     },
     "Owin/1.0.0": {

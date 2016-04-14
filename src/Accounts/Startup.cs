@@ -83,13 +83,9 @@ namespace accounts
             // IDbManager
             container.RegisterDelegate(delegate(IResolver resolver)
             {
-                string connectionString = null;
                 HttpContext httpContext = resolver.Resolve<IHttpContextAccessor>().HttpContext;
-
-                if (httpContext != null && httpContext.User.Identity.IsAuthenticated)
-                    connectionString = httpContext.User.GetConnectionString();
+                return httpContext.User.GetConnectionString();
                 
-                return connectionString;
             }, serviceKey: "ConnectionString");
 
             container.RegisterInstance(Configuration["Data:DefaultConnection:ProviderName"], serviceKey: "ProviderName");
@@ -130,6 +126,8 @@ namespace accounts
             services.Configure<CookieAuthenticationConfiguration>(Configuration.GetSection("CookieAuthentication"));
             services.Configure<ForceHttpsOptions>(Configuration.GetSection("HttpsOptions"));
             services.Configure<OracleEnvironmentSettings>(Configuration.GetSection("OracleEnvironment"));
+
+            services.AddDataProtection();
 
             services
                 .AddMvc(options =>
