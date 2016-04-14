@@ -12,7 +12,6 @@ using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.Rendering;
 using Kit.Kernel.CQRS.Command;
 using Kit.Kernel.CQRS.Query;
-using Kit.Kernel.Identity;
 using Microsoft.AspNet.Authorization;
 using Microsoft.Extensions.OptionsModel;
 
@@ -161,5 +160,17 @@ namespace accounts
            
             return new JsonResult(result);
         }
+    }
+
+    /// <summary>
+    /// Результат операции авторизации
+    /// </summary>
+    internal class LoginResult
+    {
+        public LoginStatus Status { get; set; }
+
+        public string Message { get; set; }
+
+        public string ReturnUrl { get; set; }
     }
 }

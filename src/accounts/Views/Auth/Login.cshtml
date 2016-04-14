@@ -20,20 +20,20 @@
         <link rel="stylesheet" href="~/css/sky-forms.css">
         <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-        @{
-            string theme = (string)ViewData["Theme"];
-            if (theme != "cyan")
-            {
-                theme += ".css";
-                <link rel='stylesheet' href='~/css/sky-forms-@theme' />
-            }
-        }
     </environment>
     <environment names="Staging,Production">
-        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true"/>
         <link rel="stylesheet" href="~/css/sky-forms.min.css">
-        <link rel="stylesheet" href="~/css/open-sans.min.css" />
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
     </environment>
+    @{
+        string theme = (string)ViewData["Theme"];
+        if (theme != "cyan")
+        {
+            theme += ".css";
+            <link rel='stylesheet' href='~/css/sky-forms-@theme' />
+        }
+    }
     <!--[if lt IE 9]>
         <link rel="stylesheet" href="~/css/sky-forms-ie8.css">
     <![endif]-->
@@ -84,31 +84,21 @@
         <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
         <script src="~/lib/microsoft.jquery.unobtrusive.ajax/jquery.unobtrusive-ajax.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-        <script src="~/lib/jquery-confirm/jquery.confirm.js"></script>
+        <script src="~/lib/jquery-confirm/jquery.confirm.min.js"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
     </environment>
     <environment names="Staging,Production">
-        <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.5/bootstrap.min.js"
-                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
-                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal">
-        </script>
-        <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/jquery.validate.min.js"
-                asp-fallback-src="~/lib/jquery-validation/dist/jquery.validate.min.js"
-                asp-fallback-test="window.jQuery && window.jQuery.validator">
-        </script>
-        <script src="https://ajax.aspnetcdn.com/ajax/mvc/5.2.3/jquery.validate.unobtrusive.min.js"
-                asp-fallback-src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"
-                asp-fallback-test="window.jQuery && window.jQuery.validator && window.jQuery.validator.unobtrusive">
-
-        </script>
-        <script src="~/lib/microsoft.jquery.unobtrusive.ajax/jquery.unobtrusive-ajax.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-        <script src="~/lib/jquery-confirm/jquery.confirm.js"></script>
-        <script src="~/js/site.min.js"></script>
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+        <script src="~/lib/microsoft.jquery.unobtrusive.ajax/jquery.unobtrusive-ajax.min.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="~/lib/jquery-confirm/jquery.confirm.min.js"></script>
+        <script src="~/js/site.min.js" asp-append-version="true"></script>
     </environment>
     <!--[if lt IE 10]>
-        <script src="~/lib/jquery.placeholder/jquery.placeholder.js"></script>
-    <![endif]-->
+            <script src="~/lib/jquery.placeholder/jquery.placeholder.js"></script>
+        <![endif]-->
     <!--[if lt IE 9]>
         <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
         <script src="~/js/sky-forms-ie8.js"></script>
