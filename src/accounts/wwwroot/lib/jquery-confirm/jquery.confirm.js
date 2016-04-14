@@ -104,7 +104,7 @@
                                 '<button class="confirm btn ' + settings.confirmButtonClass + '" type="button" data-dismiss="modal">' +
                                     settings.confirmButton +
                                 '</button>' +
-                                (settings.cancelButton ? '<button class="cancel btn ' + settings.cancelButtonClass + '" type="button" data-dismiss="modal">' + settings.cancelButton + '</button>' : '') +
+                                (settings.cancelButton != null ? '<button class="cancel btn ' + settings.cancelButtonClass + '" type="button" data-dismiss="modal">' + settings.cancelButton + '</button>' : '') +
                             '</div>' +
                         '</div>' +
                     '</div>' +

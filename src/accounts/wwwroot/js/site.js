@@ -45,7 +45,7 @@ onFailure = function (xhr) {
     $.confirm({
         confirmButton: "Ok",
         cancelButton: null,
-        text: xhr.responseJSON ? xhr.responceJSON.message : xhr.statusText
+        text: xhr.responseJSON ? xhr.responseJSON.message : xhr.statusText
     });
 }
 
