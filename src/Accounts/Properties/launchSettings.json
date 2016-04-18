@@ -23,12 +23,12 @@
       },
       "sdkVersion": "dnx-clr-win-x64.1.0.0-rc1-update1"
     },
-    "IIS Express - Prod": {
-      "commandName": "IISExpress",
-      "launchBrowser": true,
+    "web Production": {
+      "commandName": "web",
       "environmentVariables": {
-        "Hosting.Environment": "Production"
-      }
+        "Hosting:Environment": "Production"
+      },
+      "sdkVersion": "dnx-clr-win-x64.1.0.0-rc1-update1"
     }
   }
 }

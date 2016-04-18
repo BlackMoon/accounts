@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -128,7 +129,7 @@ namespace accounts
             {
                 Status = LoginStatus.Failure
             };
-
+            
             if (ModelState.IsValid)
             {
                 LoginCommandResult commandResult = _commandDispatcher.Dispatch<LoginCommand, LoginCommandResult>(command);
@@ -168,7 +169,7 @@ namespace accounts
     internal class LoginResult
     {
         public LoginStatus Status { get; set; }
-
+        
         public string Message { get; set; }
 
         public string ReturnUrl { get; set; }
