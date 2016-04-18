@@ -8,6 +8,7 @@ using Kit.Dal.Configurations;
 using Kit.Dal.CQRS.Command.ChangePassword;
 using Kit.Dal.CQRS.Command.Login;
 using Kit.Dal.CQRS.Query.TnsNames;
+using Kit.Dal.DbManager;
 using Kit.Kernel.Configuration;
 using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.Rendering;
@@ -125,10 +126,7 @@ namespace accounts
         [AllowAnonymous, HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginCommand command, string returnUrl = null)
         {
-            LoginResult result = new LoginResult()
-            {
-                Status = LoginStatus.Failure
-            };
+            LoginResult result = new LoginResult() { Status = LoginStatus.Failure };
             
             if (ModelState.IsValid)
             {
@@ -166,12 +164,8 @@ namespace accounts
     /// <summary>
     /// Результат операции авторизации
     /// </summary>
-    internal class LoginResult
+    internal class LoginResult : LoginCommandResult
     {
-        public LoginStatus Status { get; set; }
-        
-        public string Message { get; set; }
-
         public string ReturnUrl { get; set; }
     }
 }
