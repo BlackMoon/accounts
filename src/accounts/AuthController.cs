@@ -66,22 +66,15 @@ namespace accounts
 
                     await HttpContext.Authentication.SignOutAsync(Startup.AuthenticationSchemeName);
 
-                    ClaimsIdentity id = HttpContext.User.Identity as ClaimsIdentity;
-                    if (id != null)
+                    ClaimsIdentity ci = HttpContext.User.Identity as ClaimsIdentity;
+                    if (ci != null)
                     {
-                        Claim loginClaim = id.FindFirst("lastlogindate"),
-                              pswClaim = id.FindFirst("password");
+                        Claim claimPsw = ci.FindFirst("password");
+                        
+                        ci.TryRemoveClaim(claimPsw);
+                        ci.AddClaim(new Claim("password", command.NewPassword));
 
-                        id.TryRemoveClaim(loginClaim);
-                        id.TryRemoveClaim(pswClaim);
-
-                        id.AddClaims(new[]
-                        {
-                            new Claim("password", command.NewPassword),
-                            new Claim("lastlogindate", DateTime.UtcNow.ToString("dd.MM.yyyy HH:mm:ss.f"))
-                        });
-
-                        await HttpContext.Authentication.SignInAsync(Startup.AuthenticationSchemeName, new ClaimsPrincipal(id));
+                        await HttpContext.Authentication.SignInAsync(Startup.AuthenticationSchemeName, new ClaimsPrincipal(ci));
                     }
                 }
             }
@@ -143,11 +136,11 @@ namespace accounts
                         new Claim(ClaimTypes.Name, command.Login),
                         new Claim("password", command.Password),
                         new Claim("datasource", command.DataSource),
-                        new Claim("lastlogindate", DateTime.UtcNow.ToString("dd.MM.yyyy HH:mm:ss.f")),
+                        new Claim(ClaimTypes.Sid, new Guid().ToString("N"))
                     };
 
-                    ClaimsIdentity id = new ClaimsIdentity(claims, "local");
-                    await HttpContext.Authentication.SignInAsync(Startup.AuthenticationSchemeName, new ClaimsPrincipal(id));
+                    ClaimsIdentity ci = new ClaimsIdentity(claims, "local");
+                    await HttpContext.Authentication.SignInAsync(Startup.AuthenticationSchemeName, new ClaimsPrincipal(ci));
                 }
             }
             else 
