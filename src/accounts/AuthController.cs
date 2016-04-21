@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -8,13 +7,13 @@ using Kit.Dal.Configurations;
 using Kit.Dal.CQRS.Command.ChangePassword;
 using Kit.Dal.CQRS.Command.Login;
 using Kit.Dal.CQRS.Query.TnsNames;
-using Kit.Dal.DbManager;
 using Kit.Kernel.Configuration;
 using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.Rendering;
 using Kit.Kernel.CQRS.Command;
 using Kit.Kernel.CQRS.Query;
 using Microsoft.AspNet.Authorization;
+using Microsoft.AspNet.Mvc.ModelBinding;
 using Microsoft.Extensions.OptionsModel;
 
 namespace accounts
@@ -89,7 +88,7 @@ namespace accounts
         }
 
         [AllowAnonymous, ResponseCache(Duration = 100)]
-        public IActionResult Login(string returnUrl = null)
+        public async Task<IActionResult> Login(string returnUrl = null)
         {
             string theme = _appSettings.Theme;
             if (string.IsNullOrEmpty(theme))
@@ -103,24 +102,41 @@ namespace accounts
             ViewData["Theme"] = theme;
             ViewData["ReturnUrl"] = !string.IsNullOrEmpty(returnUrl) ? returnUrl : _appSettings.ReturnUrl;
 
-            TnsNamesQueryResult result = _queryDispatcher.Dispatch<TnsNamesQuery, TnsNamesQueryResult>(
-                new TnsNamesQuery() { ProviderInvariantName = _connectionStringSettings.ProviderName });
+            // default DataSource задан в настройках
+            if (string.IsNullOrEmpty(_connectionStringSettings.DataSource))
+            {
+                TnsNamesQueryResult result = _queryDispatcher.Dispatch<TnsNamesQuery, TnsNamesQueryResult>(
+                    new TnsNamesQuery() {ProviderInvariantName = _connectionStringSettings.ProviderName});
 
-            ViewBag.TnsNames =
-                new List<SelectListItem>()
-                {
-                    new SelectListItem() {Text = "Сервер", Value = string.Empty, Selected = true, Disabled = true}
-                }
-                .Union(result.Select(t => new SelectListItem() { Text = t, Value = t }));
-          
+                ViewBag.TnsNames = new List<SelectListItem>()
+                    {
+                        new SelectListItem() { Text = "Сервер", Value = string.Empty, Selected = true, Disabled = true } 
+                    }
+                    .Union(result.Select(t => new SelectListItem() {Text = t, Value = t}));
+            }
+            //await HttpContext.Authentication.SignOutAsync(Startup.AuthenticationSchemeName);
             return View();
         }
 
         [AllowAnonymous, HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginCommand command, string returnUrl = null)
         {
+            // default DataSource задан в настройках
+            if (!string.IsNullOrEmpty(_connectionStringSettings.DataSource))
+            {
+                command.DataSource = _connectionStringSettings.DataSource;
+                
+                ModelStateEntry mse;
+                ModelState.TryGetValue("DataSource", out mse);
+                if (mse != null)
+                {
+                    mse.Errors.Clear();
+                    mse.ValidationState = ModelValidationState.Valid;
+                }
+            }
+
             LoginResult result = new LoginResult() { Status = LoginStatus.Failure };
-            
+
             if (ModelState.IsValid)
             {
                 LoginCommandResult commandResult = _commandDispatcher.Dispatch<LoginCommand, LoginCommandResult>(command);

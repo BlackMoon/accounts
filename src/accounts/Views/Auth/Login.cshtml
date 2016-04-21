@@ -1,9 +1,10 @@
-﻿@using System.Threading.Tasks
+﻿@inject IOptions<AppSettings> appSettings
+@using System.Threading.Tasks
+@using Kit.Dal.Configurations
 @using Kit.Dal.CQRS.Command.Login
 @using Kit.Kernel.Configuration
 @using Kit.Kernel.Web.HtmlHelper
 @using Microsoft.Extensions.OptionsModel
-@inject IOptions<AppSettings> appSettings
 @model Kit.Dal.CQRS.Command.Login.LoginCommand
 
 <!DOCTYPE html>
@@ -22,9 +23,9 @@
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
     </environment>
     <environment names="Staging,Production">
-        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true"/>
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
         <link rel="stylesheet" href="~/css/sky-forms.min.css">
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     </environment>
     @{
         string theme = (string)ViewData["Theme"];
@@ -62,14 +63,19 @@
                     </label>
                     <span asp-validation-for="Password" class="note note-error"></span>
                 </section>
+                @{
+                    if (ViewBag.TnsNames != null)
+                    {
+                        <section>
+                            <label class="select">
+                                <i></i>
+                                <select asp-for="DataSource" asp-items="ViewBag.TnsNames"></select>
+                            </label>
+                            <span asp-validation-for="DataSource" class="note note-error"></span>
+                        </section>
+                    }
 
-                <section>
-                    <label class="select">
-                        <i></i>
-                        <select asp-for="DataSource" asp-items="ViewBag.TnsNames"></select>
-                    </label>
-                    <span asp-validation-for="DataSource" class="note note-error"></span>
-                </section>
+                }
             </fieldset>
             <footer>
                 <img id="imgLoader" src="~/images/loader.gif" />

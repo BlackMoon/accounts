@@ -23,6 +23,7 @@ using Microsoft.AspNet.Authentication.Cookies;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
 using Microsoft.AspNet.Http;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.ModelBinding;
 using Microsoft.Extensions.Configuration;
@@ -36,9 +37,9 @@ namespace accounts
 {
     public class Startup
     {
-        public const string AuthenticationSchemeName = "Cookies";
+        public const string AuthenticationSchemeName = CookieAuthenticationDefaults.AuthenticationScheme;
 
-        public IConfigurationRoot Configuration { get; set; }
+        private IConfigurationRoot Configuration { get; set; }
 
         private IContainer ConfigureDependencies(IServiceCollection services)
         {
@@ -59,7 +60,7 @@ namespace accounts
             IContainer container = new Container().WithDependencyInjectionAdapter(services);
             container.RegisterMany(implTypeAssemblies, (registrator, types, type) =>
             {
-                // all dispatchers --> currentScope
+                // all dispatchers --> Reuse.InCurrentScope
                 IReuse reuse = type.IsAssignableTo(typeof(ICommandDispatcher)) || type.IsAssignableTo(typeof(IJobDispatcher)) || type.IsAssignableTo(typeof(IQueryDispatcher))
                     ? Reuse.InCurrentScope
                     : Reuse.Transient;
