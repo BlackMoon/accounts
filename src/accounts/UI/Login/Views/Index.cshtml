@@ -1,0 +1,43 @@
+﻿@using System.Threading.Tasks
+@model Kit.Dal.CQRS.Command.Login.LoginCommand
+
+<form asp-action="index" asp-controller="login" class="sky-form" data-ajax="true" data-ajax-method="POST" data-ajax-begin="onBegin" data-ajax-complete="onComplete" data-ajax-loading="#imgLoader">
+    <input type="hidden" asp-for="SignInId"/>
+    <header>Войти в систему</header>
+    <fieldset>
+        <section>
+            <label class="input">
+                <i class="icon-append icon-user"></i>
+                <input asp-for="UserName" placeholder="Пользователь"/>
+                <b class="tooltip tooltip-bottom-right">Пользователь</b>
+            </label>
+            <span asp-validation-for="UserName" class="note note-error"></span>
+        </section>
+
+        <section>
+            <label class="input">
+                <i class="icon-append icon-lock"></i>
+                <input asp-for="Password" placeholder="Пароль"/>
+                <b class="tooltip tooltip-bottom-right">Пароль</b>
+            </label>
+            <span asp-validation-for="Password" class="note note-error"></span>
+        </section>
+        @{
+            if (ViewBag.TnsNames != null)
+            {
+                <section>
+                    <label class="select">
+                        <i></i>
+                        <select asp-for="DataSource" asp-items="ViewBag.TnsNames"></select>
+                    </label>
+                    <span asp-validation-for="DataSource" class="note note-error"></span>
+                </section>
+            }
+        }
+    </fieldset>
+    <footer>
+        <img id="imgLoader" src="~/images/loader.gif"/>
+        <button id="submit" type="submit" class="button">Вход</button>
+    </footer>
+</form>
+   

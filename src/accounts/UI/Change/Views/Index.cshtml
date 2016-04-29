@@ -1,0 +1,29 @@
+﻿@model Kit.Dal.CQRS.Command.ChangePassword.ChangePasswordCommand
+
+<form asp-action="index" asp-controller="change" class="sky-form" data-ajax="true" data-ajax-method="POST" data-ajax-begin="onBegin" data-ajax-complete="onComplete" data-ajax-loading="#imgLoader">
+    <input type="hidden" asp-for="SignInId" />
+    <header>Введите новый пароль</header>
+    <fieldset>
+        <section>
+            <label class="input">
+                <i class="icon-append icon-lock"></i>
+                <input asp-for="NewPassword" placeholder="Новый пароль" />
+                <b class="tooltip tooltip-bottom-right">Новый пароль</b>
+            </label>
+            <span asp-validation-for="NewPassword" class="note note-error"></span>
+        </section>
+
+        <section>
+            <label class="input">
+                <i class="icon-append icon-lock"></i>
+                <input asp-for="ConfirmPassword" placeholder="Подтверждение" />
+                <b class="tooltip tooltip-bottom-right">Подтверждение</b>
+            </label>
+            <span asp-validation-for="ConfirmPassword" class="note note-error"></span>
+        </section>
+    </fieldset>
+    <footer>
+        <img id="imgLoader" src="~/images/loader.gif" />
+        <button id="submit" type="submit" class="button">Вход</button>
+    </footer>
+</form>
