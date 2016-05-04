@@ -7,6 +7,8 @@ using System.Security.Cryptography.X509Certificates;
 using accounts.Configuration;
 using DryIoc;
 using DryIoc.Dnx.DependencyInjection;
+using IdentityServer4.Core.Configuration;
+using IdentityServer4.Core.Models;
 using IdentityServer4.Core.Services;
 using IdentityServer4.Core.Services.InMemory;
 using IdentityServer4.Core.Validation;
@@ -21,6 +23,7 @@ using Kit.Kernel.Interception;
 using Kit.Kernel.Interception.Attribute;
 using Kit.Kernel.Web.EncryptData;
 using Kit.Kernel.Web.Filter;
+using Microsoft.AspNet.Authentication.Cookies;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
 using Microsoft.AspNet.Http;
@@ -46,7 +49,8 @@ namespace accounts
 
             // Set up configuration sources.
             var builder = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json")                
+                .AddJsonFile("appsettings.json")
+                .AddJsonFile("clients.json", true)
                 .AddEnvironmentVariables();
 
             if (hostEnv.IsDevelopment())
@@ -119,20 +123,43 @@ namespace accounts
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
             services.Configure<ConnectionStringSettings>(Configuration.GetSection("Data:DefaultConnection"));
             services.Configure<OracleEnvironmentSettings>(Configuration.GetSection("OracleEnvironment"));
+            services.Configure<List<Client>>(Configuration.GetSection("Clients"));
 
-            // openId
+            // identityServer 
             IIdentityServerBuilder builder = services.AddIdentityServer(options =>
             {
+                int seconds;
+                if (int.TryParse(Configuration["ExpireTime"], out seconds))
+                {
+                    options.AuthenticationOptions = new AuthenticationOptions()
+                    {
+                        CookieAuthenticationOptions =
+                            new CookieAuthenticationOptions()
+                            {
+                                ExpireTimeSpan = TimeSpan.FromSeconds(seconds)
+                            }
+                    };
+                }
+
                 options.SigningCertificate = new X509Certificate2(Path.Combine(_appEnv.ApplicationBasePath, "idsrv4test.pfx"), "idsrv3test");
             });
-
-            builder.AddInMemoryClients(Clients.Get());
-            builder.AddInMemoryScopes(Scopes.Get());
             
-            builder.AddInMemoryUsers(new List<InMemoryUser>());         // users from CQRS --> empty list
+            #region clients
+            builder.Services.AddSingleton<IEnumerable<Client>>(provider => provider.GetService<Microsoft.Extensions.OptionsModel.IOptions<List<Client>>>().Value); 
+            builder.Services.AddTransient<IClientStore, InMemoryClientStore>();
+            builder.Services.AddTransient<ICorsPolicyService, InMemoryCorsPolicyService>();
+            #endregion
+            
+            #region scopes
+            builder.AddInMemoryScopes(Scopes.Get());
+            #endregion
+
+            #region users --> empty list
+            builder.Services.AddInstance(new List<InMemoryUser>());
             builder.Services.AddTransient<IProfileService, Services.ProfileService>();
             builder.Services.AddTransient<IResourceOwnerPasswordValidator, InMemoryResourceOwnerPasswordValidator>();
-
+            #endregion
+           
             // for the UI
             services
                 .AddMvc(options =>
@@ -177,7 +204,7 @@ namespace accounts
         {
             loggerFactory.AddConsole(LogLevel.Verbose);
             loggerFactory.AddDebug(LogLevel.Verbose);
-
+            
             app.UseDeveloperExceptionPage();
             app.UseIISPlatformHandler();
 

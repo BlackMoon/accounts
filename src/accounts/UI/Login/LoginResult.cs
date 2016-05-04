@@ -1,6 +1,6 @@
 ﻿using Kit.Dal.CQRS.Command.Login;
 
-namespace IdSvrHost.UI.Login
+namespace accounts.UI.Login
 {
     /// <summary>
     /// Результат операции авторизации

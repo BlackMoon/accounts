@@ -1,8 +1,8 @@
 ﻿using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using accounts.UI.Login;
 using IdentityServer4.Core;
-using IdSvrHost.UI.Login;
 using Kit.Dal.CQRS.Command.ChangePassword;
 using Kit.Dal.CQRS.Command.Login;
 using Kit.Kernel.CQRS.Command;

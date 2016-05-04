@@ -1,10 +1,8 @@
-﻿using IdentityServer4.Core.Models;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using IdentityServer4.Core.Models;
 
-namespace IdSvrHost.UI.Logout
+namespace accounts.UI.Logout
 {
     public class LoggedOutViewModel
     {

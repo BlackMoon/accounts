@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using IdentityServer4.Core;
 using IdentityServer4.Core.Services;
-using IdSvrHost.UI.Logout;
 using Microsoft.AspNet.Mvc;
 
 namespace accounts.UI.Logout

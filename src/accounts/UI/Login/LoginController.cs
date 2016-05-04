@@ -1,12 +1,11 @@
-﻿using IdentityModel;
-using IdentityServer4.Core;
-using IdentityServer4.Core.Services;
-using Microsoft.AspNet.Mvc;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using IdentityModel;
+using IdentityServer4.Core;
+using IdentityServer4.Core.Services;
 using Kit.Dal.Configurations;
 using Kit.Dal.CQRS.Command.Login;
 using Kit.Dal.CQRS.Query.TnsNames;
@@ -14,11 +13,12 @@ using Kit.Kernel.Configuration;
 using Kit.Kernel.CQRS.Command;
 using Kit.Kernel.CQRS.Query;
 using Kit.Kernel.Identity;
+using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.ModelBinding;
 using Microsoft.AspNet.Mvc.Rendering;
 using Microsoft.Extensions.OptionsModel;
 
-namespace IdSvrHost.UI.Login
+namespace accounts.UI.Login
 {
     public class LoginController : Controller
     {

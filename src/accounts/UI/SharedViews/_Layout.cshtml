@@ -42,8 +42,7 @@
         
         if (theme != "cyan")
         {
-            theme += ".css";
-            <link rel='stylesheet' href='~/css/sky-forms-@theme' />
+            <link rel='stylesheet' href='~/css/sky-forms-@(theme + ".css")' />
         }
     }
     <!--[if lt IE 9]>
