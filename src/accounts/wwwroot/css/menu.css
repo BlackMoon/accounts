@@ -1,0 +1,49 @@
+﻿html, body, aside {
+	display: block;
+	margin: 0;
+	padding: 0;
+}
+body {
+    overflow: hidden;
+    padding: 40px;
+    background-attachment: fixed;
+    background-position: 50% 50%;
+    -ms-background-size: cover;
+    background-size: cover;
+    -webkit-text-size-adjust: none;
+    -moz-text-size-adjust: none;
+    -ms-text-size-adjust: none;
+    text-size-adjust: none;
+}
+
+.body {
+	max-width: 1120px;
+	margin: 0 auto;
+    padding-bottom: 40px;
+}
+@media screen and (max-width: 1000px) {
+	body {
+		padding: 20px;
+	}
+}
+@media screen and (max-width: 767px) {
+	body {
+		padding: 10px;
+	}
+}
+
+aside {
+	width: 233px;
+	min-height: 500px;
+}
+aside.right {
+	margin-left: auto;
+} 
+
+.sky-tabs {
+    padding-top: 8px !important; 
+}
+
+.sky-tabs .note-error {
+    color: #ee9393;
+}
