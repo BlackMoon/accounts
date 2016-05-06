@@ -1,23 +1,21 @@
 ﻿@model accounts.UI.Logout.LogoutViewModel
 @{
-    Layout = "_Layout1";
+    Layout = "_MenuLayout";
 }
-<div class="logout-page">
-    <div class="page-header">
-        <h1>Logout</h1>
-    </div>
 
-    <div class="row">
-        <div class="col-sm-6">
-            <p>Would you like to logout of IdentityServer?</p>
-            <form asp-action="Submit">
-                <input type="hidden" asp-for="SignOutId" />
-                <fieldset>
-                    <div class="form-group">
-                        <button class="btn btn-primary">Yes</button>
-                    </div>
-                </fieldset>
-            </form>
-        </div>
-    </div>
-</div>
+<h1>
+    Выход
+</h1>
+<form asp-action="Submit">
+    <input type="hidden" asp-for="SignOutId" />
+</form>
+
+@section Scripts{
+    <environment names="Development">
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="~/lib/bootstrap3-dialog/dist/js/bootstrap-dialog.js"></script>
+        <script src="~/js/bootstrap3-msgbox.js" asp-append-version="true"></script>
+        <script src="~/js/logout.js" asp-append-version="true"></script>
+    </environment>
+}

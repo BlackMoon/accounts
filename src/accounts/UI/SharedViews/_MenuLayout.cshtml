@@ -18,16 +18,20 @@
         </li>
 
     </ul>
-    <div class="sky-tabs sky-tabs-pos-top-left sky-tabs-response-to-icons">
-        <input type="radio" name="sky-tabs" checked="" id="sky-tab1" class="sky-tab-content-1"/>
-        
-        @RenderBody()
+    <div class="sky-tabs sky-tabs-pos-top-left">
+        <input type="radio" name="sky-tabs" checked="" id="sky-tab1" class="sky-tab-content-1" />
+        <ul>
+            <li class="sky-tab-content-1">
+                <div class="typography">
+                    @RenderBody()
+                </div>
+            </li>
+        </ul>
     </div>
 </div>
-
 @section Styles{
     <environment names="Development">
-        <link rel="stylesheet" href="~/css/site-menu.css">
+        <link rel="stylesheet" href="~/css/menu.css">
         <link rel="stylesheet" href="~/css/font-awesome.css">
         <link rel="stylesheet" href="~/css/menu/sky-mega-menu.css">
         <link rel="stylesheet" href="~/css/tabs/sky-tabs.css">
@@ -47,3 +51,4 @@
         <link rel="stylesheet" href="~/css/tabs/sky-tabs-ie8.css">
     <![endif]-->
 }
+@RenderSection("Scripts", false)

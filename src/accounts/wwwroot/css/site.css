@@ -1,39 +1,40 @@
-﻿body {
-  margin-top: 65px;
+a {
+	text-decoration: underline;
 }
-.navbar-header {
-  position: relative;
-  top: -4px;
+a:hover {
+	text-decoration: none;
 }
-.navbar-brand > .icon-banner {
-  position: relative;
-  top: -2px;
-  display: inline;
+
+.bg-red {
+	background-image: url(../images/bg-red.jpg);
 }
-.icon {
-  position: relative;
-  top: -10px;
+.bg-orange {
+	background-image: url(../images/bg-orange.jpg);
 }
-.page-consent .client-logo {
-  float: left;
+.bg-yellow {
+	background-image: url(../images/bg-yellow.jpg);
 }
-.page-consent .client-logo img {
-  width: 80px;
-  height: 80px;
+.bg-green {
+	background-image: url(../images/bg-green.jpg);
 }
-.page-consent .consent-buttons {
-  margin-top: 25px;
+.bg-cyan {
+	background-image: url(../images/bg-cyan.jpg);
 }
-.page-consent .consent-form .consent-scopecheck {
-  display: inline-block;
-  margin-right: 5px;
+.bg-blue {
+	background-image: url(../images/bg-blue.jpg);
 }
-.page-consent .consent-form .consent-description {
-  margin-left: 25px;
+.bg-purple {
+	background-image: url(../images/bg-purple.jpg);
 }
-.page-consent .consent-form .consent-description label {
-  font-weight: normal;
+.bg-pink {
+	background-image: url(../images/bg-pink.jpg);
 }
-.page-consent .consent-form .consent-remember {
-  padding-left: 16px;
+.bg-black {
+	background-image: url(../images/bg-black.jpg);
+}
+
+footer.info {
+    color: #fff;
+    font: 11px/1.55 'Open Sans', Helvetica, Arial, sans-serif;
+    text-align: center;
 }

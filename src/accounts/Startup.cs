@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using accounts.Configuration;
+using accounts.UI;
 using DryIoc;
 using DryIoc.Dnx.DependencyInjection;
 using IdentityServer4.Core.Configuration;
@@ -176,7 +177,7 @@ namespace accounts
                 })
                 .AddRazorOptions(razor =>
                 {
-                    razor.ViewLocationExpanders.Add(new IdSvrHost.UI.CustomViewLocationExpander());
+                    razor.ViewLocationExpanders.Add(new CustomViewLocationExpander());
                 });
 
             // Global exceptions' filter

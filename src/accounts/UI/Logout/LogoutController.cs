@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using IdentityServer4.Core;
 using IdentityServer4.Core.Services;
 using Microsoft.AspNet.Mvc;
+using Kit.Kernel.Web.Ajax;
 
 namespace accounts.UI.Logout
 {
