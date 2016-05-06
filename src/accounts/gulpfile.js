@@ -11,18 +11,24 @@ var paths = {
     webroot: "./wwwroot/"
 };
 
-paths.js = paths.webroot + "js/**/*.js";
+paths.bootstrapJs = paths.webroot + "js/bootstrap3-msgbox.js";
+paths.formJs = paths.webroot + "js/form.js";
+paths.logoutJs = paths.webroot + "js/logout.js";
 paths.minJs = paths.webroot + "js/**/*.min.js";
-paths.skyJs = paths.webroot + "js/sky-forms-ie8.js";
+paths.skyJs = paths.webroot + "js/sky-*-ie8.js";
+
+paths.concatFormJsDest = paths.webroot + "js/form.min.js";
+paths.concatLogoutJsDest = paths.webroot + "js/logout.min.js";
+
 paths.css = paths.webroot + "css/**/*.css";
 paths.skyCss = paths.webroot + "css/**/sky-forms.css";
 paths.minCss = paths.webroot + "css/**/*.min.css";
-paths.concatJsDest = paths.webroot + "js/site2.min.js";
+
 paths.concatCssDest = paths.webroot + "css/site2.min.css";
 paths.concatSkyCssDest = paths.webroot + "css/sky-forms.min.css";
 
 gulp.task("clean:js", function (cb) {
-    rimraf(paths.concatJsDest, cb);
+    rimraf(paths.minJs, cb);
 });
 
 gulp.task("clean:css", function (cb) {
@@ -35,9 +41,9 @@ gulp.task("clean:skycss", function (cb) {
 
 gulp.task("clean", ["clean:js", "clean:css", "clean:skycss"]);
 
-gulp.task("min:js", function () {
-    return gulp.src([paths.js, "!" + paths.skyJs, "!" + paths.minJs], { base: "." })
-        .pipe(concat(paths.concatJsDest))
+gulp.task("min:formJs", function () {
+    return gulp.src([paths.bootstrapJs, paths.formJs], { base: "." })
+        .pipe(concat(paths.concatFormJsDest))
         .pipe(uglify())
         .pipe(gulp.dest("."));
 });
