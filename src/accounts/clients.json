@@ -1,0 +1,49 @@
+﻿{
+    "Clients": [
+        {            
+            "ClientId": "eco.webforms",            
+            "ClientName": "eco",            
+            "RequireConsent": false,
+            "AllowRememberConsent": false,
+            "RedirectUris": [ "http://eco.aquilon.ru" ],
+            "PostLogoutRedirectUris": [ "http://localhost:5969/" ],            
+            "AllowedScopes": [ "openid", "connectionString" ]            
+        },
+        {            
+            "ClientId": "tnnd.webforms",            
+            "ClientName": "tnnd",            
+            "RequireConsent": false,
+            "AllowRememberConsent": false,  
+            "RedirectUris": [ "http://tnnd.aquilon.ru" ],
+            "PostLogoutRedirectUris": [ "http://localhost:5969/" ],            
+            "AllowedScopes": [ "openid", "connectionString" ]            
+        },
+        {
+            "ClientId": "test",
+            "ClientName": "test",
+            "RequireConsent": false,
+            "AllowRememberConsent": false,
+            "RedirectUris": [ "http://localhost:16011" ],
+            "PostLogoutRedirectUris": [ "http://localhost:5969/" ],            
+            "AllowedScopes": [ "openid", "connectionString" ]            
+        },
+        {            
+            "ClientId": "test2",            
+            "ClientName": "test2",
+            "RequireConsent": false,
+            "AllowRememberConsent": false,         
+            "RedirectUris": [ "http://localhost:4364" ],
+            "PostLogoutRedirectUris": [ "http://localhost:5969/" ],            
+            "AllowedScopes": [ "openid", "connectionString" ]           
+        },
+	{            
+            "ClientId": "test3",            
+            "ClientName": "test3",
+            "RequireConsent": false,
+            "AllowRememberConsent": false,         
+            "RedirectUris": [ "http://localhost:9930" ],
+            "PostLogoutRedirectUris": [ "http://localhost:5969/" ],            
+            "AllowedScopes": [ "openid", "connectionString" ]           
+        }
+    ]
+}

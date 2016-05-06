@@ -1,12 +1,19 @@
 ﻿@using System.Threading.Tasks
-@using Kit.Dal.CQRS.Command.Login
 @using Kit.Kernel.Configuration
-@using Kit.Kernel.Web.HtmlHelper
 @using Microsoft.Extensions.OptionsModel
 @inject IOptions<AppSettings> appSettings
 
 @{
     ViewData["Title"] = appSettings.Value.Title ?? "IdentityServer4";
+
+    ViewBag.Theme = appSettings.Value.Theme;
+    if (string.IsNullOrEmpty(ViewBag.Theme))
+    {
+        string[] themes = { "red", "yellow", "orange", "green", "cyan", "blue", "pink", "pirple", "black" };
+
+        int len = themes.Count(), month = DateTime.Today.Month - 1;
+        ViewBag.Theme = themes[month % len];
+    }
 }
 <!DOCTYPE html>
 <html>
@@ -19,66 +26,20 @@
 
     <environment names="Development">
         <link rel="stylesheet" href="~/css/open-sans.css" />
-        <link rel="stylesheet" href="~/css/sky-forms.css">
         <link rel="stylesheet" href="~/css/site2.css" asp-append-version="true" />
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-        <link href="~/lib/bootstrap3-dialog/dist/css/bootstrap-dialog.css" rel="stylesheet" />
     </environment>
-    <environment names="Staging,Production">
-        <link rel="stylesheet" href="~/css/site2.min.css" asp-append-version="true" />
-        <link rel="stylesheet" href="~/css/sky-forms.min.css">
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-        <link href="~/lib/bootstrap3-dialog/dist/css/bootstrap-dialog.min.css" rel="stylesheet" />
-    </environment>
-    @{
-        string theme = appSettings.Value.Theme;
-        if (string.IsNullOrEmpty(theme))
-        {
-            string[] themes = { "red", "yellow", "orange", "green", "cyan", "blue", "pink", "pirple", "black" };
-
-            int len = themes.Count(), month = DateTime.Today.Month;
-            theme = themes[month % len];
-        }
-        
-        if (theme != "cyan")
-        {
-            <link rel='stylesheet' href='~/css/sky-forms-@(theme + ".css")' />
-        }
-    }
-    <!--[if lt IE 9]>
-        <link rel="stylesheet" href="~/css/sky-forms-ie8.css">
-    <![endif]-->
+    
+    @RenderSection("Styles", false)
 </head>
-<body class="bg-@theme">
-    <div class="body body-s">
-        @RenderBody()
-    </div>
+<body class="bg-@ViewBag.Theme">
+    @RenderBody()
     <footer class="info">
         <div class="note">@DateTime.UtcNow.Year&nbsp;&nbsp;IdentityServer4</div>
     </footer>
-    @Html.EnumToJs(typeof(LoginStatus), true)
-    <environment names="Development">
-        <script src="~/lib/jquery/dist/jquery.js"></script>
-        <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
-        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
-        <script src="~/lib/microsoft.jquery.unobtrusive.ajax/jquery.unobtrusive-ajax.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-        <script src="~/lib/bootstrap3-dialog/dist/js/bootstrap-dialog.js"></script>
-        <script src="~/js/bootstrap3-msgbox.js" asp-append-version="true"></script>
-        <script src="~/js/site.js" asp-append-version="true"></script>
-    </environment>
-    <environment names="Staging,Production">
-        <script src="~/lib/jquery/dist/jquery.min.js"></script>
-        <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
-        <script src="~/lib/microsoft.jquery.unobtrusive.ajax/jquery.unobtrusive-ajax.min.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
-        <script src="~/lib/bootstrap3-dialog/dist/js/bootstrap-dialog.min.js"></script>
-        <script src="~/js/site.min.js" asp-append-version="true"></script>
-    </environment>
+    @RenderSection("Scripts", false)
     <!--[if lt IE 10]>
-            <script src="~/lib/jquery.placeholder/jquery.placeholder.min.js"></script>
-        <![endif]-->
+        <script src="~/lib/jquery.placeholder/jquery.placeholder.min.js"></script>
+    <![endif]-->
     <!--[if lt IE 9]>
         <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
         <script src="~/js/sky-forms-ie8.js"></script>

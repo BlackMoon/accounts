@@ -1,28 +1,3 @@
-html, body {
-    margin: 0;
-	padding: 0;
-	background-attachment: fixed;
-	background-position: 50% 50%;
-    -ms-background-size: cover;
-    background-size: cover;
-}
-
-.body {
-    max-width: 600px;
-	margin: 0 auto;
-	padding: 40px 0;
-}
-
-@media screen and (max-width: 600px) {
-	.body {
-		padding: 20px 0;
-	}
-}
-
-.body-s {
-	max-width: 400px;
-}
-
 a {
 	text-decoration: underline;
 }
@@ -56,16 +31,6 @@ a:hover {
 }
 .bg-black {
 	background-image: url(../images/bg-black.jpg);
-}
-
-.sky-form .input-validation-error {
-    background: #fff0f0 !important;
-}
-
-#imgLoader {
-    display: none;
-    float: left;
-    margin: 16px 0 0 2px;
 }
 
 footer.info {

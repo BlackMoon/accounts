@@ -1,5 +1,8 @@
 ﻿@using System.Threading.Tasks
 @model Kit.Dal.CQRS.Command.Login.LoginCommand
+@{
+    Layout = "_FormLayout";
+}
 
 <form asp-action="index" asp-controller="login" class="sky-form" data-ajax="true" data-ajax-method="POST" data-ajax-begin="onBegin" data-ajax-complete="onComplete" data-ajax-loading="#imgLoader">
     <input type="hidden" asp-for="SignInId"/>

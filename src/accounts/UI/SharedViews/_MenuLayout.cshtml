@@ -1,0 +1,49 @@
+﻿@{
+    Layout = "_Layout";
+}
+
+<div class="body">
+    <ul class="sky-mega-menu sky-mega-menu-anim-scale">
+        <li>
+            <a href="#">IdentityServer4</a>
+        </li>
+        <li aria-haspopup="true" class="right" show-if="User.Identity.IsAuthenticated">
+            <a href="#"><i class="fa fa-user"></i>@User.Identity.Name</a>
+            <div class="grid-container3">
+                <ul>
+                    <li><a asp-route="Login"><i class="fa fa-user-plus"></i>Войти под другим пользователем</a></li>
+                    <li><a asp-route="Logout"><i class="fa fa-sign-out"></i>Выход</a></li>
+                </ul>
+            </div>
+        </li>
+
+    </ul>
+    <div class="sky-tabs sky-tabs-pos-top-left sky-tabs-response-to-icons">
+        <input type="radio" name="sky-tabs" checked="" id="sky-tab1" class="sky-tab-content-1"/>
+        
+        @RenderBody()
+    </div>
+</div>
+
+@section Styles{
+    <environment names="Development">
+        <link rel="stylesheet" href="~/css/site-menu.css">
+        <link rel="stylesheet" href="~/css/font-awesome.css">
+        <link rel="stylesheet" href="~/css/menu/sky-mega-menu.css">
+        <link rel="stylesheet" href="~/css/tabs/sky-tabs.css">
+    </environment>
+    <environment names="Staging,Production">
+
+    </environment>
+    @{
+        if (ViewBag.Theme != "cyan")
+        {
+            <link rel='stylesheet' href='~/css/menu/sky-mega-menu-@(ViewBag.Theme + ".css")' />
+            <link rel='stylesheet' href='~/css/tabs/sky-tabs-@(ViewBag.Theme + ".css")' />
+        }
+    }
+    <!--[if lt IE 9]>
+        <link rel="stylesheet" href="~/css/menu/sky-mega-menu-ie8.css">
+        <link rel="stylesheet" href="~/css/tabs/sky-tabs-ie8.css">
+    <![endif]-->
+}

@@ -1,0 +1,56 @@
+﻿@using Kit.Kernel.Web.HtmlHelper
+@{
+    Layout = "_Layout";
+}
+
+<div class="body body-s">
+    @RenderBody()
+</div>
+
+@section Styles{
+    <environment names="Development">
+        <link rel="stylesheet" href="~/css/site-forms.css">
+        <link rel="stylesheet" href="~/css/form/sky-forms.css">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link href="~/lib/bootstrap3-dialog/dist/css/bootstrap-dialog.css" rel="stylesheet" />
+    </environment>
+    <environment names="Staging,Production">
+        <link rel="stylesheet" href="~/css/site2.min.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/css/sky-forms.min.css">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+        <link href="~/lib/bootstrap3-dialog/dist/css/bootstrap-dialog.min.css" rel="stylesheet" />
+    </environment>
+    @{
+        if (ViewBag.Theme != "cyan")
+        {
+            <link rel='stylesheet' href='~/css/form/sky-forms-@(ViewBag.Theme + ".css")' />
+        }
+    }
+    <!--[if lt IE 9]>
+        <link rel="stylesheet" href="~/css/form/sky-forms-ie8.css">
+    <![endif]-->
+}
+
+@section Scripts
+{
+    @Html.EnumToJs(typeof(Kit.Dal.CQRS.Command.Login.LoginStatus), true)
+    <environment names="Development">
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+        <script src="~/lib/microsoft.jquery.unobtrusive.ajax/jquery.unobtrusive-ajax.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="~/lib/bootstrap3-dialog/dist/js/bootstrap-dialog.js"></script>
+        <script src="~/js/bootstrap3-msgbox.js" asp-append-version="true"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+        <script src="~/lib/microsoft.jquery.unobtrusive.ajax/jquery.unobtrusive-ajax.min.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="~/lib/bootstrap3-dialog/dist/js/bootstrap-dialog.min.js"></script>
+        <script src="~/js/site.min.js" asp-append-version="true"></script>
+    </environment>
+}

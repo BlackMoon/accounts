@@ -41,7 +41,7 @@ namespace accounts
     public class Startup
     {
         private readonly IApplicationEnvironment _appEnv;
-        private IConfigurationRoot Configuration { get; set; }
+        private IConfigurationRoot Configuration { get; }
 
         public Startup(IHostingEnvironment hostEnv, IApplicationEnvironment appEnv)
         {
