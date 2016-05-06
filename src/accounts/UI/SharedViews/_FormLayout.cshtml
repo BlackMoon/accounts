@@ -8,17 +8,13 @@
 </div>
 
 @section Styles{
+    <link rel="stylesheet" href="~/css/open-sans.css" />
     <environment names="Development">
-        <link rel="stylesheet" href="~/css/form.css">
+        <link rel="stylesheet" href="~/css/form.css" asp-append-version="true">
         <link rel="stylesheet" href="~/css/form/sky-forms.css">
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-        <link href="~/lib/bootstrap3-dialog/dist/css/bootstrap-dialog.css" rel="stylesheet" />
     </environment>
     <environment names="Staging,Production">
-        <link rel="stylesheet" href="~/css/site2.min.css" asp-append-version="true" />
-        <link rel="stylesheet" href="~/css/sky-forms.min.css">
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-        <link href="~/lib/bootstrap3-dialog/dist/css/bootstrap-dialog.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="~/css/form.min.css" asp-append-version="true">
     </environment>
     @{
         if (ViewBag.Theme != "cyan")

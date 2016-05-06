@@ -25,10 +25,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
 
     <environment names="Development">
-        <link rel="stylesheet" href="~/css/open-sans.css" />
         <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-        <link rel="stylesheet" href="~/lib/bootstrap3-dialog/dist/css/bootstrap-dialog.css"  />
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css"/>
+        <link rel="stylesheet" href="~/lib/bootstrap3-dialog/dist/css/bootstrap-dialog.css"/>
+    </environment>
+    <environment names="Staging,Production">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="~/lib/bootstrap3-dialog/dist/css/bootstrap-dialog.min.css" />
     </environment>
     
     @RenderSection("Styles", false)

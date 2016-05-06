@@ -5,7 +5,7 @@
 <div class="body">
     <ul class="sky-mega-menu sky-mega-menu-anim-scale">
         <li>
-            <a href="#">IdentityServer4</a>
+            <a href="/">IdentityServer4</a>
         </li>
         <li aria-haspopup="true" class="right" show-if="User.Identity.IsAuthenticated">
             <a href="#"><i class="fa fa-user"></i>@User.Identity.Name</a>
@@ -30,14 +30,14 @@
     </div>
 </div>
 @section Styles{
+    <link rel="stylesheet" href="~/css/font-awesome.css">
     <environment names="Development">
-        <link rel="stylesheet" href="~/css/menu.css">
-        <link rel="stylesheet" href="~/css/font-awesome.css">
+        <link rel="stylesheet" href="~/css/menu.css" asp-append-version="true">
         <link rel="stylesheet" href="~/css/menu/sky-mega-menu.css">
         <link rel="stylesheet" href="~/css/tabs/sky-tabs.css">
     </environment>
     <environment names="Staging,Production">
-
+        <link rel="stylesheet" href="~/css/menu.min.css" asp-append-version="true">
     </environment>
     @{
         if (ViewBag.Theme != "cyan")
