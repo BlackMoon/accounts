@@ -1,8 +1,4 @@
-﻿var $form, $divContent;
-$(function () {
-    $divContent = $('#sky-tab1 div.typography');
-    $form = $('form');
-    
+﻿$(function () {
 
     BootstrapDialog.confirm({
         btnOKLabel: 'Да',
@@ -10,7 +6,7 @@ $(function () {
         callback: function(result) 
         {
             debugger;
-            (result === true) && $form.submit();
+            (result === true) && document.forms[0].submit();
         },
         message: 'Would you like to logout of IdentityServer?',
         title: 'Вопрос',
