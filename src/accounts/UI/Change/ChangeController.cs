@@ -7,7 +7,8 @@ using Kit.Dal.CQRS.Command.ChangePassword;
 using Kit.Dal.CQRS.Command.Login;
 using Kit.Kernel.CQRS.Command;
 using Kit.Kernel.Identity;
-using Kit.Kernel.Web.Ajax;
+using Kit.Kernel.Web.Http.Ajax;
+using Kit.Kernel.Web.Mvc;
 using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Mvc;
 
@@ -69,7 +70,7 @@ namespace accounts.UI.Change
                     .Select(x => x.ErrorMessage)
                 );
 
-            return new JsonResult(result);
+            return new JsonResultIe(result);
         }
     }
 }

@@ -49,7 +49,7 @@ onComplete = function (xhr, status) {
     debugger;
     this.submit.disabled = false;
 
-    var data = xhr.responseJSON;
+    var data = xhr.responseJSON || $.parseJSON(xhr.responseText);
     if (status === 'success') {
         var that = this;
         switch (data.status)

@@ -17,6 +17,7 @@ using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.ModelBinding;
 using Microsoft.AspNet.Mvc.Rendering;
 using Microsoft.Extensions.OptionsModel;
+using Kit.Kernel.Web.Mvc;
 
 namespace accounts.UI.Login
 {
@@ -47,17 +48,6 @@ namespace accounts.UI.Login
         [HttpGet(Constants.RoutePaths.Login, Name = "Login")]
         public async Task<IActionResult> Index(string id)
         {
-            // theme
-            string theme = _appSettings.Theme;
-            if (string.IsNullOrEmpty(theme))
-            {
-                string[] themes = { "red", "yellow", "orange", "green", "cyan", "blue", "pink", "pirple", "black" };
-
-                int len = themes.Count(), month = DateTime.Today.Month;
-                theme = themes[month % len];
-            }
-            ViewBag.Theme = theme;
-
             // default DataSource задан в настройках
             if (string.IsNullOrEmpty(_connectionStringSettings.DataSource))
             {
@@ -140,8 +130,8 @@ namespace accounts.UI.Login
                     .SelectMany(x => x.Errors)
                     .Select(x => x.ErrorMessage)
                 );
-
-            return new JsonResult(result);
+            
+            return new JsonResultIe(result);
         }
     }
 }
