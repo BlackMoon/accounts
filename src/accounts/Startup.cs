@@ -23,7 +23,7 @@ using Kit.Kernel.Identity;
 using Kit.Kernel.Interception;
 using Kit.Kernel.Interception.Attribute;
 using Kit.Kernel.Web.EncryptData;
-using Kit.Kernel.Web.Filter;
+using Kit.Kernel.Web.Mvc.Filter;
 using Microsoft.AspNet.Authentication.Cookies;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
