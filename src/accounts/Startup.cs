@@ -26,10 +26,12 @@ using Kit.Kernel.Web.EncryptData;
 using Kit.Kernel.Web.Mvc.Filter;
 using Microsoft.AspNet.Authentication.Cookies;
 using Microsoft.AspNet.Builder;
+using Microsoft.AspNet.FileProviders;
 using Microsoft.AspNet.Hosting;
 using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.ModelBinding;
+using Microsoft.AspNet.Mvc.Razor;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -117,7 +119,6 @@ namespace accounts
             return container;
         }
 
-
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddOptions();
@@ -182,6 +183,7 @@ namespace accounts
 
             // Global exceptions' filter
             services.Configure<MvcOptions>(options => options.Filters.Add(new GlobalExceptionFilter()));
+            services.Configure<RazorViewEngineOptions>(options => options.FileProvider = new EmbeddedFileProvider(GetType().Assembly, "accounts"));
 
             services.ConfigureRouting(
                 routeOptions =>

@@ -1,8 +1,8 @@
 {
-  "version": "1.0.0-*",
-  "compilationOptions": {
-    "emitEntryPoint": true
-  },
+    "version": "1.0.0-*",
+    "compilationOptions": {
+        "emitEntryPoint": true
+    },
 
     "dependencies": {
         "IdentityServer4": "1.0.0-beta1-update1",
@@ -10,7 +10,8 @@
         "Kit.Kernel.Web": "1.0.0-*",
         "Microsoft.ApplicationInsights.AspNet": "1.0.0-rc1",
         "Microsoft.AspNet.Diagnostics": "1.0.0-rc1-final",
-        "Microsoft.AspNet.IISPlatformHandler": "1.0.0-rc1-final",
+        "Microsoft.AspNet.IISPlatformHandler": "1.0.0-rc1-final",        
+        "Microsoft.AspNet.FileProviders.Embedded": "1.0.0-rc1-final",
         "Microsoft.AspNet.Mvc": "6.0.0-rc1-final",
         "Microsoft.AspNet.Mvc.TagHelpers": "6.0.0-rc1-final",
         "Microsoft.AspNet.Server.Kestrel": "1.0.0-rc1-final",
@@ -25,27 +26,28 @@
         "Microsoft.VisualStudio.Web.BrowserLink.Loader": "14.0.0-rc1-final"
     },
 
-  "commands": {
-    "web": "Microsoft.AspNet.Server.Kestrel --server.urls=http://localhost:5000"
-  },
+    "commands": {
+        "web": "Microsoft.AspNet.Server.Kestrel --server.urls=http://localhost:5000"
+    },
 
-  "frameworks": {
+    "frameworks": {
         "dnx451": {
             "frameworkAssemblies": {
                 "System.configuration": "4.0.0.0"
             }
-        }
+        }        
     },
 
-  "exclude": [
-    "wwwroot",
-    "node_modules"
-  ],
-  "publishExclude": [
-    "**.user",
-    "**.vspscc"
-  ],
-  "scripts": {
-    "prepublish": [ "npm install", "bower install", "gulp clean", "gulp min" ]
-  }
+    "exclude": [
+        "wwwroot",
+        "node_modules"
+    ],
+    "publishExclude": [
+        "**.user",
+        "**.vspscc"
+    ],
+    "resource": [ "**/*.cshtml" ],
+    "scripts": {
+        "prepublish": [ "npm install", "bower install", "gulp clean", "gulp min" ]
+    }
 }

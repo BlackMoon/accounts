@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNet.Mvc;
 
-namespace IdSvrHost.UI.SignIn
+namespace accounts.UI.SignIn
 {
     public class SignInController : Controller
     {

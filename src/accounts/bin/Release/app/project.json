@@ -24,6 +24,9 @@
     "**.user",
     "**.vspscc"
   ],
+  "resource": [
+    "**/*.cshtml"
+  ],
   "scripts": {
     "prepublish": [
       "npm install",

@@ -3,7 +3,7 @@ using IdentityServer4.Core.Services;
 using Microsoft.AspNet.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace IdSvrHost.UI.SignIn
+namespace accounts.UI.SignIn
 {
     public class SignInResult : IActionResult
     {
