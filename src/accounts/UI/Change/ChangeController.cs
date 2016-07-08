@@ -2,15 +2,15 @@
 using System.Security.Claims;
 using System.Threading.Tasks;
 using accounts.UI.Login;
-using IdentityServer4.Core;
+using IdentityServer4;
 using Kit.Dal.CQRS.Command.ChangePassword;
 using Kit.Dal.CQRS.Command.Login;
 using Kit.Kernel.CQRS.Command;
 using Kit.Kernel.Identity;
 using Kit.Kernel.Web.Http.Ajax;
 using Kit.Kernel.Web.Mvc;
-using Microsoft.AspNet.Authorization;
-using Microsoft.AspNet.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace accounts.UI.Change
 {

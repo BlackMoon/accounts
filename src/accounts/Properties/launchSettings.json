@@ -10,26 +10,25 @@
   "profiles": {
     "IIS Express": {
       "commandName": "IISExpress",
-      "launchBrowser": true,
-      "launchUrl": "http://localhost:22530/",
-      "environmentVariables": {
-        "Hosting:Environment": "Development"
+      "launchBrowser": true,      
+      "environmentVariables": {        
+        "ASPNETCORE_ENVIRONMENT": "Development"        
       }
     },
-    "web": {
-      "commandName": "web",
-      "environmentVariables": {
-        "Hosting:Environment": "Development"
-      },
-      "sdkVersion": "dnx-clr-win-x64.1.0.0-rc1-final"
+    "accounts": {
+        "commandName": "Project",
+        "launchBrowser": true,
+        "launchUrl": "http://localhost:5000",
+        "environmentVariables": {
+            "ASPNETCORE_ENVIRONMENT": "Development"
+        }        
     },
     "IIS Express - Production": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "http://localhost:22530/",
-      "environmentVariables": {
-        "Environment": "Production"
-      }
+        "environmentVariables": {
+            "ASPNETCORE_ENVIRONMENT": "Production",            
+        }
     }
   }
 }

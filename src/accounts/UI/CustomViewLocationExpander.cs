@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Microsoft.AspNet.Mvc.Razor;
+using Microsoft.AspNetCore.Mvc.Razor;
 
 namespace accounts.UI
 {

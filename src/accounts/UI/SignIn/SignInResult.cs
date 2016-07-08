@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
-using IdentityServer4.Core.Services;
-using Microsoft.AspNet.Mvc;
+using IdentityServer4.Services;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace accounts.UI.SignIn
@@ -17,7 +17,7 @@ namespace accounts.UI.SignIn
         public async Task ExecuteResultAsync(ActionContext context)
         {
             var interaction = context.HttpContext.RequestServices.GetRequiredService<SignInInteraction>();
-            await interaction.ProcessResponseAsync(_requestId, new IdentityServer4.Core.Models.SignInResponse());
+            await interaction.ProcessResponseAsync(_requestId, new IdentityServer4.Models.SignInResponse());
         }
     }
 }

@@ -4,8 +4,8 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using IdentityModel;
-using IdentityServer4.Core;
-using IdentityServer4.Core.Services;
+using IdentityServer4;
+using IdentityServer4.Services;
 using Kit.Dal.Configurations;
 using Kit.Dal.CQRS.Command.Login;
 using Kit.Dal.CQRS.Query.TnsNames;
@@ -13,11 +13,11 @@ using Kit.Kernel.Configuration;
 using Kit.Kernel.CQRS.Command;
 using Kit.Kernel.CQRS.Query;
 using Kit.Kernel.Identity;
-using Microsoft.AspNet.Mvc;
-using Microsoft.AspNet.Mvc.ModelBinding;
-using Microsoft.AspNet.Mvc.Rendering;
-using Microsoft.Extensions.OptionsModel;
+using Microsoft.Extensions.Options;
 using Kit.Kernel.Web.Mvc;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace accounts.UI.Login
 {

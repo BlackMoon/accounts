@@ -1,6 +1,6 @@
-﻿using IdentityServer4.Core.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using IdentityModel;
+using IdentityServer4.Models;
 
 namespace accounts.Configuration
 {

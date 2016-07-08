@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
-using IdentityServer4.Core;
-using IdentityServer4.Core.Services;
-using Microsoft.AspNet.Mvc;
+using IdentityServer4;
+using IdentityServer4.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace accounts.UI.Error
 {

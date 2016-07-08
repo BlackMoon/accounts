@@ -2,9 +2,9 @@
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using IdentityServer4.Core.Models;
-using IdentityServer4.Core.Services;
-using IdentityServer4.Core.Services.InMemory;
+using IdentityServer4.Models;
+using IdentityServer4.Services;
+using IdentityServer4.Services.InMemory;
 
 namespace accounts.Services
 {
