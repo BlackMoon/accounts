@@ -26,22 +26,18 @@ namespace accounts.UI.Login
         private readonly ICommandDispatcher _commandDispatcher;
         private readonly IQueryDispatcher _queryDispatcher;
         private readonly SignInInteraction _signInInteraction;
-
-        private readonly AppSettings _appSettings;
+       
         private readonly ConnectionStringSettings _connectionStringSettings;
 
         public LoginController(
             ICommandDispatcher commandDispatcher,
             IQueryDispatcher queryDispatcher,
-            IOptions<AppSettings> appOptions,
             IOptions<ConnectionStringSettings> connectionStringOptions,
             SignInInteraction signInInteraction)
         {
             _commandDispatcher = commandDispatcher;
             _queryDispatcher = queryDispatcher;
             _signInInteraction = signInInteraction;
-
-            _appSettings = appOptions.Value;
             _connectionStringSettings = connectionStringOptions.Value;
         }
 
@@ -55,7 +51,13 @@ namespace accounts.UI.Login
 
                 ViewBag.TnsNames = new List<SelectListItem>()
                     {
-                        new SelectListItem() {Text = "Сервер", Value = string.Empty, Selected = true, Disabled = true}
+                        new SelectListItem()
+                        {
+                            Text = "Сервер",
+                            Value = string.Empty,
+                            Selected = true,
+                            Disabled = true
+                        }
                     }
                     .Union(result.Select(t => new SelectListItem() {Text = t, Value = t}));
             }
@@ -95,7 +97,7 @@ namespace accounts.UI.Login
             #endregion
 
             LoginResult result = new LoginResult() { Status = LoginStatus.Failure };
-
+            
             if (ModelState.IsValid)
             {
                 LoginCommandResult commandResult = _commandDispatcher.Dispatch<LoginCommand, LoginCommandResult>(command);

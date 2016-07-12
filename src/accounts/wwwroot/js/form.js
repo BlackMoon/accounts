@@ -24,23 +24,31 @@ getView = function(url) {
 onBegin = function (xhr, options) {
     debugger;
 
-    var needToUpdate = 0;
-    $(this).find(':input:not([type=hidden])').each(function(ix, el) {
+    var encrypted = {}, needToUpdate = 0;
+    $(this)
+        .find(":input:not([type=hidden])")
+        .each(function(ix, el) {
 
-        var $el = $(el);
-        if ($el.attr('data-encrypt')) {
-            var val = $el.val(), len = val.length, xor = '';
-            // value encryption with xor operator
-            for (var i = 0; i < len; ++i) {
-                xor += String.fromCharCode(val.charCodeAt(i) ^ 128);
+            var $el = $(el);
+            if ($el.attr("data-encrypt")) {
+                var val = $el.val(), len = val.length, xor = "";
+                // value encryption with xor operator
+                for (var i = 0; i < len; ++i) {
+                    xor += String.fromCharCode(val.charCodeAt(i) ^ 128);
+                }
+                encrypted[$el.attr("name")] = xor;
+
+                needToUpdate = 1;
             }
-            $el.val(xor);
+        });
 
-            needToUpdate = 1;
-        }
-    });
+    if (needToUpdate) {
 
-    needToUpdate && (options.data = $(this).serialize());
+        Object.keys(encrypted).every(function(k) {
+            options.data = options.data.replace(new RegExp(k + "=[^&]+"), k + "=" + encrypted[k]);
+        });
+    }
+
     this.submit.disabled = true;
 }
 

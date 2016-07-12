@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Security.Cryptography.X509Certificates;
 using accounts.Configuration;
 using accounts.UI;
 using DryIoc;
@@ -18,24 +19,38 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Routing;
 using Kit.Dal.DbManager;
 using Kit.Kernel.Configuration;
 using Kit.Kernel.CQRS.Command;
 using Kit.Kernel.CQRS.Job;
 using Kit.Kernel.CQRS.Query;
 using Kit.Kernel.Identity;
+using Kit.Kernel.Interception;
 using Kit.Kernel.Interception.Attribute;
+using Kit.Kernel.Web.Binders;
+using Kit.Kernel.Web.Mvc.Filter;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using Microsoft.Extensions.FileProviders;
+using AuthenticationOptions = IdentityServer4.Configuration.AuthenticationOptions;
 
 namespace accounts
 {
     public class Startup
     {
+        private readonly string _contentRootPath;
+
         private IConfigurationRoot Configuration { get; }
 
         public Startup(IHostingEnvironment env)
         {
+            _contentRootPath = env.ContentRootPath;
+
             // Set up configuration sources.
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
@@ -84,7 +99,7 @@ namespace accounts
                     if (attr != null)
                     {
                         Type serviceType = attr.ServiceInterfaceType ?? type.GetImplementedInterfaces().FirstOrDefault();
-                        //registrator.r .RegisterInterfaceInterceptor(serviceType, attr.InterceptorType);
+                        registrator.RegisterInterfaceInterceptor(serviceType, attr.InterceptorType);
                     }
                 }
             });
@@ -116,25 +131,27 @@ namespace accounts
             services.Configure<ConnectionStringSettings>(Configuration.GetSection("Data:DefaultConnection"));
             services.Configure<OracleEnvironmentSettings>(Configuration.GetSection("OracleEnvironment"));
             services.Configure<List<Client>>(Configuration.GetSection("Clients"));
-            
-            // identityServer 
-            IIdentityServerBuilder builder = services.AddIdentityServer(options =>
-            {
-                int seconds;
-                if (int.TryParse(Configuration["ExpireTime"], out seconds))
-                {
-                    /*options.AuthenticationOptions = new AuthenticationOptions()
-                    {
-                        CookieAuthenticationOptions =
-                            new CookieAuthenticationOptions()
-                            {
-                                ExpireTimeSpan = TimeSpan.FromSeconds(seconds)
-                            }
-                    };*/
-                }
 
-                //options.SigningCertificate = new X509Certificate2(Path.Combine(_appEnv.ApplicationBasePath, "idsrv4test.pfx"), "idsrv3test");
-            });
+            //identityServer
+            X509Certificate2 cert = new X509Certificate2(Path.Combine(_contentRootPath, "idsrv4test.pfx"), "idsrv3test");
+
+            IIdentityServerBuilder builder = services
+                .AddIdentityServer(options =>
+                {
+                    int seconds;
+                    if (int.TryParse(Configuration["ExpireTime"], out seconds))
+                    {
+                        options.AuthenticationOptions = new AuthenticationOptions()
+                        {
+                            CookieAuthenticationOptions =
+                                new CookieAuthenticationOptions()
+                                {
+                                    ExpireTimeSpan = TimeSpan.FromSeconds(seconds)
+                                }
+                        };
+                    }
+                })
+                .SetSigningCredential(cert);
             
             #region clients
             builder.Services.AddSingleton<IEnumerable<Client>>(provider => provider.GetService<Microsoft.Extensions.Options.IOptions<List<Client>>>().Value); 
@@ -151,16 +168,10 @@ namespace accounts
             builder.Services.AddTransient<IProfileService, Services.ProfileService>();
             builder.Services.AddTransient<IResourceOwnerPasswordValidator, InMemoryResourceOwnerPasswordValidator>();
             #endregion
-           
+
             // for the UI
             services
-                .AddMvc(options =>
-                {
-                    /*IModelBinder originalBinder = options.ModelBinders.FirstOrDefault(x => x.GetType() == typeof(MutableObjectModelBinder));
-                    int ix = options.ModelBinders.IndexOf(originalBinder);
-                    options.ModelBinders.Remove(originalBinder);
-                    options.ModelBinders.Insert(ix, new EncryptModelBinder());*/
-                })
+                .AddMvc(options => options.ModelBinderProviders.Insert(0, new EncryptModelBinderProvider()))
                 .AddJsonOptions(option =>
                 {
                     option.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
@@ -172,16 +183,17 @@ namespace accounts
                 });
 
             // Global exceptions' filter
-            //services.Configure<MvcOptions>(options => options.Filters.Add(new GlobalExceptionFilter()));
-            //services.Configure<RazorViewEngineOptions>(options => options.FileProvider = new EmbeddedFileProvider(GetType().Assembly, "accounts"));
-            /*
-            services.ConfigureRouting(
-                routeOptions =>
+            services.Configure<MvcOptions>(options => options.Filters.Add(new GlobalExceptionFilter()));
+            services.Configure<RazorViewEngineOptions>(options => 
+                options.FileProviders.Add(new EmbeddedFileProvider(GetType().Assembly, "accounts"))
+            );
+            
+            services.AddRouting(
+                options =>
                 {
-                    routeOptions.LowercaseUrls = true;
-                    routeOptions.AppendTrailingSlash = true;
+                    options.LowercaseUrls = true;
+                    options.AppendTrailingSlash = true;
                 });
-                */
             
             // Add dependencies
             IContainer container = ConfigureDependencies(services);
@@ -206,6 +218,9 @@ namespace accounts
                 app.UseDeveloperExceptionPage();
                 app.UseBrowserLink();
             }
+            else
+                app.UseExceptionHandler("/Home/Error");
+
             app.UseApplicationInsightsExceptionTelemetry();
             
             app.UseIdentityServer();
