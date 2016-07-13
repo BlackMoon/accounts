@@ -228,8 +228,15 @@ namespace accounts
 
         public static void Main(string[] args)
         {
-            var host = new WebHostBuilder()
+            IConfigurationRoot hostConfig = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("hosting.json", optional: true)
+                .Build();
+
+            IWebHost host = new WebHostBuilder()
                 .UseKestrel()
+                .UseConfiguration(hostConfig)
+                .UseUrls(args)
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseIISIntegration()
                 .UseStartup<Startup>()
