@@ -52,7 +52,7 @@ namespace accounts
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddJsonFile("clients.json", optional: true)
+                .AddJsonFile("clients.json", optional: true, reloadOnChange: true)
                 .AddEnvironmentVariables();
 
             if (env.IsDevelopment())
@@ -130,8 +130,6 @@ namespace accounts
             services.Configure<List<Client>>(Configuration.GetSection("Clients"));
 
             //identityServer
-            X509Certificate2 cert = new X509Certificate2(Path.Combine(_contentRootPath, "idsrv4test.pfx"), "idsrv3test");
-
             IIdentityServerBuilder builder = services
                 .AddIdentityServer(options =>
                 {
@@ -147,9 +145,17 @@ namespace accounts
                                 }
                         };
                     }
-                })
-                .SetSigningCredential(cert);
-            
+                });
+
+            #region X590Certificate2
+            string fileName = Path.Combine(_contentRootPath, "idsrv4test.pfx");
+            if (File.Exists(fileName))
+            {
+                X509Certificate2 cert = new X509Certificate2(fileName, "idsrv3test");
+                builder.SetSigningCredential(cert);
+            }
+            #endregion
+
             #region clients
             builder.Services.AddSingleton<IEnumerable<Client>>(provider => provider.GetService<Microsoft.Extensions.Options.IOptions<List<Client>>>().Value); 
             builder.Services.AddTransient<IClientStore, InMemoryClientStore>();
