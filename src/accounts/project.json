@@ -28,7 +28,6 @@
     },
 
     "frameworks": {
-
         "net452": {
             "frameworkAssemblies": {
                 "System.Configuration": "4.0.0.0"
@@ -37,6 +36,11 @@
     },
 
     "buildOptions": {
+        "copyToOutput": {
+            "mappings": {
+                "OraOps12.dll": "build\\x64\\OraOps12.dll"
+            }
+        },
         "embed": [ "**/*.cshtml" ],
         "emitEntryPoint": true,
         "preserveCompilationContext": true
@@ -44,12 +48,15 @@
 
     "publishOptions": {
         "include": [
-            "wwwroot",            
+            "wwwroot",
             "appsettings.json",
             "clients.json",
             "idsrv4test.pfx",
             "web.config"
-        ]
+        ],
+        "mappings": {
+            "OraOps12.dll": "build\\x64\\OraOps12.dll"
+        }
     },    
 
     "runtimes": {
