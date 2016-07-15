@@ -57,43 +57,50 @@ onComplete = function (xhr, status) {
     debugger;
     this.submit.disabled = false;
 
-    var data = xhr.responseJSON || $.parseJSON(xhr.responseText);
-    if (status === 'success') {
+    var data = xhr.responseJSON;
+    if (!data) {
+        try {
+            data = $.parseJSON(xhr.responseText);
+        } catch (e) {
+            data = {};
+        }
+    }
+
+    if (status === "success") {
         var that = this;
-        switch (data.status)
-        {
+        switch (data.status) {
             // LoginStatus decalred in Login.cshtml view through [@Html.EnumToJs(typeof(LoginStatus), true)]
-            case LoginStatus.Success:
-                window.location = data.returnUrl;
-                break;
+        case LoginStatus.Success:
+            window.location = data.returnUrl;
+            break;
 
-            case LoginStatus.Expired:
+        case LoginStatus.Expired:
 
-                BootstrapDialog.warning(data.message);
-                getView('/ui/change?id=' + $(that.SignInId).val());
+            BootstrapDialog.warning(data.message);
+            getView("/ui/change?id=" + $(that.SignInId).val());
 
-                break;
+            break;
 
-            case LoginStatus.Expiring:
+        case LoginStatus.Expiring:
 
-                BootstrapDialog.confirm({
-                    btnOKLabel: 'Да',
-                    btnCancelLabel: 'Нет',
-                    callback: function(result) {
-                        (result === true) ? getView('/ui/change?id=' + $(that.SignInId).val()) : window.location = data.returnUrl;
-                    },
-                    message: data.message,
-                    title: 'Вопрос',
-                    type: BootstrapDialog.TYPE_INFO
-                });
+            BootstrapDialog.confirm({
+                btnOKLabel: "Да",
+                btnCancelLabel: "Нет",
+                callback: function(result) {
+                    (result === true) ? getView("/ui/change?id=" + $(that.SignInId).val()) : window.location = data.returnUrl;
+                },
+                message: data.message,
+                title: "Вопрос",
+                type: BootstrapDialog.TYPE_INFO
+            });
 
-                break;
+            break;
 
-            default:
-                BootstrapDialog.danger(data.message);
-                break;
+        default:
+            BootstrapDialog.danger(data.message);
+            break;
         }
     }
     else
-        BootstrapDialog.danger(data.message);
+        BootstrapDialog.danger(data.message || xhr.statusText);
 }

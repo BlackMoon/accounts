@@ -103,7 +103,7 @@ namespace accounts.UI.Login
                 LoginCommandResult commandResult = _commandDispatcher.Dispatch<LoginCommand, LoginCommandResult>(command);
                 result.Status = commandResult.Status;
                 result.Message = commandResult.Message;
-
+                
                 // Authenticate
                 if (result.Status != LoginStatus.Failure)
                 {

@@ -8,7 +8,6 @@ namespace accounts.UI.Home
         [Route("/")]
         public IActionResult Index()
         {
-            throw new Exception();
             return View();
         }
     }
