@@ -9,7 +9,6 @@ using IdentityServer4.Services;
 using Kit.Dal.Configurations;
 using Kit.Dal.CQRS.Command.Login;
 using Kit.Dal.CQRS.Query.TnsNames;
-using Kit.Kernel.Configuration;
 using Kit.Kernel.CQRS.Command;
 using Kit.Kernel.CQRS.Query;
 using Kit.Kernel.Identity;
