@@ -213,16 +213,17 @@ namespace accounts
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
-
+            
             app.UseApplicationInsightsRequestTelemetry();
-
+            app.UseStatusCodePagesWithReExecute("/ui/error/{0}");
+        
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseBrowserLink();
             }
             else
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/ui/error");
 
             app.UseApplicationInsightsExceptionTelemetry();
             

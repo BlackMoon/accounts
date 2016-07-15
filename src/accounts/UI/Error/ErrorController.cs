@@ -14,6 +14,12 @@ namespace accounts.UI.Error
             _errorInteraction = errorInteraction;
         }
 
+        [HttpGet(Constants.RoutePaths.Error + "/{viewName}")]
+        public IActionResult HandleUnknownAction(string viewName)
+        {
+            return View(viewName);
+        }
+
         [Route(Constants.RoutePaths.Error, Name ="Error")]
         public async Task<IActionResult> Index(string id)
         {
@@ -23,9 +29,7 @@ namespace accounts.UI.Error
             {
                 var message = await _errorInteraction.GetRequestAsync(id);
                 if (message != null)
-                {
                     vm.Error = message;
-                }
             }
 
             return View("Error", vm);

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using Microsoft.AspNetCore.Mvc;
 
 namespace accounts.UI.Home
 {
@@ -7,6 +8,7 @@ namespace accounts.UI.Home
         [Route("/")]
         public IActionResult Index()
         {
+            throw new Exception();
             return View();
         }
     }
