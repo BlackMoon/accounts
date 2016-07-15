@@ -1,8 +1,8 @@
 ﻿var $divBody, $imgLoader;
        
 $(function () {
-    $divBody = $('div.body');
-    $imgLoader = $('#imgLoader');
+    $divBody = $("div.body");
+    $imgLoader = $("#imgLoader");
 });
 
 getView = function(url) {
@@ -12,7 +12,7 @@ getView = function(url) {
         complete: function (event, xhr) {
             $imgLoader.hide();
 
-            if (xhr === 'success')
+            if (xhr === "success")
             {
                 $divBody.html(event.responseText);
                 $.validator.unobtrusive.parse($divBody);
@@ -70,35 +70,35 @@ onComplete = function (xhr, status) {
         var that = this;
         switch (data.status) {
             // LoginStatus decalred in Login.cshtml view through [@Html.EnumToJs(typeof(LoginStatus), true)]
-        case LoginStatus.Success:
-            window.location = data.returnUrl;
-            break;
+            case LoginStatus.Success:
+                window.location = data.returnUrl;
+                break;
 
-        case LoginStatus.Expired:
+            case LoginStatus.Expired:
 
-            BootstrapDialog.warning(data.message);
-            getView("/ui/change?id=" + $(that.SignInId).val());
+                BootstrapDialog.warning(data.message);
+                getView("/ui/change?id=" + $(that.SignInId).val());
 
-            break;
+                break;
 
-        case LoginStatus.Expiring:
+            case LoginStatus.Expiring:
 
-            BootstrapDialog.confirm({
-                btnOKLabel: "Да",
-                btnCancelLabel: "Нет",
-                callback: function(result) {
-                    (result === true) ? getView("/ui/change?id=" + $(that.SignInId).val()) : window.location = data.returnUrl;
-                },
-                message: data.message,
-                title: "Вопрос",
-                type: BootstrapDialog.TYPE_INFO
-            });
+                BootstrapDialog.confirm({
+                    btnOKLabel: "Да",
+                    btnCancelLabel: "Нет",
+                    callback: function(result) {
+                        (result === true) ? getView("/ui/change?id=" + $(that.SignInId).val()) : window.location = data.returnUrl;
+                    },
+                    message: data.message,
+                    title: "Вопрос",
+                    type: BootstrapDialog.TYPE_INFO
+                });
 
-            break;
+                break;
 
-        default:
-            BootstrapDialog.danger(data.message);
-            break;
+            default:
+                BootstrapDialog.danger(data.message);
+                break;
         }
     }
     else
