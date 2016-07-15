@@ -28,12 +28,14 @@ using Kit.Kernel.Identity;
 using Kit.Kernel.Interception;
 using Kit.Kernel.Interception.Attribute;
 using Kit.Kernel.Web.Binders;
+using Kit.Kernel.Web.ForceHttpsMiddleware;
 using Kit.Kernel.Web.Mvc.Filter;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Options;
 using AuthenticationOptions = IdentityServer4.Configuration.AuthenticationOptions;
 
 namespace accounts
@@ -126,6 +128,7 @@ namespace accounts
             services.AddOptions();
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
             services.Configure<ConnectionStringSettings>(Configuration.GetSection("Data:DefaultConnection"));
+            services.Configure<ForceHttpsOptions>(Configuration.GetSection("HttpsOptions"));
             services.Configure<OracleEnvironmentSettings>(Configuration.GetSection("OracleEnvironment"));
             services.Configure<List<Client>>(Configuration.GetSection("Clients"));
 
@@ -157,7 +160,7 @@ namespace accounts
             #endregion
 
             #region clients
-            builder.Services.AddSingleton<IEnumerable<Client>>(provider => provider.GetService<Microsoft.Extensions.Options.IOptions<List<Client>>>().Value); 
+            builder.Services.AddSingleton<IEnumerable<Client>>(provider => provider.GetService<IOptions<List<Client>>>().Value); 
             builder.Services.AddTransient<IClientStore, InMemoryClientStore>();
             builder.Services.AddTransient<ICorsPolicyService, InMemoryCorsPolicyService>();
             #endregion
@@ -215,6 +218,14 @@ namespace accounts
             loggerFactory.AddDebug();
             
             app.UseApplicationInsightsRequestTelemetry();
+            
+            // forceHttps
+            if (Configuration["HttpsOptions"] != null)
+            {
+                IOptions<ForceHttpsOptions> options = app.ApplicationServices.GetService<IOptions<ForceHttpsOptions>>();
+                app.UseForceHttps(options.Value);
+            }
+
             app.UseStatusCodePagesWithReExecute("/ui/error/{0}");
         
             if (env.IsDevelopment())
