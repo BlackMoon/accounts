@@ -1,24 +1,19 @@
 ﻿using System.Security.Claims;
 using System.Threading.Tasks;
 using IdentityServer4;
-using IdentityServer4.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace accounts.UI.Logout
 {
     public class LogoutController : Controller
     {
-        private readonly SignOutInteraction _signOutInteraction;
-
-        public LogoutController(SignOutInteraction signOutInteraction)
-        {
-            _signOutInteraction = signOutInteraction;
-        }
-
         [HttpGet(Constants.RoutePaths.Logout, Name = "Logout")]
-        public IActionResult Index(string id)
+        public IActionResult Index(string returnUrl)
         {
-            return View(new LogoutViewModel { SignOutId = id });
+            if (returnUrl != null && !Url.IsLocalUrl(returnUrl))
+                returnUrl = null;
+            
+            return View(new LogoutViewModel { ReturnUrl = returnUrl });
         }
 
         [HttpPost(Constants.RoutePaths.Logout)]

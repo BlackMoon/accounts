@@ -42,13 +42,16 @@
     },
 
     "publishOptions": {
+        "configProperties": {
+            "System.GC.Server": true
+        },
         "include": [
             "wwwroot",
             "appsettings.json",
             "clients.json",
             "idsrv4test.pfx",
             "web.config"
-        ]        
+        ]
     },    
 
     "runtimes": {

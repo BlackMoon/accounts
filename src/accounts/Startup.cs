@@ -28,6 +28,7 @@ using Kit.Kernel.Identity;
 using Kit.Kernel.Interception;
 using Kit.Kernel.Interception.Attribute;
 using Kit.Kernel.Web.Binders;
+using Kit.Kernel.Web.DebugModeMiddleware;
 using Kit.Kernel.Web.ForceHttpsMiddleware;
 using Kit.Kernel.Web.Mvc.Filter;
 using Microsoft.AspNetCore.Mvc;
@@ -53,8 +54,8 @@ namespace accounts
             // Set up configuration sources.
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddJsonFile("clients.json", optional: true, reloadOnChange: true)
+                .AddJsonFile("appsettings.json", false, true)
+                .AddJsonFile("clients.json", true, true)
                 .AddEnvironmentVariables();
 
             if (env.IsDevelopment())
@@ -219,6 +220,9 @@ namespace accounts
             
             app.UseApplicationInsightsRequestTelemetry();
             
+            // check development (debug) mode
+            app.CheckDebugMode();
+
             // forceHttps
             if (Configuration["HttpsOptions"] != null)
             {
