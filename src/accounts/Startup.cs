@@ -151,6 +151,11 @@ namespace accounts
 
                         };
                     }
+
+                    options.UserInteractionOptions.LoginUrl = "/ui/login";
+                    options.UserInteractionOptions.LogoutUrl = "/ui/logout";
+                    options.UserInteractionOptions.ConsentUrl = "/ui/consent";
+                    options.UserInteractionOptions.ErrorUrl = "/ui/error";
                 });
 
             #region X590Certificate2

@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace accounts.UI.Change
 {
+    [Authorize]
     public class ChangeController : Controller
     {
         private readonly ICommandDispatcher _commandDispatcher;
@@ -22,12 +23,11 @@ namespace accounts.UI.Change
         {
             _commandDispatcher = commandDispatcher;
         }
-
-        [Authorize]
+        
         [HttpGet("ui/change", Name = "Change")]
-        public IActionResult Index(string id)
+        public IActionResult Index(string returnUrl)
         {
-            ChangePasswordCommand command = new ChangePasswordCommand() { SignInId = id };
+            ChangePasswordCommand command = new ChangePasswordCommand() { ReturnUrl = returnUrl };
 
             return Request.IsAjax() ? (IActionResult) PartialView(command) : View(command);
         }
@@ -46,9 +46,9 @@ namespace accounts.UI.Change
 
                 if (result.Status != LoginStatus.Failure)
                 {
-                    result.ReturnUrl = (command.SignInId != null) ? "/ui/signin?id=" + command.SignInId : "/";
+                    result.ReturnUrl = command.ReturnUrl ?? "/";
 
-                    await HttpContext.Authentication.SignOutAsync(Constants.PrimaryAuthenticationType);
+                    await HttpContext.Authentication.SignOutAsync(Constants.DefaultCookieAuthenticationScheme);
 
                     ClaimsIdentity ci = HttpContext.User.Identity as ClaimsIdentity;
                     if (ci != null)
@@ -57,8 +57,8 @@ namespace accounts.UI.Change
 
                         ci.TryRemoveClaim(claimPsw);
                         ci.AddClaim(new Claim(ConnectionStringClaimTypes.Password, command.NewPassword));
-
-                        await HttpContext.Authentication.SignInAsync(Constants.PrimaryAuthenticationType, new ClaimsPrincipal(ci));
+                        
+                        await HttpContext.Authentication.SignInAsync(Constants.DefaultCookieAuthenticationScheme, new ClaimsPrincipal(ci));
                     }
                 }
 

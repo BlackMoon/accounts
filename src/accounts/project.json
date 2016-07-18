@@ -2,7 +2,7 @@
     "version": "1.0.0-*",
 
     "dependencies": {
-        "IdentityServer4": "1.0.0-beta4-update2",
+        "IdentityServer4": "1.0.0-beta5",
         "Kit.Dal": "1.0.0-*",
         "Kit.Kernel.Web": "1.0.0-*",
         "Microsoft.ApplicationInsights.AspNetCore": "1.0.0",

@@ -24,24 +24,24 @@ namespace accounts.UI.Login
     {
         private readonly ICommandDispatcher _commandDispatcher;
         private readonly IQueryDispatcher _queryDispatcher;
-        private readonly SignInInteraction _signInInteraction;
-       
+        private readonly IUserInteractionService _interaction;
+
         private readonly ConnectionStringSettings _connectionStringSettings;
 
         public LoginController(
             ICommandDispatcher commandDispatcher,
             IQueryDispatcher queryDispatcher,
             IOptions<ConnectionStringSettings> connectionStringOptions,
-            SignInInteraction signInInteraction)
+            IUserInteractionService interaction)
         {
             _commandDispatcher = commandDispatcher;
             _queryDispatcher = queryDispatcher;
-            _signInInteraction = signInInteraction;
+            _interaction = interaction;
             _connectionStringSettings = connectionStringOptions.Value;
         }
 
-        [HttpGet(Constants.RoutePaths.Login, Name = "Login")]
-        public async Task<IActionResult> Index(string id)
+        [HttpGet("ui/login", Name = "Login")]
+        public async Task<IActionResult> Index(string returnUrl)
         {
             // default DataSource задан в настройках
             if (string.IsNullOrEmpty(_connectionStringSettings.DataSource))
@@ -63,20 +63,20 @@ namespace accounts.UI.Login
 
             LoginCommand command = new LoginCommand();
 
-            if (id != null)
+            if (returnUrl != null)
             {
-                var request = await _signInInteraction.GetRequestAsync(id);
-                if (request != null)
+                var context = await _interaction.GetLoginContextAsync();
+                if (context != null)
                 {
-                    command.UserName = request.LoginHint;
-                    command.SignInId = id;
+                    command.UserName = context.LoginHint;
+                    command.ReturnUrl = returnUrl;
                 }
             }
 
             return View(command);
         }
 
-        [HttpPost(Constants.RoutePaths.Login)]
+        [HttpPost("ui/login")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Index(LoginCommand command)
         {
@@ -95,13 +95,11 @@ namespace accounts.UI.Login
             }
             #endregion
 
-            LoginResult result = new LoginResult() { Status = LoginStatus.Failure };
+            LoginCommandResult result = new LoginCommandResult();
             
             if (ModelState.IsValid)
             {
-                LoginCommandResult commandResult = _commandDispatcher.Dispatch<LoginCommand, LoginCommandResult>(command);
-                result.Status = commandResult.Status;
-                result.Message = commandResult.Message;
+                result = _commandDispatcher.Dispatch<LoginCommand, LoginCommandResult>(command);
                 
                 // Authenticate
                 if (result.Status != LoginStatus.Failure)
@@ -116,13 +114,8 @@ namespace accounts.UI.Login
                         };
 
                     ClaimsIdentity ci = new ClaimsIdentity(claims, "password", JwtClaimTypes.Name, JwtClaimTypes.Role);
-                    ClaimsPrincipal cp = new ClaimsPrincipal(ci);
-
-                    await HttpContext.Authentication.SignInAsync(Constants.PrimaryAuthenticationType, cp);
-
-                    // если LoginStatus.Expired --> Redirect /ui/change (на клиенте)
-                    if (result.Status != LoginStatus.Expired)
-                        result.ReturnUrl = (command.SignInId != null) ? "/ui/signin?id=" + command.SignInId : "/";
+                    
+                    await HttpContext.Authentication.SignInAsync(Constants.DefaultCookieAuthenticationScheme, new ClaimsPrincipal(ci));
                 }
             }
             else

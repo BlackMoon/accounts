@@ -7,8 +7,8 @@
 <h1>
     Выход
 </h1>
-<form asp-action="Submit">
-    <input type="hidden" asp-for="ReturnUrl" />
+<form asp-route="Logout">
+    <input type="hidden" name="logoutId" asp-for="LogoutId" />
 </form>
 
 @section Scripts{

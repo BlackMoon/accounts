@@ -2,11 +2,11 @@
 {
     public class LogoutViewModel
     {
+        public string LogoutId { get; set; }
+
         /// <summary>
         /// URL источника запроса (для возврата)
         /// </summary>
         public string Referer { get; set; }
-
-        public string ReturnUrl { get; set; }
     }
 }

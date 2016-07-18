@@ -1,7 +1,7 @@
 ﻿@model Kit.Dal.CQRS.Command.ChangePassword.ChangePasswordCommand
 
 <form asp-action="index" asp-controller="change" class="sky-form" data-ajax="true" data-ajax-method="POST" data-ajax-begin="onBegin" data-ajax-complete="onComplete" data-ajax-loading="#imgLoader">
-    <input type="hidden" asp-for="SignInId" />
+    <input type="hidden" asp-for="ReturnUrl" />
     <header>Введите новый пароль</header>
     <fieldset>
         <section>
