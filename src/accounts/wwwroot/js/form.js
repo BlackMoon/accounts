@@ -44,7 +44,7 @@ onBegin = function (xhr, options) {
 
     if (needToUpdate) {
 
-        Object.keys(encrypted).every(function(k) {
+        Object.keys(encrypted).forEach(function(k) {
             options.data = options.data.replace(new RegExp(k + "=[^&]+"), k + "=" + encrypted[k]);
         });
     }
@@ -67,17 +67,17 @@ onComplete = function (xhr, status) {
     }
 
     if (status === "success") {
-        var that = this;
+        var returnUrl = $(this.ReturnUrl).val();
         switch (data.status) {
-            // LoginStatus decalred in Login.cshtml view through [@Html.EnumToJs(typeof(LoginStatus), true)]
+            // LoginStatus declared in Login.cshtml view through [@Html.EnumToJs(typeof(LoginStatus), true)]
             case LoginStatus.Success:
-                window.location = data.returnUrl;
+                window.location = returnUrl;
                 break;
 
             case LoginStatus.Expired:
 
                 BootstrapDialog.warning(data.message);
-                getView("/ui/change?id=" + $(that.SignInId).val());
+                getView("/ui/change?returnUrl=" + encodeURIComponent(returnUrl));
 
                 break;
 
@@ -86,8 +86,8 @@ onComplete = function (xhr, status) {
                 BootstrapDialog.confirm({
                     btnOKLabel: "Да",
                     btnCancelLabel: "Нет",
-                    callback: function(result) {
-                        (result === true) ? getView("/ui/change?id=" + $(that.SignInId).val()) : window.location = data.returnUrl;
+                    callback: function (result) {
+                        (result === true) ? getView("/ui/change?returnUrl=" + encodeURIComponent(returnUrl)) : window.location = returnUrl;
                     },
                     message: data.message,
                     title: "Вопрос",
