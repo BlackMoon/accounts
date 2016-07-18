@@ -13,7 +13,11 @@ namespace accounts.UI.Logout
             if (returnUrl != null && !Url.IsLocalUrl(returnUrl))
                 returnUrl = null;
             
-            return View(new LogoutViewModel { ReturnUrl = returnUrl });
+            return View(new LogoutViewModel
+            {
+                Referer = Request.Headers["Referer"],
+                ReturnUrl = returnUrl
+            });
         }
 
         [HttpPost(Constants.RoutePaths.Logout)]

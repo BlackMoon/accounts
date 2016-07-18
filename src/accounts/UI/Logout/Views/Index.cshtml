@@ -1,4 +1,5 @@
-﻿@model accounts.UI.Logout.LogoutViewModel
+﻿@using Kit.Kernel.Web.HtmlHelper
+@model accounts.UI.Logout.LogoutViewModel
 @{
     Layout = "_MenuLayout";
 }
@@ -11,6 +12,7 @@
 </form>
 
 @section Scripts{
+    @Html.ValueToJs("referer", @Model.Referer, true)
     <environment names="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>

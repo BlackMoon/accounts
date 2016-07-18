@@ -1,14 +1,17 @@
 ﻿$(function () {
-
     BootstrapDialog.confirm({
         btnOKLabel: "Да",
         btnCancelLabel: "Нет",
         callback: function(result) 
         {
             debugger;
-            (result === true) && document.forms[0].submit();
+            if (result === true) 
+                document.forms[0].submit();
+            else
+                // referrer decalred in Index.cshtml view through [@Html.ValueToJs("referrer", @Model.Referrer, true)]
+                referer && (window.location = referer);
         },
-        message: "Would you like to logout of IdentityServer?",
+        message: "Выход из системы?",
         title: "Вопрос",
         type: BootstrapDialog.TYPE_INFO
     });

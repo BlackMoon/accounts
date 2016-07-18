@@ -6,7 +6,7 @@
         return new BootstrapDialog({
             buttons: [{
                 action: function (dlg) { dlg.close(); },
-                label: 'Ok'
+                label: "Ok"
             }],
             message: message,
             title: title,
@@ -30,26 +30,26 @@
                 btnOKClass: null,
                 callback: null
             };
-            if (typeof arguments[0] === 'object' && arguments[0].constructor === {}.constructor) {
+            if (typeof arguments[0] === "object" && arguments[0].constructor === {}.constructor) {
                 confirmOptions = $.extend(true, defaultConfirmOptions, arguments[0]);
             } else {
                 confirmOptions = $.extend(true, defaultConfirmOptions, {
                     message: arguments[0],
-                    callback: typeof arguments[1] !== 'undefined' ? arguments[1] : null
+                    callback: typeof arguments[1] !== "undefined" ? arguments[1] : null
                 });
             }
             if (confirmOptions.btnOKClass === null) {
-                confirmOptions.btnOKClass = ['btn', confirmOptions.type.split('-')[1]].join('-');
+                confirmOptions.btnOKClass = ["btn", confirmOptions.type.split("-")[1]].join("-");
             }
 
             var dialog = new BootstrapDialog(confirmOptions);
-            dialog.setData('callback', confirmOptions.callback);
+            dialog.setData("callback", confirmOptions.callback);
 
             dialog.addButton({
                 label: confirmOptions.btnOKLabel,
                 cssClass: confirmOptions.btnOKClass,
                 action: function (dialog) {
-                    if (typeof dialog.getData('callback') === 'function' && dialog.getData('callback').call(this, true) === false) {
+                    if (typeof dialog.getData("callback") === "function" && dialog.getData("callback").call(this, true) === false) {
                         return false;
                     }
 
@@ -61,7 +61,7 @@
                 label: confirmOptions.btnCancelLabel,
                 cssClass: confirmOptions.btnCancelClass,
                 action: function (dialog) {
-                    if (typeof dialog.getData('callback') === 'function' && dialog.getData('callback').call(this, false) === false) {
+                    if (typeof dialog.getData("callback") === "function" && dialog.getData("callback").call(this, false) === false) {
                         return false;
                     }
 
@@ -72,9 +72,9 @@
             return dialog.open();
         },
 
-        danger: function (message) { msgBox(message, 'Ошибка', BootstrapDialog.TYPE_DANGER); },
-        info: function (message) { msgBox(message, 'Информация', BootstrapDialog.TYPE_INFO); },
-        warning: function(message) { msgBox(message, 'Внимание', BootstrapDialog.TYPE_WARNING); }
+        danger: function (message) { msgBox(message, "Ошибка", BootstrapDialog.TYPE_DANGER); },
+        info: function (message) { msgBox(message, "Информация", BootstrapDialog.TYPE_INFO); },
+        warning: function(message) { msgBox(message, "Внимание", BootstrapDialog.TYPE_WARNING); }
 
     });
 

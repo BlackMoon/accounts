@@ -146,7 +146,9 @@ namespace accounts
                                 new CookieAuthenticationOptions()
                                 {
                                     ExpireTimeSpan = TimeSpan.FromSeconds(seconds)
-                                }
+                                },
+                            EnableSignOutPrompt = false
+
                         };
                     }
                 });
