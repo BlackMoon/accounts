@@ -5,8 +5,7 @@
             "ClientName": "eco",            
             "RequireConsent": false,
             "AllowRememberConsent": false,
-            "RedirectUris": [ "http://eco.aquilon.ru" ],
-            "PostLogoutRedirectUris": [ "http://localhost:5969/" ],            
+            "RedirectUris": [ "http://eco.aquilon.ru" ],            
             "AllowedScopes": [ "openid", "connectionString" ]            
         },
         {            
@@ -15,7 +14,7 @@
             "RequireConsent": false,
             "AllowRememberConsent": false,  
             "RedirectUris": [ "http://tnnd.aquilon.ru" ],
-            "PostLogoutRedirectUris": [ "http://localhost:5969/" ],            
+            "PostLogoutRedirectUris": [ "http://tnnd.aquilon.ru" ],            
             "AllowedScopes": [ "openid", "connectionString" ]            
         },
         {
@@ -27,14 +26,15 @@
             "PostLogoutRedirectUris": [ "http://localhost:5969/" ],            
             "AllowedScopes": [ "openid", "connectionString" ]            
         },
-        {            
-            "ClientId": "test2",            
+        {
+            "ClientId": "test2",
             "ClientName": "test2",
             "RequireConsent": false,
-            "AllowRememberConsent": false,         
+            "AllowRememberConsent": false,
+            "LogoutUri": "http: //localhost:4364",
             "RedirectUris": [ "http://localhost:4364" ],
-            "PostLogoutRedirectUris": [ "http://localhost:5969/" ],            
-            "AllowedScopes": [ "openid", "connectionString" ]           
+            "PostLogoutRedirectUris": [ "http://localhost:5969/" ],
+            "AllowedScopes": [ "openid", "connectionString" ]
         },
 	{            
             "ClientId": "test3",            
