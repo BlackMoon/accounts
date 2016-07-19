@@ -202,12 +202,7 @@ namespace accounts
                 options.FileProviders.Add(new EmbeddedFileProvider(GetType().Assembly, "accounts"))
             );
             
-            services.AddRouting(
-                options =>
-                {
-                    options.LowercaseUrls = true;
-                    options.AppendTrailingSlash = true;
-                });
+            services.AddRouting(options => options.LowercaseUrls = true);
             
             // Add dependencies
             IContainer container = ConfigureDependencies(services);
