@@ -1,0 +1,4 @@
+[submodule "kit"]
+	path = kit
+	url = http://tfs:8080/tfs/ntcGroup/ntcProjects/_git/kit
+	branch = netcore
