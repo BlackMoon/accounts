@@ -21,7 +21,7 @@
     <UpdateAssemblyInfoVersion>False</UpdateAssemblyInfoVersion>
     <AssemblyVersionSettings>None.MonthStamp.IncrementOnDemandWithReset.TimeStamp</AssemblyVersionSettings>
     <AssemblyFileVersionSettings>None.MonthStamp.IncrementOnDemandWithReset.TimeStamp</AssemblyFileVersionSettings>
-    <AssemblyVersion>1.7.1.1524</AssemblyVersion>
+    <AssemblyVersion>1.7.1.1126</AssemblyVersion>
   </PropertyGroup>
   <Import Project="$(VSToolsPath)\DotNet.Web\Microsoft.DotNet.Web.targets" Condition="'$(VSToolsPath)' != ''" />
 </Project>
