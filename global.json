@@ -1,5 +1,5 @@
 ﻿{
-    "projects": [ "src", "test", "kit/Software/netcore" ],
+    "projects": [ "src", "test", "kit/Software/netcore/src" ],
     "sdk": {
         "version": "1.0.0-preview3-003206"
     }
