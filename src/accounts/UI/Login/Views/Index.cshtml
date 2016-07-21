@@ -1,7 +1,11 @@
-﻿@using System.Threading.Tasks
+﻿@using Kit.Kernel.Configuration
+@using Microsoft.Extensions.Options
+@inject IOptions<AppSettings> appSettings
+
 @model Kit.Dal.CQRS.Command.Login.LoginCommand
 @{
     Layout = "_FormLayout";
+    string autoComplete = appSettings.Value.AutoComplete ? "on" : "off";
 }
 
 <form asp-action="index" asp-controller="login" class="sky-form" data-ajax="true" data-ajax-method="POST" data-ajax-begin="onBegin" data-ajax-complete="onComplete" data-ajax-loading="#imgLoader">
@@ -20,7 +24,7 @@
         <section>
             <label class="input">
                 <i class="icon-append icon-lock"></i>
-                <input asp-for="Password" placeholder="Пароль"/>
+                <input asp-for="Password" placeholder="Пароль" autocomplete="@autoComplete" />
                 <b class="tooltip tooltip-bottom-right">Пароль</b>
             </label>
             <span asp-validation-for="Password" class="note note-error"></span>

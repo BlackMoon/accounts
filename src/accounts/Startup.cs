@@ -142,13 +142,8 @@ namespace accounts
                     {
                         options.AuthenticationOptions = new AuthenticationOptions()
                         {
-                            CookieAuthenticationOptions =
-                                new CookieAuthenticationOptions()
-                                {
-                                    ExpireTimeSpan = TimeSpan.FromSeconds(seconds)
-                                },
+                            CookieAuthenticationOptions = new CookieAuthenticationOptions() { ExpireTimeSpan = TimeSpan.FromSeconds(seconds) },
                             EnableSignOutPrompt = false
-
                         };
                     }
 
