@@ -132,7 +132,7 @@ namespace accounts
             services.Configure<ForceHttpsOptions>(Configuration.GetSection("HttpsOptions"));
             services.Configure<OracleEnvironmentSettings>(Configuration.GetSection("OracleEnvironment"));
             services.Configure<List<Client>>(Configuration.GetSection("Clients"));
-
+            
             //identityServer
             IIdentityServerBuilder builder = services
                 .AddIdentityServer(options =>
@@ -185,7 +185,11 @@ namespace accounts
 
             // for the UI
             services
-                .AddMvc(options => options.ModelBinderProviders.Insert(0, new EncryptModelBinderProvider()))
+                .AddMvc(options =>
+                {
+                    options.ModelBinderProviders.Insert(0, new EncryptModelBinderProvider());
+                    options.CacheProfiles.Add("1hour", new CacheProfile() { Duration = 3600 });
+                })
                 .AddJsonOptions(option =>
                 {
                     option.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
@@ -219,14 +223,14 @@ namespace accounts
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
-            
+           
             app.UseApplicationInsightsRequestTelemetry();
             
             // check development (debug) mode
             app.CheckDebugMode();
 
             // forceHttps
-            if (Configuration["HttpsOptions"] != null)
+            if (Configuration["HttpsOptions:Port"] != null)
             {
                 IOptions<ForceHttpsOptions> options = app.ApplicationServices.GetService<IOptions<ForceHttpsOptions>>();
                 app.UseForceHttps(options.Value);
@@ -245,7 +249,6 @@ namespace accounts
             app.UseApplicationInsightsExceptionTelemetry();
             
             app.UseIdentityServer();
-
             app.UseStaticFiles();
             app.UseMvcWithDefaultRoute();
         }

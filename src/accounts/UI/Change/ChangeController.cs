@@ -25,6 +25,7 @@ namespace accounts.UI.Change
         }
         
         [HttpGet("ui/change", Name = "Change")]
+        [ResponseCache(CacheProfileName = "1hour")]
         public IActionResult Index(string returnUrl)
         {
             ChangePasswordCommand command = new ChangePasswordCommand() { ReturnUrl = returnUrl };

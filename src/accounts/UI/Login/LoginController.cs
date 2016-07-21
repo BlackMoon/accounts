@@ -41,6 +41,7 @@ namespace accounts.UI.Login
         }
 
         [HttpGet("ui/login", Name = "Login")]
+        [ResponseCache(CacheProfileName = "1hour")]
         public async Task<IActionResult> Index(string returnUrl)
         {
             // default DataSource задан в настройках

@@ -17,6 +17,7 @@ namespace accounts.UI.Logout
         }
         
         [HttpGet("ui/logout", Name = "Logout")]
+        [ResponseCache(CacheProfileName = "1hour")]
         public IActionResult Index(string logoutId)
         {
             return View(new LogoutViewModel()

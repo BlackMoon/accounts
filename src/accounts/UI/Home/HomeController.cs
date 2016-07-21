@@ -5,6 +5,7 @@ namespace accounts.UI.Home
 {
     public class HomeController : Controller
     {
+        [ResponseCache(CacheProfileName = "1hour")]
         [Route("/")]
         public IActionResult Index()
         {

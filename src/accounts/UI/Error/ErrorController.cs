@@ -14,6 +14,7 @@ namespace accounts.UI.Error
         }
 
         [HttpGet("ui/error" + "/{viewName}")]
+        [ResponseCache(CacheProfileName = "1hour")]
         public IActionResult HandleUnknownAction(string viewName)
         {
             return View(viewName);
