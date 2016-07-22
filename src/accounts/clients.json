@@ -39,7 +39,7 @@
             "ClientName": "test2",
             "RequireConsent": false,
             "AllowRememberConsent": false,
-            "RedirectUris": [ "http://localhost:4365" ],
+            "RedirectUris": [ "http://localhost:4364" ],
             "PostLogoutRedirectUris": [ "http://localhost:5969/" ],
             "AllowedScopes": [ "openid", "connectionString" ]
         },

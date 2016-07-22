@@ -1,35 +1,26 @@
 ﻿using System.Security.Claims;
 using System.Threading.Tasks;
 using IdentityServer4;
+using IdentityServer4.Configuration;
+using IdentityServer4.Models;
 using IdentityServer4.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace accounts.UI.Logout
 {
-    [Authorize]
+    //[Authorize]
     public class LogoutController : Controller
     {
         private readonly IUserInteractionService _interaction;
-        public LogoutController(IUserInteractionService interaction)
+        private readonly IdentityServerOptions _options;
+        public LogoutController(IUserInteractionService interaction, IdentityServerOptions options)
         {
             _interaction = interaction;
+            _options = options;
         }
-        
-        [HttpGet("ui/logout", Name = "Logout")]
-        [ResponseCache(CacheProfileName = "1hour")]
-        public IActionResult Index(string logoutId)
-        {
-            return View(new LogoutViewModel()
-            {
-                LogoutId = logoutId,
-                Referer = Request.Headers["Referer"]
-            });
-        }
-        
-        [HttpPost("ui/logout")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Submit(string logoutId)
+
+        private async Task<IActionResult> SignOut(string logoutId)
         {
             await HttpContext.Authentication.SignOutAsync(Constants.DefaultCookieAuthenticationScheme);
 
@@ -45,6 +36,33 @@ namespace accounts.UI.Logout
                 SignOutIframeUrl = logout.SignOutIFrameUrl
             };
             return View("LoggedOut", vm);
+        }
+
+        [HttpGet("ui/logout", Name = "Logout")]
+        [ResponseCache(CacheProfileName = "1hour")]
+        public async Task<IActionResult> Index(string logoutId)
+        {
+            IActionResult result;
+
+            if (_options.AuthenticationOptions.EnableSignOutPrompt)
+            {
+                result = View(new LogoutViewModel()
+                {
+                    LogoutId = logoutId,
+                    Referer = Request.Headers["Referer"]
+                });
+            }
+            else
+                result = await SignOut(logoutId);
+
+            return result;
+        }
+
+        [HttpPost("ui/logout")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Submit(string logoutId)
+        {
+            return await SignOut(logoutId);
         }
     }
 }

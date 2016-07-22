@@ -30,6 +30,7 @@ using Kit.Kernel.Interception.Attribute;
 using Kit.Kernel.Web.Binders;
 using Kit.Kernel.Web.DebugModeMiddleware;
 using Kit.Kernel.Web.ForceHttpsMiddleware;
+using Kit.Kernel.Web.Job;
 using Kit.Kernel.Web.Mvc.Filter;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Razor;
@@ -140,12 +141,14 @@ namespace accounts
                     int seconds;
                     if (int.TryParse(Configuration["ExpireTime"], out seconds))
                     {
-                        options.AuthenticationOptions = new AuthenticationOptions()
+                        options.AuthenticationOptions.CookieAuthenticationOptions = new CookieAuthenticationOptions()
                         {
-                            CookieAuthenticationOptions = new CookieAuthenticationOptions() { ExpireTimeSpan = TimeSpan.FromSeconds(seconds) },
-                            EnableSignOutPrompt = false
+                            ExpireTimeSpan = TimeSpan.FromSeconds(seconds)
                         };
                     }
+                    bool enableSignOutPrompt;
+                    if (bool.TryParse(Configuration["EnableSignOutPrompt"], out enableSignOutPrompt))
+                        options.AuthenticationOptions.EnableSignOutPrompt = enableSignOutPrompt;
 
                     options.UserInteractionOptions.LoginUrl = "/ui/login";
                     options.UserInteractionOptions.LogoutUrl = "/ui/logout";
@@ -266,5 +269,9 @@ namespace accounts
 
             host.Run();
         }
+    }
+
+    internal class await
+    {
     }
 }

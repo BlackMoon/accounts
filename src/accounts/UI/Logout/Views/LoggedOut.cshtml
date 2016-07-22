@@ -4,9 +4,8 @@
 }
 
 <h1>Выход</h1>
-<p>You are now logged out</p>
+<p>Произведен выход из системы</p>
 <p hide-if-null="Model.PostLogoutRedirectUri">
-    Click <a href="@Model.PostLogoutRedirectUri">here</a> to return to the
-    <span>@Model.ClientName</span> application.
+    Для возврата в <span>@Model.ClientName</span> пройдите по <a href="@Model.PostLogoutRedirectUri">ссылке</a>.
 </p>
 <iframe style="display:none" width="0" height="0" hide-if-null="Model.SignOutIframeUrl" class="signout" src="@Model.SignOutIframeUrl"></iframe>
