@@ -2,14 +2,13 @@
 using System.Threading.Tasks;
 using IdentityServer4;
 using IdentityServer4.Configuration;
-using IdentityServer4.Models;
 using IdentityServer4.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace accounts.UI.Logout
 {
-    //[Authorize]
+    [Authorize]
     public class LogoutController : Controller
     {
         private readonly IUserInteractionService _interaction;
