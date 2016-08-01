@@ -30,7 +30,6 @@ using Kit.Kernel.Interception.Attribute;
 using Kit.Kernel.Web.Binders;
 using Kit.Kernel.Web.DebugModeMiddleware;
 using Kit.Kernel.Web.ForceHttpsMiddleware;
-using Kit.Kernel.Web.Job;
 using Kit.Kernel.Web.Mvc.Filter;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Razor;
@@ -38,7 +37,6 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
-using AuthenticationOptions = IdentityServer4.Configuration.AuthenticationOptions;
 
 namespace accounts
 {
@@ -186,17 +184,14 @@ namespace accounts
                 .AddMvc(options =>
                 {
                     options.ModelBinderProviders.Insert(0, new EncryptModelBinderProvider());
-                    options.CacheProfiles.Add("1hour", new CacheProfile() { Duration = 3600 });
+                    options.CacheProfiles.Add("1hour", new CacheProfile() {Duration = 3600});
                 })
                 .AddJsonOptions(option =>
                 {
                     option.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
                     option.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
                 })
-                .AddRazorOptions(razor =>
-                {
-                    razor.ViewLocationExpanders.Add(new CustomViewLocationExpander());
-                });
+                .AddRazorOptions(razor => razor.ViewLocationExpanders.Add(new CustomViewLocationExpander()));
 
             // Global exceptions' filter
             services.Configure<MvcOptions>(options => options.Filters.Add(new GlobalExceptionFilter()));

@@ -2,15 +2,16 @@
     "Clients": [
         {
             "ClientId": "eco.webforms",
-            "ClientName": "eco",
+            "ClientName": "ECO-Control",
             "RequireConsent": false,
             "AllowRememberConsent": false,
-            "RedirectUris": [ "http://eco","http://eco.aquilon.ru" ],
+            "RedirectUris": [ "http://eco", "http://eco.aquilon.ru" ],
+            "PostLogoutRedirectUris": [ "http://eco.aquilon.ru" ],
             "AllowedScopes": [ "openid", "connectionString" ]
         },
         {
             "ClientId": "kpi.webforms",
-            "ClientName": "kpi",
+            "ClientName": "KPI M.System",
             "RequireConsent": false,
             "AllowRememberConsent": false,
             "RedirectUris": [ "http://kpi", "http://kpi.aquilon.ru" ],
@@ -18,7 +19,7 @@
         },
         {
             "ClientId": "tnnd.webforms",
-            "ClientName": "tnnd",
+            "ClientName": "Татнефть-нефтедобыча",
             "RequireConsent": false,
             "AllowRememberConsent": false,
             "RedirectUris": [ "http://tnnd", "http://tnnd.aquilon.ru" ],
@@ -39,7 +40,7 @@
             "ClientName": "test2",
             "RequireConsent": false,
             "AllowRememberConsent": false,
-            "RedirectUris": [ "http://localhost:4364" ],
+            "RedirectUris": [ "http://localhost:4365" ],
             "PostLogoutRedirectUris": [ "http://localhost:5969/" ],
             "AllowedScopes": [ "openid", "connectionString" ]
         },

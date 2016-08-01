@@ -11,10 +11,13 @@ namespace accounts.UI.Logout
     [Authorize]
     public class LogoutController : Controller
     {
-        private readonly IUserInteractionService _interaction;
+        private readonly IClientStore _clients;
         private readonly IdentityServerOptions _options;
-        public LogoutController(IUserInteractionService interaction, IdentityServerOptions options)
+        private readonly IUserInteractionService _interaction;
+        
+        public LogoutController(IClientStore clients, IUserInteractionService interaction, IdentityServerOptions options)
         {
+            _clients = clients;
             _interaction = interaction;
             _options = options;
         }
@@ -27,11 +30,12 @@ namespace accounts.UI.Logout
             HttpContext.User = new ClaimsPrincipal(new ClaimsIdentity());
 
             var logout = await _interaction.GetLogoutContextAsync(logoutId);
+            var client = await _clients.FindClientByIdAsync(logout.ClientId);
 
             var vm = new LoggedOutViewModel()
             {
                 PostLogoutRedirectUri = logout.PostLogoutRedirectUri,
-                ClientName = logout.ClientId,
+                ClientName = client?.ClientName ?? logout.ClientId,
                 SignOutIframeUrl = logout.SignOutIFrameUrl
             };
             return View("LoggedOut", vm);
