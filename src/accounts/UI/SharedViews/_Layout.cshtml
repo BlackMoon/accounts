@@ -10,7 +10,7 @@
     ViewBag.Theme = appSettings.Value.Theme;
     if (string.IsNullOrEmpty(ViewBag.Theme))
     {
-        string[] themes = { "red", "yellow", "orange", "green", "cyan", "blue", "pink", "pirple", "black" };
+        string[] themes = { "red", "yellow", "orange", "green", "cyan", "blue", "pink", "purple", "black" };
 
         int len = themes.Count(), month = DateTime.Today.Month - 1;
         ViewBag.Theme = themes[month % len];
