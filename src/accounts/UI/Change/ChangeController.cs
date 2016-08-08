@@ -29,8 +29,13 @@ namespace accounts.UI.Change
         public IActionResult Index(string returnUrl)
         {
             ChangePasswordCommand command = new ChangePasswordCommand() { ReturnUrl = returnUrl };
+            
+            if (Request.IsAjax())
+                return PartialView(command);
 
-            return Request.IsAjax() ? (IActionResult) PartialView(command) : View(command);
+            // в полном представлении необходим Layout
+            ViewBag.Layout = "_FormLayout";
+            return View(command);
         }
 
         [HttpPost("ui/change")]

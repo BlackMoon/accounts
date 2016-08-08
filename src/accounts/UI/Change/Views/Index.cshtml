@@ -1,4 +1,7 @@
 ﻿@model Kit.Dal.CQRS.Command.ChangePassword.ChangePasswordCommand
+@{
+    Layout = ViewBag.Layout;
+}
 
 <form asp-action="index" asp-controller="change" class="sky-form" data-ajax="true" data-ajax-method="POST" data-ajax-begin="onBegin" data-ajax-complete="onComplete" data-ajax-loading="#imgLoader">
     <input type="hidden" asp-for="ReturnUrl" />
