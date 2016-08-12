@@ -8,7 +8,7 @@
     var request_id = Model?.Error?.RequestId;
 }
 
-<h1>Error</h1>
+<h1>Ошибка</h1>
 <p hide-if-null="error_code" class="note-error">@Model.Error.ErrorCode</p>
 <p class="note-error">@error_description</p>
 <p hide-if-null="request_id" class="request-id">Request Id: @request_id</p>
