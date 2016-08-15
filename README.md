@@ -1,1 +1,1 @@
-ASP.Net Core Authorization Project
+ASP.Net Core Authentication Project
