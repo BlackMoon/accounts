@@ -48,7 +48,7 @@ namespace accounts.UI.Login
             if (string.IsNullOrEmpty(_connectionStringSettings.DataSource))
             {
                 TnsNamesQueryResult result = _queryDispatcher.Dispatch<TnsNamesQuery, TnsNamesQueryResult>(new TnsNamesQuery() { ProviderInvariantName = _connectionStringSettings.ProviderName });
-
+                
                 ViewBag.TnsNames = new List<SelectListItem>()
                     {
                         new SelectListItem()
