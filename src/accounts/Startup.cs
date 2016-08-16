@@ -228,7 +228,7 @@ namespace accounts
                 IOptions<ForceHttpsOptions> options = app.ApplicationServices.GetService<IOptions<ForceHttpsOptions>>();
                 app.UseForceHttps(options.Value);
             }
-
+            
             app.UseStatusCodePagesWithReExecute("/ui/error/{0}");
         
             if (env.IsDevelopment())
@@ -264,9 +264,5 @@ namespace accounts
 
             host.Run();
         }
-    }
-
-    internal class await
-    {
     }
 }

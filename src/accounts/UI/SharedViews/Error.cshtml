@@ -1,10 +1,13 @@
-﻿@model accounts.UI.Error.ErrorViewModel
+﻿@using Kit.Kernel.Configuration
+@using Microsoft.Extensions.Options
+@inject IOptions<AppSettings> appSettings
+@model accounts.UI.Error.ErrorViewModel
 
 @{
     Layout = "_MenuLayout";
 
-    var error_description = Model?.Error?.ErrorDescription ?? "Sorry, there was an unexpected error.";
     var error_code = Model?.Error?.ErrorCode;
+    var error_description = Model?.Error?.ErrorDescription ?? "Произошла непредвиденная ошибка.";
     var request_id = Model?.Error?.RequestId;
 }
 
