@@ -59,7 +59,7 @@ namespace accounts.UI.Login
                             Disabled = true
                         }
                     }
-                    .Union(result.Select(t => new SelectListItem() {Text = t, Value = t}));
+                    .Concat(result.Select(t => new SelectListItem() {Text = t, Value = t}));
             }
 
             LoginCommand command = new LoginCommand();
