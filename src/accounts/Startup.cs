@@ -229,6 +229,7 @@ namespace accounts
                 app.UseForceHttps(options.Value);
             }
             
+            // exception handlers
             app.UseStatusCodePagesWithReExecute("/ui/error/{0}");
         
             if (env.IsDevelopment())
