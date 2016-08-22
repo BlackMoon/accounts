@@ -60,3 +60,7 @@
 .sky-form .rating input.checked + label + input + label + input + label + input + label + input + label + input + label + input + label + input + label + input + label + input + label {
 	color: #2da5da;
 }
+
+.note {
+    margin: 10px 0 auto;
+}

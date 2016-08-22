@@ -53,7 +53,6 @@ namespace accounts.UI.Change
                 if (result.Status != LoginStatus.Failure)
                 {
                     result.ReturnUrl = command.ReturnUrl ?? "/";
-
                     await HttpContext.Authentication.SignOutAsync(Constants.DefaultCookieAuthenticationScheme);
 
                     ClaimsIdentity ci = HttpContext.User.Identity as ClaimsIdentity;
@@ -67,7 +66,6 @@ namespace accounts.UI.Change
                         await HttpContext.Authentication.SignInAsync(Constants.DefaultCookieAuthenticationScheme, new ClaimsPrincipal(ci));
                     }
                 }
-
             }
             else
                 result.Message = string.Join("; ",

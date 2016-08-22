@@ -36,5 +36,8 @@ a:hover {
 footer.info {
     color: #fff;
     font: 11px/1.55 'Open Sans', Helvetica, Arial, sans-serif;
+}
+
+.note {
     text-align: center;
 }

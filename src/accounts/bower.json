@@ -2,11 +2,13 @@
   "name": "accounts",
   "private": true,
   "dependencies": {
-    "jquery": "2.1.4",
+    "jquery": "2.2.3",
+    "jquery-legacy": "jquery#^1.10",
     "jquery-validation": "1.14.0",
-    "jquery-validation-unobtrusive": "3.2.4",
-    "Microsoft.jQuery.Unobtrusive.Ajax": "~3.2.3",    
+    "jquery-validation-unobtrusive": "3.2.6",
+    "Microsoft.jQuery.Unobtrusive.Ajax": "3.2.3",
     "jquery.placeholder": "0.2.4",
-    "bootstrap3-dialog": "~1.35.1"
+    "bootstrap3-dialog": "1.35.2",
+    "html5shiv": "3.7.3"
   }
 }

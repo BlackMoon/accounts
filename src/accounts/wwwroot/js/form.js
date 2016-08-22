@@ -43,10 +43,12 @@ onBegin = function (xhr, options) {
         });
 
     if (needToUpdate) {
-
-        Object.keys(encrypted).forEach(function(k) {
-            options.data = options.data.replace(new RegExp(k + "=[^&]+"), k + "=" + encrypted[k]);
-        });
+        
+        for (var k in encrypted) {
+            if (encrypted.hasOwnProperty(k)) {
+                options.data = options.data.replace(new RegExp(k + "=[^&]+"), k + "=" + encrypted[k]);
+            }
+        }
     }
 
     this.submit.disabled = true;

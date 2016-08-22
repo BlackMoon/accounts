@@ -32,6 +32,6 @@
     "commit": "a5b5caf864b11f1a3d137b8c491fbb58f8b9248d"
   },
   "_source": "https://github.com/whyleee/Microsoft.jQuery.Unobtrusive.Ajax.git",
-  "_target": "~3.2.3",
+  "_target": "3.2.3",
   "_originalSource": "Microsoft.jQuery.Unobtrusive.Ajax"
 }

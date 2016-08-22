@@ -30,26 +30,31 @@
     </div>
 </div>
 @section Styles{
-    <link rel="stylesheet" href="~/css/font-awesome.css">
+    <link rel="stylesheet" href="/css/font-awesome.css">
     <environment names="Development">
-        <link rel="stylesheet" href="~/css/menu.css" asp-append-version="true">
-        <link rel="stylesheet" href="~/css/menu/sky-mega-menu.css">
-        <link rel="stylesheet" href="~/css/tabs/sky-tabs.css">
+        <link rel="stylesheet" href="/css/menu.css" asp-append-version="true">
+        <link rel="stylesheet" href="/css/menu/sky-mega-menu.css">
+        <link rel="stylesheet" href="/css/tabs/sky-tabs.css">
     </environment>
     <environment names="Staging,Production">
-        <link rel="stylesheet" href="~/css/menu.min.css" asp-append-version="true">
+        <link rel="stylesheet" href="/css/menu.min.css" asp-append-version="true">
     </environment>
     @{
         if (ViewBag.Theme != "cyan")
         {
-            <link rel='stylesheet' href='~/css/menu/sky-mega-menu-@(ViewBag.Theme + ".css")' />
-            <link rel='stylesheet' href='~/css/tabs/sky-tabs-@(ViewBag.Theme + ".css")' />
+            <link rel='stylesheet' href='/css/menu/sky-mega-menu-@(ViewBag.Theme + ".css")' />
+            <link rel='stylesheet' href='/css/tabs/sky-tabs-@(ViewBag.Theme + ".css")' />
         }
     }
     <!--[if lt IE 9]>
-        <link rel="stylesheet" href="~/css/menu/sky-mega-menu-ie8.css">
-        <link rel="stylesheet" href="~/css/tabs/sky-tabs-ie8.css">
+        <link rel="stylesheet" href="/css/menu/sky-mega-menu-ie8.css">
+        <link rel="stylesheet" href="/css/tabs/sky-tabs-ie8.css">
     <![endif]-->
 }
-@*scripts only for ui/logout*@
-@RenderSection("Scripts", false)
+
+@section Scripts{
+    <!--[if lt IE 9]><script src="/js/sky-tabs-ie8.js"></script><![endif]-->
+
+    @*scripts only for ui/logout*@
+    @RenderSection("Scripts", false)
+}
