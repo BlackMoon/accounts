@@ -33,11 +33,8 @@ a:hover {
 	background-image: url(../images/bg-black.jpg);
 }
 
-footer.info {
+.note {
     color: #fff;
     font: 11px/1.55 'Open Sans', Helvetica, Arial, sans-serif;
-}
-
-.note {
     text-align: center;
 }
