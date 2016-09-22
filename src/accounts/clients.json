@@ -15,6 +15,7 @@
             "RequireConsent": false,
             "AllowRememberConsent": false,
             "RedirectUris": [ "http://kpi", "http://kpi.aquilon.ru" ],
+            "PostLogoutRedirectUris": [ "http://kpi.aquilon.ru" ],
             "AllowedScopes": [ "openid", "connectionString" ]
         },
         {
@@ -40,7 +41,7 @@
             "ClientName": "test2",
             "RequireConsent": false,
             "AllowRememberConsent": false,
-            "RedirectUris": [ "http://localhost:4365" ],
+            "RedirectUris": [ "http://localhost:4364" ],
             "PostLogoutRedirectUris": [ "http://localhost:5969/" ],
             "AllowedScopes": [ "openid", "connectionString" ]
         },
@@ -51,6 +52,15 @@
             "AllowRememberConsent": false,
             "RedirectUris": [ "http://localhost:9930" ],
             "PostLogoutRedirectUris": [ "http://localhost:5969/" ],
+            "AllowedScopes": [ "openid", "connectionString" ]
+        },
+        {
+            "ClientId": "test4",
+            "ClientName": "test4",
+            "RequireConsent": false,
+            "AllowRememberConsent": false,
+            "RedirectUris": [ "http://localhost:5271" ],
+            "PostLogoutRedirectUris": [ "http://localhost:5271/" ],
             "AllowedScopes": [ "openid", "connectionString" ]
         }
     ]
