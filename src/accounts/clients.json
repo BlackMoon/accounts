@@ -1,6 +1,15 @@
 ﻿{
     "Clients": [
         {
+            "ClientId": "apg.webforms",
+            "ClientName": "APG-Control",
+            "RequireConsent": false,
+            "AllowRememberConsent": false,
+            "RedirectUris": [ "http://apg", "http://apg.aquilon.ru" ],
+            "PostLogoutRedirectUris": [ "http://apg.aquilon.ru" ],
+            "AllowedScopes": [ "openid", "connectionString" ]
+        },
+        {
             "ClientId": "eco.webforms",
             "ClientName": "ECO-Control",
             "RequireConsent": false,
@@ -19,6 +28,15 @@
             "AllowedScopes": [ "openid", "connectionString" ]
         },
         {
+            "ClientId": "mrf.webforms",
+            "ClientName": "MRF-Control",
+            "RequireConsent": false,
+            "AllowRememberConsent": false,
+            "RedirectUris": [ "http://mrf", "http://mrf.aquilon.ru" ],
+            "PostLogoutRedirectUris": [ "http://mrf.aquilon.ru" ],
+            "AllowedScopes": [ "openid", "connectionString" ]
+        },
+        {
             "ClientId": "tnnd.webforms",
             "ClientName": "Татнефть-нефтедобыча",
             "RequireConsent": false,
@@ -32,8 +50,8 @@
             "ClientName": "test",
             "RequireConsent": false,
             "AllowRememberConsent": false,
-            "RedirectUris": [ "http://localhost:16011" ],
-            "PostLogoutRedirectUris": [ "http://localhost:5969/" ],
+            "RedirectUris": [ "http://localhost:10554" ],
+            "PostLogoutRedirectUris": [ "http://localhost:10554/" ],
             "AllowedScopes": [ "openid", "connectionString" ]
         },
         {
@@ -56,11 +74,38 @@
         },
         {
             "ClientId": "test4",
-            "ClientName": "test4",
+            "ClientName": "Oil.Tatneft",
             "RequireConsent": false,
             "AllowRememberConsent": false,
             "RedirectUris": [ "http://localhost:5271" ],
             "PostLogoutRedirectUris": [ "http://localhost:5271/" ],
+            "AllowedScopes": [ "openid", "connectionString" ]
+        },
+        {
+            "ClientId": "test5",
+            "ClientName": "Eco.Tatneft",
+            "RequireConsent": false,
+            "AllowRememberConsent": false,
+            "RedirectUris": [ "http://localhost:15482" ],
+            "PostLogoutRedirectUris": [ "http://localhost:15482/" ],
+            "AllowedScopes": [ "openid", "connectionString" ]
+        },
+        {
+            "ClientId": "test6",
+            "ClientName": "StatReports.Tatneft",
+            "RequireConsent": false,
+            "AllowRememberConsent": false,
+            "RedirectUris": [ "http://localhost:2642" ],
+            "PostLogoutRedirectUris": [ "http://localhost:2642/" ],
+            "AllowedScopes": [ "openid", "connectionString" ]
+        },
+        {
+            "ClientId": "test7",
+            "ClientName": "Mrf.Tatneft",
+            "RequireConsent": false,
+            "AllowRememberConsent": false,
+            "RedirectUris": [ "http://localhost:13767" ],
+            "PostLogoutRedirectUris": [ "http://localhost:13767/" ],
             "AllowedScopes": [ "openid", "connectionString" ]
         }
     ]
