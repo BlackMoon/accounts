@@ -20,17 +20,17 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Kit.Dal.DbManager;
-using Kit.Kernel.Configuration;
-using Kit.Kernel.CQRS.Command;
-using Kit.Kernel.CQRS.Job;
-using Kit.Kernel.CQRS.Query;
-using Kit.Kernel.Identity;
-using Kit.Kernel.Interception;
-using Kit.Kernel.Interception.Attribute;
-using Kit.Kernel.Web.Binders;
-using Kit.Kernel.Web.DebugModeMiddleware;
-using Kit.Kernel.Web.ForceHttpsMiddleware;
-using Kit.Kernel.Web.Mvc.Filter;
+using Kit.Core.Configuration;
+using Kit.Core.CQRS.Command;
+using Kit.Core.CQRS.Job;
+using Kit.Core.CQRS.Query;
+using Kit.Core.Identity;
+using Kit.Core.Interception;
+using Kit.Core.Interception.Attribute;
+using Kit.Core.Web.Binders;
+using Kit.Core.Web.DebugModeMiddleware;
+using Kit.Core.Web.ForceHttpsMiddleware;
+using Kit.Core.Web.Mvc.Filter;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Newtonsoft.Json;
@@ -67,9 +67,9 @@ namespace accounts
 
         private IContainer ConfigureDependencies(IServiceCollection services)
         {
-            IEnumerable<string> implAssembliesNames = new[] { "Kit.Dal", "Kit.Kernel" };
+            IEnumerable<string> implAssembliesNames = new[] { "Kit.Core", "Kit.Dal" };
 
-            // Register Kit.Kernel assembly
+            // Register assemblies
             IEnumerable<AssemblyName> assemblyNames = Assembly.GetExecutingAssembly()
                 .GetReferencedAssemblies()
                 .Where(a => implAssembliesNames.Contains(a.Name))
@@ -205,8 +205,8 @@ namespace accounts
             IContainer container = ConfigureDependencies(services);
 
             // Startup Jobs
-            IJobDispatcher dispatcher = container.Resolve<IJobDispatcher>();
-            dispatcher.Dispatch<IStartupJob>();
+            IJobDispatcher dispatcher = container.Resolve<IJobDispatcher>(IfUnresolved.ReturnDefault);
+            dispatcher?.Dispatch<IStartupJob>();
 
             return container.Resolve<IServiceProvider>();            
         }

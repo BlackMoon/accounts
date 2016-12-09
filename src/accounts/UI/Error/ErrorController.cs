@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using IdentityServer4.Models;
 using IdentityServer4.Services;
-using Kit.Kernel.Configuration;
+using Kit.Core.Configuration;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
