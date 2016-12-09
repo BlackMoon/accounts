@@ -17,11 +17,11 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "accounts", "src\accounts\ac
 		{EFC3FD89-351A-4E6D-891A-8F410E325F2E} = {EFC3FD89-351A-4E6D-891A-8F410E325F2E}
 	EndProjectSection
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Kit.Dal", "kit\Software\netcore\src\Kit.Dal\Kit.Dal.xproj", "{EFC3FD89-351A-4E6D-891A-8F410E325F2E}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Kit.Dal", "..\kit\src\Kit.Dal\Kit.Dal.xproj", "{EFC3FD89-351A-4E6D-891A-8F410E325F2E}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Kit.Kernel", "kit\Software\netcore\src\Kit.Kernel\Kit.Kernel.xproj", "{94B41B2E-6E24-49C7-B80D-92CBAE1713DA}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Kit.Kernel", "..\kit\src\Kit.Kernel\Kit.Kernel.xproj", "{94B41B2E-6E24-49C7-B80D-92CBAE1713DA}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Kit.Kernel.Web", "kit\Software\netcore\src\Kit.Kernel.Web\Kit.Kernel.Web.xproj", "{8FB3C314-BD49-4016-96BB-4D42AC576EC5}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Kit.Kernel.Web", "..\kit\src\Kit.Kernel.Web\Kit.Kernel.Web.xproj", "{8FB3C314-BD49-4016-96BB-4D42AC576EC5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
