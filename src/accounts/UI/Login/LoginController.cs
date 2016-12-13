@@ -14,17 +14,19 @@ using Kit.Core.CQRS.Query;
 using Kit.Core.Identity;
 using Microsoft.Extensions.Options;
 using Kit.Core.Web.Mvc;
+using Kit.Core.Web.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace accounts.UI.Login
 {
+    [SecurityHeaders(Directive = "script-src 'self' 'sha256-/dselSWiKLD2SUSXKnFwLDhDtLSAEW4yzXCfaDrhkZE='")]
     public class LoginController : Controller
     {
         private readonly ICommandDispatcher _commandDispatcher;
         private readonly IQueryDispatcher _queryDispatcher;
-        private readonly IUserInteractionService _interaction;
+        private readonly IIdentityServerInteractionService _interaction;
 
         private readonly ConnectionStringSettings _connectionStringSettings;
 
@@ -32,7 +34,7 @@ namespace accounts.UI.Login
             ICommandDispatcher commandDispatcher,
             IQueryDispatcher queryDispatcher,
             IOptions<ConnectionStringSettings> connectionStringOptions,
-            IUserInteractionService interaction)
+            IIdentityServerInteractionService interaction)
         {
             _commandDispatcher = commandDispatcher;
             _queryDispatcher = queryDispatcher;
@@ -61,18 +63,15 @@ namespace accounts.UI.Login
                     }
                     .Concat(result.Select(t => new SelectListItem() {Text = t, Value = t}));
             }
+            
+            
+            var context = await _interaction.GetAuthorizationContextAsync(returnUrl);
 
-            LoginCommand command = new LoginCommand();
-
-            if (returnUrl != null)
+            LoginCommand command = new LoginCommand
             {
-                var context = await _interaction.GetLoginContextAsync();
-                if (context != null)
-                {
-                    command.UserName = context.LoginHint;
-                    command.ReturnUrl = returnUrl;
-                }
-            }
+                UserName = context?.LoginHint,
+                ReturnUrl = _interaction.IsValidReturnUrl(returnUrl) ? returnUrl : "/"
+            };
 
             return View(command);
         }
@@ -116,7 +115,7 @@ namespace accounts.UI.Login
 
                     ClaimsIdentity ci = new ClaimsIdentity(claims, "password", JwtClaimTypes.Name, JwtClaimTypes.Role);
                     
-                    await HttpContext.Authentication.SignInAsync(Constants.DefaultCookieAuthenticationScheme, new ClaimsPrincipal(ci));
+                    await HttpContext.Authentication.SignInAsync(IdentityServerConstants.DefaultCookieAuthenticationScheme, new ClaimsPrincipal(ci));
                 }
             }
             else

@@ -8,7 +8,7 @@ namespace accounts.UI.Consent
 {
     public class ConsentViewModel : ConsentInputModel
     {
-        public ConsentViewModel(ConsentInputModel model, string returnUrl, AuthorizationRequest request, Client client, IEnumerable<Scope> scopes, ILocalizationService localization)
+        public ConsentViewModel(ConsentInputModel model, string returnUrl, AuthorizationRequest request, Client client, IEnumerable<Scope> scopes/*, ILocalizationService localization*/)
         {
             RememberConsent = model?.RememberConsent ?? true;
             ScopesConsented = model?.ScopesConsented ?? Enumerable.Empty<string>();
@@ -20,8 +20,8 @@ namespace accounts.UI.Consent
             ClientLogoUrl = client.LogoUri;
             AllowRememberConsent = client.AllowRememberConsent;
 
-            IdentityScopes = scopes.Where(x => x.Type == ScopeType.Identity).Select(x => new ScopeViewModel(localization, x, ScopesConsented.Contains(x.Name) || model == null)).ToArray();
-            ResourceScopes = scopes.Where(x => x.Type == ScopeType.Resource).Select(x => new ScopeViewModel(localization, x, ScopesConsented.Contains(x.Name) || model == null)).ToArray();
+            //IdentityScopes = scopes.Where(x => x.Type == ScopeType.Identity).Select(x => new ScopeViewModel(localization, x, ScopesConsented.Contains(x.Name) || model == null)).ToArray();
+            //ResourceScopes = scopes.Where(x => x.Type == ScopeType.Resource).Select(x => new ScopeViewModel(localization, x, ScopesConsented.Contains(x.Name) || model == null)).ToArray();
         }
 
         public string ClientName { get; set; }
@@ -35,11 +35,11 @@ namespace accounts.UI.Consent
 
     public class ScopeViewModel
     {
-        public ScopeViewModel(ILocalizationService localization, Scope scope, bool check)
+        public ScopeViewModel(/*ILocalizationService localization, */Scope scope, bool check)
         {
             Name = scope.Name;
-            DisplayName = localization.GetScopeDisplayName(scope.Name) ?? scope.DisplayName;
-            Description = localization.GetScopeDescription(scope.Name) ?? scope.Description;
+            /*DisplayName = localization.GetScopeDisplayName(scope.Name) ?? scope.DisplayName;
+            Description = localization.GetScopeDescription(scope.Name) ?? scope.Description;*/
             Emphasize = scope.Emphasize;
             Required = scope.Required;
             Checked = check || scope.Required;

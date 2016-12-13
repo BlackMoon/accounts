@@ -12,23 +12,24 @@ namespace Host.UI.Consent
     public class ConsentController : Controller
     {
         private readonly ILogger<ConsentController> _logger;
-        private readonly IClientStore _clientStore;
-        private readonly IUserInteractionService _interaction;
-        private readonly IScopeStore _scopeStore;
-        private readonly ILocalizationService _localization;
+        //private readonly IClientStore _clientStore;
+        //private readonly IUserInteractionService _interaction;
+        //private readonly IScopeStore _scopeStore;
+        //private readonly ILocalizationService _localization;
 
         public ConsentController(
-            ILogger<ConsentController> logger,
-            IUserInteractionService interaction,
-            IClientStore clientStore,
-            IScopeStore scopeStore,
-            ILocalizationService localization)
+            ILogger<ConsentController> logger
+          //  IUserInteractionService interaction,
+//            IClientStore clientStore,
+  //          IScopeStore scopeStore,
+    //        ILocalizationService localization
+    )
         {
             _logger = logger;
-            _interaction = interaction;
-            _clientStore = clientStore;
-            _scopeStore = scopeStore;
-            _localization = localization;
+    //        _interaction = interaction;
+      //      _clientStore = clientStore;
+        //    _scopeStore = scopeStore;
+          //  _localization = localization;
         }
 
         [HttpGet("ui/consent", Name = "Consent")]
@@ -47,7 +48,7 @@ namespace Host.UI.Consent
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Index(string button, ConsentInputModel model)
         {
-            var request = await _interaction.GetConsentContextAsync(model.ReturnUrl);
+            /*var request = await _interaction.GetConsentContextAsync(model.ReturnUrl);
             ConsentResponse response = null;
 
             if (button == "no")
@@ -84,7 +85,7 @@ namespace Host.UI.Consent
             if (vm != null)
             {
                 return View("Index", vm);
-            }
+            }*/
 
             return View("Error");
         }
@@ -103,7 +104,7 @@ namespace Host.UI.Consent
         {
             if (returnUrl != null)
             {
-                var request = await _interaction.GetConsentContextAsync(returnUrl);
+                /*var request = await _interaction.GetConsentContextAsync(returnUrl);
                 if (request != null)
                 {
                     var client = await _clientStore.FindClientByIdAsync(request.ClientId);
@@ -127,7 +128,7 @@ namespace Host.UI.Consent
                 else
                 {
                     _logger.LogError("No consent request matching id: {0}", returnUrl);
-                }
+                }*/
             }
             else
             {

@@ -11,6 +11,8 @@ using DryIoc.AspNetCore.DependencyInjection;
 using IdentityServer4.Models;
 using IdentityServer4.Services;
 using IdentityServer4.Services.InMemory;
+using IdentityServer4.Stores;
+using IdentityServer4.Stores.InMemory;
 using IdentityServer4.Validation;
 using Kit.Dal.Configurations;
 using Microsoft.AspNetCore.Builder;
@@ -30,13 +32,14 @@ using Kit.Core.Interception.Attribute;
 using Kit.Core.Web.Binders;
 using Kit.Core.Web.DebugModeMiddleware;
 using Kit.Core.Web.ForceHttpsMiddleware;
-using Kit.Core.Web.Mvc.Filter;
+using Kit.Core.Web.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
+using Resources = accounts.Configuration.Resources;
 
 namespace accounts
 {
@@ -136,47 +139,37 @@ namespace accounts
             IIdentityServerBuilder builder = services
                 .AddIdentityServer(options =>
                 {
-                    int seconds;
-                    if (int.TryParse(Configuration["ExpireTime"], out seconds))
-                    {
-                        options.AuthenticationOptions.CookieAuthenticationOptions = new CookieAuthenticationOptions()
-                        {
-                            ExpireTimeSpan = TimeSpan.FromSeconds(seconds)
-                        };
-                    }
-                    bool enableSignOutPrompt;
-                    if (bool.TryParse(Configuration["EnableSignOutPrompt"], out enableSignOutPrompt))
-                        options.AuthenticationOptions.EnableSignOutPrompt = enableSignOutPrompt;
-
                     options.UserInteractionOptions.LoginUrl = "/ui/login";
                     options.UserInteractionOptions.LogoutUrl = "/ui/logout";
                     options.UserInteractionOptions.ConsentUrl = "/ui/consent";
                     options.UserInteractionOptions.ErrorUrl = "/ui/error";
                 });
 
-            #region X590Certificate2
+            #region certificate
             string fileName = Path.Combine(_contentRootPath, "idsrv4test.pfx");
             if (File.Exists(fileName))
             {
                 X509Certificate2 cert = new X509Certificate2(fileName, "idsrv3test");
-                builder.SetSigningCredential(cert);
+                builder.AddSigningCredential(cert);
             }
+            else
+                builder.AddTemporarySigningCredential();
+
             #endregion
 
-            #region clients
+            #region clients (from clients.json)
             builder.Services.AddSingleton<IEnumerable<Client>>(provider => provider.GetService<IOptions<List<Client>>>().Value); 
             builder.Services.AddTransient<IClientStore, InMemoryClientStore>();
             builder.Services.AddTransient<ICorsPolicyService, InMemoryCorsPolicyService>();
             #endregion
-            
-            #region scopes
-            builder.AddInMemoryScopes(Scopes.Get());
+
+            #region resources
+
+            builder.AddInMemoryIdentityResources(Resources.GetIdentityResources());            
             #endregion
 
             #region users --> empty list
-            builder.Services.AddSingleton(new List<InMemoryUser>());
-            builder.Services.AddTransient<IProfileService, Services.ProfileService>();
-            builder.Services.AddTransient<IResourceOwnerPasswordValidator, InMemoryResourceOwnerPasswordValidator>();
+            builder.AddInMemoryUsers(new List<InMemoryUser>());
             #endregion
 
             // for the UI
@@ -190,8 +183,8 @@ namespace accounts
                 {
                     option.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
                     option.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-                })
-                .AddRazorOptions(razor => razor.ViewLocationExpanders.Add(new CustomViewLocationExpander()));
+                });
+                //.AddRazorOptions(razor => razor.ViewLocationExpanders.Add(new CustomViewLocationExpander()));
 
             // Global exceptions' filter
             services.Configure<MvcOptions>(options => options.Filters.Add(new GlobalExceptionFilter()));

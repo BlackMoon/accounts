@@ -52,8 +52,8 @@ namespace accounts.UI.Change
 
                 if (result.Status != LoginStatus.Failure)
                 {
-                    result.ReturnUrl = command.ReturnUrl ?? "/";
-                    await HttpContext.Authentication.SignOutAsync(Constants.DefaultCookieAuthenticationScheme);
+                    result.ReturnUrl = command.ReturnUrl ?? "~/";
+                    await HttpContext.Authentication.SignOutAsync(IdentityServerConstants.DefaultCookieAuthenticationScheme);
 
                     ClaimsIdentity ci = HttpContext.User.Identity as ClaimsIdentity;
                     if (ci != null)
@@ -63,7 +63,7 @@ namespace accounts.UI.Change
                         ci.TryRemoveClaim(claimPsw);
                         ci.AddClaim(new Claim(ConnectionStringClaimTypes.Password, command.NewPassword));
                         
-                        await HttpContext.Authentication.SignInAsync(Constants.DefaultCookieAuthenticationScheme, new ClaimsPrincipal(ci));
+                        await HttpContext.Authentication.SignInAsync(IdentityServerConstants.DefaultCookieAuthenticationScheme, new ClaimsPrincipal(ci));
                     }
                 }
             }

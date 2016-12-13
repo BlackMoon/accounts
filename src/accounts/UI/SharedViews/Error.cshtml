@@ -6,12 +6,12 @@
 @{
     Layout = "_MenuLayout";
 
-    var error_code = Model?.Error?.ErrorCode;
-    var error_description = Model?.Error?.ErrorDescription ?? "Произошла непредвиденная ошибка.";
+    var error_code = Model?.Error?.Error;
+    var error_description = ViewBag.ErrorDescription ?? "Произошла непредвиденная ошибка.";
     var request_id = Model?.Error?.RequestId;
 }
 
 <h1>Ошибка</h1>
-<p hide-if-null="error_code" class="note-error">@Model.Error.ErrorCode</p>
+<p hide-if-null="error_code" class="note-error">@error_code</p>
 <p class="note-error">@error_description</p>
 <p hide-if-null="request_id" class="request-id">Request Id: @request_id</p>

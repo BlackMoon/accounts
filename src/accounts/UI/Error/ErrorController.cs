@@ -10,9 +10,9 @@ namespace accounts.UI.Error
     public class ErrorController : Controller
     {
         private readonly AppSettings _appSettings;
-        private readonly IUserInteractionService _interaction;
+        private readonly IIdentityServerInteractionService _interaction;
 
-        public ErrorController(IUserInteractionService interaction, IOptions<AppSettings> appSettings)
+        public ErrorController(IIdentityServerInteractionService interaction, IOptions<AppSettings> appSettings)
         {
             _appSettings = appSettings.Value;
             _interaction = interaction;
@@ -26,11 +26,12 @@ namespace accounts.UI.Error
 
             if (!string.IsNullOrEmpty(errorCode))
             {
+                ErrorMessage message = new ErrorMessage() { Error = errorCode };
+                vm.Error = message;
+
                 string description = null;
                 _appSettings.ErrorMessages?.TryGetValue(errorCode, out description);
-
-                var message = new ErrorMessage() { ErrorCode = errorCode, ErrorDescription = description };
-                vm.Error = message;
+                ViewBag.ErrorDescription = description;
             };
 
             return View("Error", vm);
@@ -43,7 +44,7 @@ namespace accounts.UI.Error
 
             if (errorId != null)
             {
-                var message = await _interaction.GetErrorContextAsync(errorId);
+                ErrorMessage message = await _interaction.GetErrorContextAsync(errorId);
                 if (message != null)
                     vm.Error = message;
             }
