@@ -1,0 +1,27 @@
+﻿@using Kit.Core.Web.HtmlHelper
+@model accounts.Models.LogoutViewModel
+@{
+    Layout = "_MenuLayout";
+}
+
+<h1>
+    Выход
+</h1>
+<form asp-route="Logout">
+    <input type="hidden" name="logoutId" asp-for="LogoutId" />
+</form>
+
+@section Scripts{
+    @Html.ValueToJs("referer", @Model.Referer, true)
+    <environment names="Development">
+        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="~/lib/bootstrap3-dialog/dist/js/bootstrap-dialog.js"></script>
+        <script src="~/js/bootstrap3-msgbox.js" asp-append-version="true"></script>
+        <script src="~/js/logout.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="~/lib/bootstrap3-dialog/dist/js/bootstrap-dialog.min.js"></script>
+        <script src="~/js/logout.min.js" asp-append-version="true"></script>
+    </environment>
+}

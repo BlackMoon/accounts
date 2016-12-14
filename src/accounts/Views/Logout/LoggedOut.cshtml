@@ -1,0 +1,11 @@
+﻿@model accounts.Models.LoggedOutViewModel
+@{
+    Layout = "_MenuLayout";
+}
+
+<h1>Выход</h1>
+<p>Произведен выход из системы</p>
+<p hide-if-null="Model.PostLogoutRedirectUri">
+    Для возврата в <strong>@Model.ClientName</strong> пройдите по <a href="@Model.PostLogoutRedirectUri">ссылке</a>.
+</p>
+<iframe style="display:none" width="0" height="0" hide-if-null="Model.SignOutIframeUrl" class="signout" src="@Model.SignOutIframeUrl"></iframe>
