@@ -4,8 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
-using accounts.Configuration;
-using accounts.UI;
 using DryIoc;
 using DryIoc.AspNetCore.DependencyInjection;
 using IdentityServer4.Models;
@@ -13,7 +11,6 @@ using IdentityServer4.Services;
 using IdentityServer4.Services.InMemory;
 using IdentityServer4.Stores;
 using IdentityServer4.Stores.InMemory;
-using IdentityServer4.Validation;
 using Kit.Dal.Configurations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -39,7 +36,6 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
-using Resources = accounts.Configuration.Resources;
 
 namespace accounts
 {
@@ -139,10 +135,10 @@ namespace accounts
             IIdentityServerBuilder builder = services
                 .AddIdentityServer(options =>
                 {
-                    options.UserInteractionOptions.LoginUrl = "/ui/login";
-                    options.UserInteractionOptions.LogoutUrl = "/ui/logout";
-                    options.UserInteractionOptions.ConsentUrl = "/ui/consent";
-                    options.UserInteractionOptions.ErrorUrl = "/ui/error";
+                    options.UserInteractionOptions.LoginUrl = "/login";
+                    options.UserInteractionOptions.LogoutUrl = "/logout";
+                    options.UserInteractionOptions.ConsentUrl = "/consent";
+                    options.UserInteractionOptions.ErrorUrl = "/error";
                 });
 
             #region certificate
@@ -165,7 +161,7 @@ namespace accounts
 
             #region resources
 
-            builder.AddInMemoryIdentityResources(Resources.GetIdentityResources());            
+            builder.AddInMemoryIdentityResources(accounts.Configuration.Resources.GetIdentityResources());            
             #endregion
 
             #region users --> empty list
@@ -184,16 +180,12 @@ namespace accounts
                     option.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
                     option.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
                 });
-                //.AddRazorOptions(razor => razor.ViewLocationExpanders.Add(new CustomViewLocationExpander()));
-
-            // Global exceptions' filter
-            services.Configure<MvcOptions>(options => options.Filters.Add(new GlobalExceptionFilter()));
-            services.Configure<RazorViewEngineOptions>(options => 
-                options.FileProviders.Add(new EmbeddedFileProvider(GetType().Assembly, "accounts"))
-            );
             
             services.AddRouting(options => options.LowercaseUrls = true);
-            
+            services.Configure<MvcOptions>(options => options.Filters.Add(new GlobalExceptionFilter()));            // Global exceptions' filter
+            services.Configure<RazorViewEngineOptions>(options => options.FileProviders.Add(new EmbeddedFileProvider(GetType().Assembly, "accounts")));
+            services.AddSingleton<IConfiguration>(_ => Configuration);
+
             // Add dependencies
             IContainer container = ConfigureDependencies(services);
 
@@ -223,7 +215,7 @@ namespace accounts
             }
             
             // exception handlers
-            app.UseStatusCodePagesWithReExecute("/ui/error/{0}");
+            app.UseStatusCodePagesWithReExecute("/error/{0}");
         
             if (env.IsDevelopment())
             {
@@ -231,7 +223,7 @@ namespace accounts
                 app.UseBrowserLink();
             }
             else
-                app.UseExceptionHandler("/ui/error");
+                app.UseExceptionHandler("/error");
 
             app.UseApplicationInsightsExceptionTelemetry();
             
