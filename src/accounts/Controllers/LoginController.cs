@@ -10,6 +10,7 @@ using Kit.Core.CQRS.Command;
 using Kit.Core.CQRS.Query;
 using Kit.Core.Identity;
 using Kit.Core.Web.Mvc;
+using Kit.Core.Web.Mvc.Filters;
 using Kit.Dal.Configurations;
 using Kit.Dal.CQRS.Command.Login;
 using Kit.Dal.CQRS.Query.TnsNames;
@@ -20,7 +21,7 @@ using Microsoft.Extensions.Options;
 
 namespace accounts.Controllers
 {
-    //[SecurityHeaders(Directive = "script-src 'self' 'sha256-/dselSWiKLD2SUSXKnFwLDhDtLSAEW4yzXCfaDrhkZE='")]
+    [SecurityHeaders(Directive = "script-src 'self' 'unsafe-eval' 'sha256-/dselSWiKLD2SUSXKnFwLDhDtLSAEW4yzXCfaDrhkZE='")]
     public class LoginController : Controller
     {
         private readonly ICommandDispatcher _commandDispatcher;

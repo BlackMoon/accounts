@@ -11,7 +11,7 @@
         "Microsoft.AspNetCore.Mvc.TagHelpers": "1.1.0",
         "Microsoft.AspNetCore.Razor.Tools": {
             "type": "build",
-            "version": "1.0.0-preview2-final"
+            "version": "1.1.0-preview4-final"
         },
         "Microsoft.AspNetCore.Server.IISIntegration": "1.1.0",
         "Microsoft.AspNetCore.Server.Kestrel": "1.1.0",
@@ -41,10 +41,7 @@
         "preserveCompilationContext": true
     },
 
-    "publishOptions": {
-        "configProperties": {
-            "System.GC.Server": true
-        },
+    "publishOptions": {        
         "include": [
             "wwwroot",
             "appsettings.json",
@@ -52,7 +49,11 @@
             "idsrv4test.pfx",
             "web.config"
         ]
-    },    
+    },
+
+    "runtimeOptions": {        
+        "configProperties": { "System.GC.Server": true }
+    },
 
     "runtimes": {
         "win7-x64": {},

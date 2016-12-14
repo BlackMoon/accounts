@@ -229,7 +229,15 @@ namespace accounts
             
             app.UseIdentityServer();
             app.UseStaticFiles();
-            app.UseMvcWithDefaultRoute();
+
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute("login", "login", new { controller = "Login", action = "Index" });
+                routes.MapRoute("logout", "logout", new { controller = "Logout", action = "Index" });
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Home}/{action=Index}/{id?}");
+            });
         }
 
         public static void Main(string[] args)
