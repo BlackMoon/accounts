@@ -8,7 +8,7 @@
     string autoComplete = appSettings.Value.AutoComplete ? "on" : "off";
 }
 
-<form asp-action="index" asp-controller="login" autocomplete="@autoComplete" class="sky-form" data-ajax="true" data-ajax-method="POST" data-ajax-begin="onBegin" data-ajax-complete="onComplete" data-ajax-loading="#imgLoader">
+<form asp-route="login1" autocomplete="@autoComplete" class="sky-form" data-ajax="true" data-ajax-method="POST" data-ajax-begin="onBegin" data-ajax-complete="onComplete" data-ajax-loading="#imgLoader">
     <input type="hidden" asp-for="ReturnUrl"/>
     <header>Войти в систему</header>
     <fieldset>

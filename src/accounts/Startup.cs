@@ -11,6 +11,7 @@ using IdentityServer4.Services;
 using IdentityServer4.Services.InMemory;
 using IdentityServer4.Stores;
 using IdentityServer4.Stores.InMemory;
+using IdentityServer4.Validation;
 using Kit.Dal.Configurations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -161,11 +162,13 @@ namespace accounts
 
             #region resources
 
-            builder.AddInMemoryIdentityResources(accounts.Configuration.Resources.GetIdentityResources());            
+            builder.AddInMemoryIdentityResources(accounts.Configuration.Resources.GetIdentityResources());
             #endregion
 
             #region users --> empty list
-            builder.AddInMemoryUsers(new List<InMemoryUser>());
+            builder.AddProfileService<Services.ProfileService>();
+            builder.Services.AddSingleton(new List<InMemoryUser>());
+            builder.Services.AddTransient<IResourceOwnerPasswordValidator, InMemoryUserResourceOwnerPasswordValidator>();
             #endregion
 
             // for the UI
@@ -229,7 +232,7 @@ namespace accounts
             
             app.UseIdentityServer();
             app.UseStaticFiles();
-
+            
             app.UseMvc(routes =>
             {
                 routes.MapRoute("login", "login", new { controller = "Login", action = "Index" });
@@ -242,6 +245,8 @@ namespace accounts
 
         public static void Main(string[] args)
         {
+            Console.Title = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
+
             IConfigurationRoot hostConfig = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("hosting.json", optional: true)

@@ -13,7 +13,6 @@ namespace accounts.Configuration
                 new IdentityResources.OpenId(),
                 new IdentityResource("connectionString", "Connection String", new[] {JwtClaimTypes.Name, "password", "datasource"})
             };
-
         }
     }
 }

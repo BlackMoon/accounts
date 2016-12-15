@@ -18,16 +18,10 @@ namespace accounts.Services
         }
 
         public Task GetProfileDataAsync(ProfileDataRequestContext context)
-        {
-            var claims = new List<Claim>(context.Subject.Claims);
-            /*if (!context.AllClaimsRequested)
-            {
-                claims = claims
+        {   
+            context.IssuedClaims = context.Subject.Claims
                     .Where(x => context.RequestedClaimTypes.Contains(x.Type))
                     .ToList();
-            }*/
-
-            context.IssuedClaims = claims;
 
             return Task.FromResult(0);
         }

@@ -79,7 +79,7 @@ onComplete = function (xhr, status) {
             case LoginStatus.Expired:
 
                 BootstrapDialog.warning(data.message);
-                getView("/ui/change?returnUrl=" + encodeURIComponent(returnUrl));
+                getView("/change?returnUrl=" + encodeURIComponent(returnUrl));
 
                 break;
 
@@ -89,7 +89,7 @@ onComplete = function (xhr, status) {
                     btnOKLabel: "Да",
                     btnCancelLabel: "Нет",
                     callback: function (result) {
-                        (result === true) ? getView("/ui/change?returnUrl=" + encodeURIComponent(returnUrl)) : window.location = returnUrl;
+                        (result === true) ? getView("/change?returnUrl=" + encodeURIComponent(returnUrl)) : window.location = returnUrl;
                     },
                     message: data.message,
                     title: "Вопрос",

@@ -85,7 +85,8 @@
             "ClientId": "test5",
             "ClientName": "Eco.Tatneft",
             "RequireConsent": false,
-            "AllowRememberConsent": false,
+            "AllowAccessTokensViaBrowser": true,
+            "AllowRememberConsent": false,            
             "RedirectUris": [ "http://localhost:15482" ],
             "PostLogoutRedirectUris": [ "http://localhost:15482/" ],
             "AllowedScopes": [ "openid", "connectionString" ]

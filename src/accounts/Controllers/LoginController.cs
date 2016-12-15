@@ -21,7 +21,7 @@ using Microsoft.Extensions.Options;
 
 namespace accounts.Controllers
 {
-    [SecurityHeaders(Directive = "script-src 'self' 'unsafe-eval' 'sha256-/dselSWiKLD2SUSXKnFwLDhDtLSAEW4yzXCfaDrhkZE='")]
+    //[SecurityHeaders(Directive = "script-src 'self' 'unsafe-eval' 'sha256-/dselSWiKLD2SUSXKnFwLDhDtLSAEW4yzXCfaDrhkZE='")]
     public class LoginController : Controller
     {
         private readonly ICommandDispatcher _commandDispatcher;
@@ -110,7 +110,7 @@ namespace accounts.Controllers
                             new Claim(ConnectionStringClaimTypes.DataSource, command.DataSource),
                             new Claim(JwtClaimTypes.Subject, command.DataSource + command.UserName + command.Password),
                             new Claim(JwtClaimTypes.IdentityProvider, "idsvr"),
-                            new Claim(JwtClaimTypes.AuthenticationTime, DateTime.UtcNow.ToEpochTime().ToString()),
+                            new Claim(JwtClaimTypes.AuthenticationTime, DateTime.UtcNow.ToEpochTime().ToString())
                         };
 
                     ClaimsIdentity ci = new ClaimsIdentity(claims, "password", JwtClaimTypes.Name, JwtClaimTypes.Role);

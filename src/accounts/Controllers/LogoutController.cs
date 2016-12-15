@@ -43,7 +43,8 @@ namespace accounts.Controllers
             };
             return View("LoggedOut", vm);
         }
-       
+
+        [HttpGet]
         [ResponseCache(CacheProfileName = "1hour")]
         public async Task<IActionResult> Index(string logoutId)
         {
@@ -68,9 +69,9 @@ namespace accounts.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Submit(string logoutId)
+        public async Task<IActionResult> Index(LogoutViewModel model)
         {
-            return await SignOut(logoutId);
+            return await SignOut(model.LogoutId);
         }
     }
 }
