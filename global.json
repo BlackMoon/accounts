@@ -1,5 +1,5 @@
 {
-    "projects": [ "src", "test", "../kit/src", "../../IdentityServer4-dev/src" ],
+    "projects": [ "src", "test", "../kit/src" ],
     "sdk": {
         "version": "1.0.0-preview2-1-003177"
     }
