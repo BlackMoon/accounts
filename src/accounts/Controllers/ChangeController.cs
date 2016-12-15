@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using IdentityServer4;
@@ -9,17 +10,21 @@ using Kit.Core.Web.Mvc;
 using Kit.Dal.CQRS.Command.ChangePassword;
 using Kit.Dal.CQRS.Command.Login;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace accounts.Controllers
 {
     [Authorize]
     public class ChangeController : Controller
     {
+        private readonly AppSettings _appSettings;
         private readonly ICommandDispatcher _commandDispatcher;
 
-        public ChangeController(ICommandDispatcher commandDispatcher)
+        public ChangeController(ICommandDispatcher commandDispatcher, IOptions<AppSettings> appSettings)
         {
+            _appSettings = appSettings.Value;
             _commandDispatcher = commandDispatcher;
         }
         
@@ -61,8 +66,15 @@ namespace accounts.Controllers
 
                         ci.TryRemoveClaim(claimPsw);
                         ci.AddClaim(new Claim(ConnectionStringClaimTypes.Password, command.NewPassword));
-                        
-                        await HttpContext.Authentication.SignInAsync(IdentityServerConstants.DefaultCookieAuthenticationScheme, new ClaimsPrincipal(ci));
+
+                        // persistent cookie
+                        AuthenticationProperties props = new AuthenticationProperties
+                        {
+                            IsPersistent = true,
+                            ExpiresUtc = DateTimeOffset.UtcNow.AddSeconds(_appSettings.Timeout)
+                        };
+
+                        await HttpContext.Authentication.SignInAsync(IdentityServerConstants.DefaultCookieAuthenticationScheme, new ClaimsPrincipal(ci), props);
                     }
                 }
             }

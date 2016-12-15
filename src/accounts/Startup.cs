@@ -161,7 +161,6 @@ namespace accounts
             #endregion
 
             #region resources
-
             builder.AddInMemoryIdentityResources(accounts.Configuration.Resources.GetIdentityResources());
             #endregion
 
@@ -187,7 +186,6 @@ namespace accounts
             services.AddRouting(options => options.LowercaseUrls = true);
             services.Configure<MvcOptions>(options => options.Filters.Add(new GlobalExceptionFilter()));            // Global exceptions' filter
             services.Configure<RazorViewEngineOptions>(options => options.FileProviders.Add(new EmbeddedFileProvider(GetType().Assembly, "accounts")));
-            services.AddSingleton<IConfiguration>(_ => Configuration);
 
             // Add dependencies
             IContainer container = ConfigureDependencies(services);

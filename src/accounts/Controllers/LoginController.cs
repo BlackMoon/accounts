@@ -14,6 +14,7 @@ using Kit.Core.Web.Mvc.Filters;
 using Kit.Dal.Configurations;
 using Kit.Dal.CQRS.Command.Login;
 using Kit.Dal.CQRS.Query.TnsNames;
+using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -24,6 +25,7 @@ namespace accounts.Controllers
     [SecurityHeaders(Directive = "script-src 'self' 'unsafe-eval' 'sha256-/dselSWiKLD2SUSXKnFwLDhDtLSAEW4yzXCfaDrhkZE='")]
     public class LoginController : Controller
     {
+        private readonly AppSettings _appSettings;
         private readonly ICommandDispatcher _commandDispatcher;
         private readonly IQueryDispatcher _queryDispatcher;
         private readonly IIdentityServerInteractionService _interaction;
@@ -34,8 +36,10 @@ namespace accounts.Controllers
             ICommandDispatcher commandDispatcher,
             IQueryDispatcher queryDispatcher,
             IOptions<ConnectionStringSettings> connectionStringOptions,
-            IIdentityServerInteractionService interaction)
+            IIdentityServerInteractionService interaction,
+            IOptions<AppSettings> appSettings)
         {
+            _appSettings = appSettings.Value;
             _commandDispatcher = commandDispatcher;
             _queryDispatcher = queryDispatcher;
             _interaction = interaction;
@@ -100,7 +104,7 @@ namespace accounts.Controllers
             if (ModelState.IsValid)
             {
                 result = _commandDispatcher.Dispatch<LoginCommand, LoginCommandResult>(command);
-                
+                result.Status = LoginStatus.Expiring;
                 // Authenticate
                 if (result.Status != LoginStatus.Failure)
                 {
@@ -114,8 +118,15 @@ namespace accounts.Controllers
                         };
 
                     ClaimsIdentity ci = new ClaimsIdentity(claims, "password", JwtClaimTypes.Name, JwtClaimTypes.Role);
-                    
-                    await HttpContext.Authentication.SignInAsync(IdentityServerConstants.DefaultCookieAuthenticationScheme, new ClaimsPrincipal(ci));
+
+                    // persistent cookie
+                    AuthenticationProperties props = new AuthenticationProperties
+                    {
+                        IsPersistent = true,
+                        ExpiresUtc = DateTimeOffset.UtcNow.AddSeconds(_appSettings.Timeout)
+                    };
+
+                    await HttpContext.Authentication.SignInAsync(IdentityServerConstants.DefaultCookieAuthenticationScheme, new ClaimsPrincipal(ci), props);
                 }
             }
             else

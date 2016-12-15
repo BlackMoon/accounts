@@ -6,20 +6,20 @@ using IdentityServer4.Services;
 using IdentityServer4.Stores;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 
 namespace accounts.Controllers
 {
     [Authorize]
     public class LogoutController : Controller
     {
-        private readonly IConfiguration _config;
+        private readonly AppSettings _appSettings;
         private readonly IClientStore _clients;
         private readonly IIdentityServerInteractionService _interaction;
         
-        public LogoutController(IClientStore clients, IIdentityServerInteractionService interaction, IConfiguration config)
+        public LogoutController(IClientStore clients, IIdentityServerInteractionService interaction, IOptions<AppSettings> appSettings)
         {
-            _config = config;
+            _appSettings = appSettings.Value;
             _clients = clients;
             _interaction = interaction;
         }
@@ -50,10 +50,7 @@ namespace accounts.Controllers
         {
             IActionResult result;
 
-            bool enableSignOutPrompt;
-            bool.TryParse(_config["EnableSignOutPrompt"], out enableSignOutPrompt);
-
-            if (enableSignOutPrompt)
+            if (_appSettings.EnableSignOutPrompt)
             {
                 result = View(new LogoutViewModel()
                 {
