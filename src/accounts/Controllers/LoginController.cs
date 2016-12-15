@@ -104,7 +104,7 @@ namespace accounts.Controllers
             if (ModelState.IsValid)
             {
                 result = _commandDispatcher.Dispatch<LoginCommand, LoginCommandResult>(command);
-                result.Status = LoginStatus.Expiring;
+               
                 // Authenticate
                 if (result.Status != LoginStatus.Failure)
                 {
