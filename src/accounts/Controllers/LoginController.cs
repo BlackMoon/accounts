@@ -21,7 +21,7 @@ using Microsoft.Extensions.Options;
 
 namespace accounts.Controllers
 {
-    //[SecurityHeaders(Directive = "script-src 'self' 'unsafe-eval' 'sha256-/dselSWiKLD2SUSXKnFwLDhDtLSAEW4yzXCfaDrhkZE='")]
+    [SecurityHeaders(Directive = "script-src 'self' 'unsafe-eval' 'sha256-/dselSWiKLD2SUSXKnFwLDhDtLSAEW4yzXCfaDrhkZE='")]
     public class LoginController : Controller
     {
         private readonly ICommandDispatcher _commandDispatcher;

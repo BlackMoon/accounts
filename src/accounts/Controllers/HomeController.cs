@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace accounts.Controllers
 {
-    //[SecurityHeaders]
+    [SecurityHeaders]
     public class HomeController : Controller
     {
         public IActionResult Index()
