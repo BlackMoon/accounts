@@ -28,10 +28,7 @@
     },
 
     "frameworks": {
-        "net452": {
-            "frameworkAssemblies": {
-                "System.Configuration": "4.0.0.0"
-            }
+        "net452": {            
         }
     },
 
