@@ -122,7 +122,7 @@ namespace accounts.Controllers
                     // persistent cookie
                     AuthenticationProperties props = new AuthenticationProperties
                     {
-                        IsPersistent = true,
+                        IsPersistent = _appSettings.Persistent,
                         ExpiresUtc = DateTimeOffset.UtcNow.AddSeconds(_appSettings.Timeout)
                     };
 

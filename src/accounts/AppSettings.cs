@@ -16,6 +16,11 @@ namespace accounts
         public bool EnableSignOutPrompt { get; set; }
 
         /// <summary>
+        /// Persistent cookie?
+        /// </summary>
+        public bool Persistent { get; set; }
+
+        /// <summary>
         /// Время жизни, сек
         /// </summary>
         public int Timeout { get; set; } = 1800;
