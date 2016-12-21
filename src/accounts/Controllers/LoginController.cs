@@ -11,7 +11,7 @@ using Kit.Core.CQRS.Query;
 using Kit.Core.Identity;
 using Kit.Core.Web.Mvc;
 using Kit.Core.Web.Mvc.Filters;
-using Kit.Dal.Configurations;
+using Kit.Dal.Configuration;
 using Kit.Dal.CQRS.Command.Login;
 using Kit.Dal.CQRS.Query.TnsNames;
 using Microsoft.AspNetCore.Http.Authentication;

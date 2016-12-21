@@ -12,7 +12,6 @@ using IdentityServer4.Services.InMemory;
 using IdentityServer4.Stores;
 using IdentityServer4.Stores.InMemory;
 using IdentityServer4.Validation;
-using Kit.Dal.Configurations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -30,6 +29,8 @@ using Kit.Core.Web.Binders;
 using Kit.Core.Web.Middleware.DebugMode;
 using Kit.Core.Web.Middleware.ForceHttps;
 using Kit.Core.Web.Mvc.Filters;
+using Kit.Dal.Configuration;
+using Kit.Dal.Oracle;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Newtonsoft.Json;
@@ -128,7 +129,7 @@ namespace accounts
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
             services.Configure<ConnectionStringSettings>(Configuration.GetSection("Data:DefaultConnection"));
             services.Configure<ForceHttpsOptions>(Configuration.GetSection("HttpsOptions"));
-            services.Configure<OracleEnvironmentSettings>(Configuration.GetSection("OracleEnvironment"));
+            services.Configure<OracleEnvironmentConfiguration>(Configuration.GetSection("OracleEnvironment"));
             services.Configure<List<Client>>(Configuration.GetSection("Clients"));
             
             //identityServer
