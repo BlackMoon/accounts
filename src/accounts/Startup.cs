@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using DryIoc;
-using DryIoc.AspNetCore.DependencyInjection;
 using IdentityServer4.Models;
 using IdentityServer4.Services;
 using IdentityServer4.Services.InMemory;
 using IdentityServer4.Stores;
 using IdentityServer4.Stores.InMemory;
 using IdentityServer4.Validation;
+using Kit.Core;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -19,12 +17,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Kit.Dal.DbManager;
-using Kit.Core.CQRS.Command;
 using Kit.Core.CQRS.Job;
-using Kit.Core.CQRS.Query;
 using Kit.Core.Identity;
-using Kit.Core.Interception;
-using Kit.Core.Interception.Attribute;
 using Kit.Core.Web.Binders;
 using Kit.Core.Web.Middleware.DebugMode;
 using Kit.Core.Web.Middleware.ForceHttps;
@@ -40,7 +34,7 @@ using Microsoft.Extensions.Options;
 
 namespace accounts
 {
-    public class Startup
+    public class Startup : DryIocStartup
     {
         private readonly string _contentRootPath;
 
@@ -64,62 +58,7 @@ namespace accounts
             }
             Configuration = builder.Build();
         }
-
-        private IContainer ConfigureDependencies(IServiceCollection services)
-        {
-            IEnumerable<string> implAssembliesNames = new[] { "Kit.Core", "Kit.Dal" };
-
-            // Register assemblies
-            IEnumerable<AssemblyName> assemblyNames = Assembly.GetExecutingAssembly()
-                .GetReferencedAssemblies()
-                .Where(a => implAssembliesNames.Contains(a.Name))
-                .ToList();
-
-            IList<Assembly> implTypeAssemblies = new List<Assembly>(assemblyNames.Count());
-            foreach (AssemblyName an in assemblyNames)
-            {
-                implTypeAssemblies.Add(Assembly.Load(an));
-            }
-            
-            IContainer container = new Container().WithDependencyInjectionAdapter(services);
-            container.RegisterMany(implTypeAssemblies, (registrator, types, type) =>
-            {
-                // all dispatchers --> Reuse.InCurrentScope
-                IReuse reuse = type.IsAssignableTo(typeof(ICommandDispatcher)) || type.IsAssignableTo(typeof(IJobDispatcher)) || type.IsAssignableTo(typeof(IQueryDispatcher))
-                    ? Reuse.InCurrentScope
-                    : Reuse.Transient;
-
-                registrator.RegisterMany(types, type, reuse);
-                
-                // interceptors
-                if (type.IsClass)
-                {
-                    InterceptedObjectAttribute attr = (InterceptedObjectAttribute)type.GetCustomAttribute(typeof(InterceptedObjectAttribute));
-                    if (attr != null)
-                    {
-                        Type serviceType = attr.ServiceInterfaceType ?? type.GetImplementedInterfaces().FirstOrDefault();
-                        registrator.RegisterInterfaceInterceptor(serviceType, attr.InterceptorType);
-                    }
-                }
-            });
-            
-            // IDbManager
-            container.RegisterDelegate(delegate (IResolver resolver)
-            {
-                HttpContext httpContext = resolver.Resolve<IHttpContextAccessor>().HttpContext;
-                return httpContext.User.GetConnectionString();
-
-            }, serviceKey: "ConnectionString");
-            
-            container.RegisterInstance(Configuration["Data:DefaultConnection:ProviderName"], serviceKey: "ProviderName");
-            container.Register(
-                reuse: Reuse.InWebRequest,
-                made: Made.Of(() => DbManagerFactory.CreateDbManager(Arg.Of<string>("ProviderName"), Arg.Of<string>("ConnectionString")), requestIgnored => string.Empty)
-                );
-            
-            return container;
-        }
-
+        
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
@@ -188,7 +127,21 @@ namespace accounts
             services.Configure<RazorViewEngineOptions>(options => options.FileProviders.Add(new EmbeddedFileProvider(GetType().Assembly, "accounts")));
 
             // Add dependencies
-            IContainer container = ConfigureDependencies(services);
+            IContainer container = ConfigureDependencies(services, "Kit.Core", "Kit.Dal");
+
+            // IDbManager
+            container.RegisterDelegate(delegate (IResolver resolver)
+            {
+                HttpContext httpContext = resolver.Resolve<IHttpContextAccessor>().HttpContext;
+                return httpContext.User.GetConnectionString();
+
+            }, serviceKey: "ConnectionString");
+
+            container.RegisterInstance(Configuration["Data:DefaultConnection:ProviderName"], serviceKey: "ProviderName");
+            container.Register(
+                reuse: Reuse.InWebRequest,
+                made: Made.Of(() => DbManagerFactory.CreateDbManager(Arg.Of<string>("ProviderName"), Arg.Of<string>("ConnectionString")), requestIgnored => string.Empty)
+                );
 
             // Startup Jobs
             IJobDispatcher dispatcher = container.Resolve<IJobDispatcher>(IfUnresolved.ReturnDefault);

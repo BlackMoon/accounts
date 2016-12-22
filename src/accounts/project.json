@@ -48,8 +48,10 @@
         ]
     },
 
-    "runtimeOptions": {        
-        "configProperties": { "System.GC.Server": true }
+    "runtimeOptions": {
+        "configProperties": {
+            "System.GC.Server": true 
+        }
     },
 
     "runtimes": {
