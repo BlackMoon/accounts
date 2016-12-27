@@ -1,4 +1,5 @@
 ﻿@using Kit.Core.Web.HtmlHelper
+@using Kit.Dal.Domain.Login.Command
 @{
     Layout = "_Layout";
 }
@@ -27,7 +28,7 @@
 
 @section Scripts
 {
-    @Html.EnumToJs(typeof(Kit.Dal.CQRS.Command.Login.LoginStatus), true)
+    @Html.EnumToJs(typeof(LoginStatus), true)
     <environment names="Development">
         <script src="/lib/jquery-validation/dist/jquery.validate.js"></script>
         <script src="/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>

@@ -1,4 +1,4 @@
-﻿using Kit.Dal.CQRS.Command.Login;
+﻿using Kit.Dal.Domain.Login.Command;
 
 namespace accounts.Controllers
 {

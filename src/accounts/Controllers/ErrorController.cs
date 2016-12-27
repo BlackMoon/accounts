@@ -2,7 +2,6 @@
 using accounts.Models;
 using IdentityServer4.Models;
 using IdentityServer4.Services;
-using Kit.Core.Configuration;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
