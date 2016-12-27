@@ -63,8 +63,9 @@ namespace accounts
         {
             // Add framework services.
             services.AddApplicationInsightsTelemetry(Configuration);
-
+            services.AddDirectoryBrowser();
             services.AddOptions();
+
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
             services.Configure<ConnectionStringSettings>(Configuration.GetSection("Data:DefaultConnection"));
             services.Configure<ForceHttpsOptions>(Configuration.GetSection("HttpsOptions"));
@@ -180,7 +181,6 @@ namespace accounts
                 app.UseExceptionHandler("/error");
 
             app.UseApplicationInsightsExceptionTelemetry();
-            
             app.UseIdentityServer();
             app.UseStaticFiles();
             
