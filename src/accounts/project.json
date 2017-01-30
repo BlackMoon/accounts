@@ -1,31 +1,31 @@
 {
     "version": "1.0.0-*",
 
-    "dependencies": {
-        "IdentityServer4": "1.0.0-rc5",
-        "Kit.Dal": "1.0.0-*",
-        "Kit.Core.Web": "1.0.0-*",
-        "Microsoft.ApplicationInsights.AspNetCore": "1.0.2",
-        "Microsoft.AspNetCore.Diagnostics": "1.1.0",
-        "Microsoft.AspNetCore.Mvc": "1.1.0",
-        "Microsoft.AspNetCore.Mvc.TagHelpers": "1.1.0",
-        "Microsoft.AspNetCore.Razor.Tools": {
-            "type": "build",
-            "version": "1.1.0-preview4-final"
-        },
-        "Microsoft.AspNetCore.Server.IISIntegration": "1.1.0",
-        "Microsoft.AspNetCore.Server.Kestrel": "1.1.0",
-        "Microsoft.AspNetCore.StaticFiles": "1.1.0",
-        "Microsoft.Extensions.Configuration": "1.1.0",
-        "Microsoft.Extensions.Configuration.EnvironmentVariables": "1.1.0",
-        "Microsoft.Extensions.Configuration.Json": "1.1.0",
-        "Microsoft.Extensions.FileProviders.Embedded": "1.1.0",
-        "Microsoft.Extensions.Logging": "1.1.0",
-        "Microsoft.Extensions.Logging.Console": "1.1.0",
-        "Microsoft.Extensions.Logging.Debug": "1.1.0",
-        "Microsoft.Extensions.Options.ConfigurationExtensions": "1.1.0",
-        "Microsoft.VisualStudio.Web.BrowserLink.Loader": "14.1.0"        
+  "dependencies": {
+    "IdentityServer4": "1.0.0-rc5",
+    "Kit.Core.Web": "1.0.0-*",
+    "Kit.Dal.Oracle": "1.0.0-*",
+    "Microsoft.ApplicationInsights.AspNetCore": "1.0.2",
+    "Microsoft.AspNetCore.Diagnostics": "1.1.0",
+    "Microsoft.AspNetCore.Mvc": "1.1.0",
+    "Microsoft.AspNetCore.Mvc.TagHelpers": "1.1.0",
+    "Microsoft.AspNetCore.Razor.Tools": {
+      "type": "build",
+      "version": "1.1.0-preview4-final"
     },
+    "Microsoft.AspNetCore.Server.IISIntegration": "1.1.0",
+    "Microsoft.AspNetCore.Server.Kestrel": "1.1.0",
+    "Microsoft.AspNetCore.StaticFiles": "1.1.0",
+    "Microsoft.Extensions.Configuration": "1.1.0",
+    "Microsoft.Extensions.Configuration.EnvironmentVariables": "1.1.0",
+    "Microsoft.Extensions.Configuration.Json": "1.1.0",
+    "Microsoft.Extensions.FileProviders.Embedded": "1.1.0",
+    "Microsoft.Extensions.Logging": "1.1.0",
+    "Microsoft.Extensions.Logging.Console": "1.1.0",
+    "Microsoft.Extensions.Logging.Debug": "1.1.0",
+    "Microsoft.Extensions.Options.ConfigurationExtensions": "1.1.0",
+    "Microsoft.VisualStudio.Web.BrowserLink.Loader": "14.1.0"
+  },
 
     "frameworks": {
         "net452": {            
