@@ -130,14 +130,14 @@ namespace accounts
             IContainer container = ConfigureDependencies(services, "Kit.Core", "Kit.Dal", "Kit.Dal.Oracle");
 
             // IDbManager
-            container.RegisterDelegate(delegate (IResolver resolver)
+            container.RegisterDelegate(delegate (IResolver r)
             {
-                HttpContext httpContext = resolver.Resolve<IHttpContextAccessor>().HttpContext;
+                HttpContext httpContext = r.Resolve<IHttpContextAccessor>().HttpContext;
                 return httpContext.User.GetConnectionString();
-
             }, serviceKey: "ConnectionString");
 
-            container.RegisterInstance(Configuration["Data:DefaultConnection:ProviderName"], serviceKey: "ProviderName");
+            container.RegisterDelegate(r => r.Resolve<IOptions<ConnectionStringSettings>>().Value.ProviderName, serviceKey: "ProviderName");
+
             container.Register(
                 reuse: Reuse.InWebRequest,
                 made: Made.Of(() => DbManagerFactory.CreateDbManager(Arg.Of<string>("ProviderName"), Arg.Of<string>("ConnectionString")), requestIgnored => string.Empty)
