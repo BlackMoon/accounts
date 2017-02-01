@@ -1,6 +1,6 @@
 ﻿using Kit.Core.CQRS.Command;
 
-namespace Kit.Dal.Oracle.Domain.Login.Command
+namespace domain.Login.Command
 {
     public class LoginCommandResult : ICommandResult
     {

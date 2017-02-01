@@ -127,7 +127,7 @@ namespace accounts
             services.Configure<RazorViewEngineOptions>(options => options.FileProviders.Add(new EmbeddedFileProvider(GetType().Assembly, "accounts")));
 
             // Add dependencies
-            IContainer container = ConfigureDependencies(services, "Kit.Core", "Kit.Dal", "Kit.Dal.Oracle");
+            IContainer container = ConfigureDependencies(services, "domain", "Kit.Core", "Kit.Dal", "Kit.Dal.Oracle");
 
             // IDbManager
             container.RegisterDelegate(delegate (IResolver r)

@@ -1,4 +1,4 @@
-﻿using Kit.Dal.Oracle.Domain.Login.Command;
+﻿using domain.Login.Command;
 
 namespace accounts.Controllers
 {

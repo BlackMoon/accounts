@@ -13,7 +13,6 @@ using Kit.Core.Identity;
 using Kit.Core.Web.Mvc;
 using Kit.Core.Web.Mvc.Filters;
 using Kit.Dal.Configuration;
-using Kit.Dal.Oracle.Domain.Login.Command;
 using Kit.Dal.Oracle.Domain.TnsNames.Query;
 using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.Mvc;

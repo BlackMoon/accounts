@@ -1,7 +1,6 @@
 ﻿using System;
 using domain.ChangePassword.Command;
 using domain.Login.Command;
-using Kit.Dal.Oracle.Domain.Login.Command;
 using Kit.Core.CQRS.Command;
 using Kit.Dal.DbManager;
 using Oracle.DataAccess.Client;

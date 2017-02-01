@@ -2,7 +2,7 @@
 @using Microsoft.Extensions.Options
 @inject IOptions<AppSettings> appSettings
 
-@model Kit.Dal.Oracle.Domain.Login.Command.LoginCommand
+@model domain.Login.Command.LoginCommand
 @{
     Layout = "_FormLayout";
     string autoComplete = appSettings.Value.AutoComplete ? "on" : "off";

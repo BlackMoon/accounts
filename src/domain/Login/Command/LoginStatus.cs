@@ -1,4 +1,4 @@
-﻿namespace Kit.Dal.Oracle.Domain.Login.Command
+﻿namespace domain.Login.Command
 {
     public enum LoginStatus
     {
