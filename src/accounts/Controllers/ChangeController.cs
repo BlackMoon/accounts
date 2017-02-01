@@ -2,12 +2,12 @@
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using domain.ChangePassword.Command;
 using IdentityServer4;
 using Kit.Core.CQRS.Command;
 using Kit.Core.Identity;
 using Kit.Core.Web.Http.Ajax;
 using Kit.Core.Web.Mvc;
-using Kit.Dal.Oracle.Domain.ChangePassword.Command;
 using Kit.Dal.Oracle.Domain.Login.Command;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.Authentication;
