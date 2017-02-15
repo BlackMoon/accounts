@@ -107,7 +107,7 @@ namespace accounts.Controllers
                
                 // Authenticate
                 if (result.Status != LoginStatus.Failure)
-                {
+                { 
                     Claim[] claims = {
                             new Claim(JwtClaimTypes.Name, command.UserName),
                             new Claim(ConnectionStringClaimTypes.Password, command.Password),
