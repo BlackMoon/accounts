@@ -30,12 +30,12 @@ namespace accounts.Controllers
         private readonly IQueryDispatcher _queryDispatcher;
         private readonly IIdentityServerInteractionService _interaction;
 
-        private readonly ConnectionSettings _connectionStringSettings;
+        private readonly ConnectionOptions _connectionOptions;
 
         public LoginController(
             ICommandDispatcher commandDispatcher,
             IQueryDispatcher queryDispatcher,
-            IOptions<ConnectionSettings> connectionStringOptions,
+            IOptions<ConnectionOptions> connectionOptions,
             IIdentityServerInteractionService interaction,
             IOptions<AppSettings> appSettings)
         {
@@ -43,7 +43,7 @@ namespace accounts.Controllers
             _commandDispatcher = commandDispatcher;
             _queryDispatcher = queryDispatcher;
             _interaction = interaction;
-            _connectionStringSettings = connectionStringOptions.Value;
+            _connectionOptions = connectionOptions.Value;
         }
         
         [HttpGet]
@@ -51,9 +51,9 @@ namespace accounts.Controllers
         public async Task<IActionResult> Index(string returnUrl)
         {
             // default DataSource задан в настройках
-            if (string.IsNullOrEmpty(_connectionStringSettings.DataSource))
+            if (string.IsNullOrEmpty(_connectionOptions.DataSource))
             {
-                TnsNamesQueryResult result = _queryDispatcher.Dispatch<TnsNamesQuery, TnsNamesQueryResult>(new TnsNamesQuery() { ProviderInvariantName = _connectionStringSettings.ProviderName });
+                TnsNamesQueryResult result = _queryDispatcher.Dispatch<TnsNamesQuery, TnsNamesQueryResult>(new TnsNamesQuery() { ProviderInvariantName = _connectionOptions.ProviderName });
                 
                 ViewBag.TnsNames = new List<SelectListItem>()
                     {
@@ -85,9 +85,9 @@ namespace accounts.Controllers
         public async Task<IActionResult> Index(LoginCommand command)
         {
             #region если Default DataSource задан в настройках
-            if (!string.IsNullOrEmpty(_connectionStringSettings.DataSource))
+            if (!string.IsNullOrEmpty(_connectionOptions.DataSource))
             {
-                command.DataSource = _connectionStringSettings.DataSource;
+                command.DataSource = _connectionOptions.DataSource;
 
                 ModelStateEntry mse;
                 ModelState.TryGetValue("DataSource", out mse);
