@@ -66,7 +66,7 @@ namespace accounts
             services.AddOptions();
 
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
-            services.Configure<ConnectionStringSettings>(Configuration.GetSection("Data:DefaultConnection"));
+            services.Configure<ConnectionSettings>(Configuration.GetSection("Data:DefaultConnection"));
             services.Configure<ForceHttpsOptions>(Configuration.GetSection("HttpsOptions"));
             services.Configure<OracleEnvironmentConfiguration>(Configuration.GetSection("OracleEnvironment"));
             services.Configure<List<Client>>(Configuration.GetSection("Clients"));
@@ -133,10 +133,10 @@ namespace accounts
             container.RegisterDelegate(delegate (IResolver r)
             {
                 HttpContext httpContext = r.Resolve<IHttpContextAccessor>().HttpContext;
-                return httpContext.User.GetConnectionString();
+                return httpContext.User.ToString($"Data Source={{{ConnectionClaimTypes.DataSource}}};User Id={{{ConnectionClaimTypes.UserId}}};Password={{{ConnectionClaimTypes.Password}}};");
             }, serviceKey: "ConnectionString");
 
-            container.RegisterDelegate(r => r.Resolve<IOptions<ConnectionStringSettings>>().Value.ProviderName, serviceKey: "ProviderName");
+            container.RegisterDelegate(r => r.Resolve<IOptions<ConnectionSettings>>().Value.ProviderName, serviceKey: "ProviderName");
 
             container.Register(
                 reuse: Reuse.InWebRequest,

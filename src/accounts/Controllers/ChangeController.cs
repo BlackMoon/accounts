@@ -62,10 +62,10 @@ namespace accounts.Controllers
                     ClaimsIdentity ci = HttpContext.User.Identity as ClaimsIdentity;
                     if (ci != null)
                     {
-                        Claim claimPsw = ci.FindFirst(ConnectionStringClaimTypes.Password);
+                        Claim claimPsw = ci.FindFirst(ConnectionClaimTypes.Password);
 
                         ci.TryRemoveClaim(claimPsw);
-                        ci.AddClaim(new Claim(ConnectionStringClaimTypes.Password, command.NewPassword));
+                        ci.AddClaim(new Claim(ConnectionClaimTypes.Password, command.NewPassword));
 
                         // persistent cookie
                         AuthenticationProperties props = new AuthenticationProperties

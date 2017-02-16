@@ -30,12 +30,12 @@ namespace accounts.Controllers
         private readonly IQueryDispatcher _queryDispatcher;
         private readonly IIdentityServerInteractionService _interaction;
 
-        private readonly ConnectionStringSettings _connectionStringSettings;
+        private readonly ConnectionSettings _connectionStringSettings;
 
         public LoginController(
             ICommandDispatcher commandDispatcher,
             IQueryDispatcher queryDispatcher,
-            IOptions<ConnectionStringSettings> connectionStringOptions,
+            IOptions<ConnectionSettings> connectionStringOptions,
             IIdentityServerInteractionService interaction,
             IOptions<AppSettings> appSettings)
         {
@@ -110,8 +110,8 @@ namespace accounts.Controllers
                 { 
                     Claim[] claims = {
                             new Claim(JwtClaimTypes.Name, command.UserName),
-                            new Claim(ConnectionStringClaimTypes.Password, command.Password),
-                            new Claim(ConnectionStringClaimTypes.DataSource, command.DataSource),
+                            new Claim(ConnectionClaimTypes.Password, command.Password),
+                            new Claim(ConnectionClaimTypes.DataSource, command.DataSource),
                             new Claim(JwtClaimTypes.Subject, command.DataSource + command.UserName + command.Password),
                             new Claim(JwtClaimTypes.IdentityProvider, "idsvr"),
                             new Claim(JwtClaimTypes.AuthenticationTime, DateTime.UtcNow.ToEpochTime().ToString())
