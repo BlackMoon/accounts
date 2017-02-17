@@ -31,6 +31,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
+using System.Security.Claims;
 
 namespace accounts
 {
@@ -133,7 +134,11 @@ namespace accounts
             container.RegisterDelegate(delegate (IResolver r)
             {
                 HttpContext httpContext = r.Resolve<IHttpContextAccessor>().HttpContext;
-                return httpContext.User.ToString($"Data Source={{{ConnectionClaimTypes.DataSource}}};User Id={{{ConnectionClaimTypes.UserId}}};Password={{{ConnectionClaimTypes.Password}}};");
+
+                ClaimsPrincipal cp = httpContext.User;
+                string userId = cp.Identity.Name;
+
+                return httpContext.User.ToString($"Data Source={{{ConnectionClaimTypes.DataSource}}};User Id={userId};Password={{{ConnectionClaimTypes.Password}}};");
             }, serviceKey: "ConnectionString");
 
             container.RegisterDelegate(r => r.Resolve<IOptions<ConnectionOptions>>().Value.ProviderName, serviceKey: "ProviderName");
