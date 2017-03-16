@@ -1,4 +1,4 @@
-﻿using Kit.Core;
+﻿using Kit.Core.Encryption;
 using System.ComponentModel.DataAnnotations;
 
 namespace domain.Login.Command

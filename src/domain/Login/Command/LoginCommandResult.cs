@@ -2,7 +2,7 @@
 
 namespace domain.Login.Command
 {
-    public class LoginCommandResult : ICommandResult
+    public class LoginCommandResult
     {
         public LoginStatus Status { get; set; }
 

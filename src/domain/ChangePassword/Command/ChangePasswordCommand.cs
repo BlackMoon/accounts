@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Kit.Core;
+using Kit.Core.Encryption;
 
 namespace domain.ChangePassword.Command
 {

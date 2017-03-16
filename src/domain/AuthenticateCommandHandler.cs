@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using domain.ChangePassword.Command;
 using domain.Login.Command;
 using Kit.Core.CQRS.Command;
@@ -35,6 +36,11 @@ namespace domain
             return new LoginCommandResult() { Message = msg, Status = status };
         }
 
+        public Task<LoginCommandResult> ExecuteAsync(ChangePasswordCommand command)
+        {
+            throw new NotImplementedException();
+        }
+
         public LoginCommandResult Execute(LoginCommand command)
         {
             LoginStatus status = LoginStatus.Success;
@@ -65,6 +71,11 @@ namespace domain
             }
 
             return new LoginCommandResult() { Status = status, Message = msg };
+        }
+
+        public Task<LoginCommandResult> ExecuteAsync(LoginCommand command)
+        {
+            throw new NotImplementedException();
         }
     }
 }

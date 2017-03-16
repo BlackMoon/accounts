@@ -59,7 +59,7 @@ namespace accounts
             }
             Configuration = builder.Build();
         }
-        
+
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
@@ -71,7 +71,7 @@ namespace accounts
             services.Configure<ForceHttpsOptions>(Configuration.GetSection("HttpsOptions"));
             services.Configure<OracleEnvironmentConfiguration>(Configuration.GetSection("OracleEnvironment"));
             services.Configure<List<Client>>(Configuration.GetSection("Clients"));
-            
+
             //identityServer
             IIdentityServerBuilder builder = services
                 .AddIdentityServer(options =>
@@ -95,7 +95,7 @@ namespace accounts
             #endregion
 
             #region clients (from clients.json)
-            builder.Services.AddSingleton<IEnumerable<Client>>(provider => provider.GetService<IOptions<List<Client>>>().Value); 
+            builder.Services.AddSingleton<IEnumerable<Client>>(provider => provider.GetService<IOptions<List<Client>>>().Value);
             builder.Services.AddTransient<IClientStore, InMemoryClientStore>();
             builder.Services.AddTransient<ICorsPolicyService, InMemoryCorsPolicyService>();
             #endregion
@@ -115,14 +115,14 @@ namespace accounts
                 .AddMvc(options =>
                 {
                     options.ModelBinderProviders.Insert(0, new EncryptModelBinderProvider());
-                    options.CacheProfiles.Add("1hour", new CacheProfile() {Duration = 3600});
+                    options.CacheProfiles.Add("1hour", new CacheProfile() { Duration = 3600 });
                 })
                 .AddJsonOptions(option =>
                 {
                     option.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
                     option.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
                 });
-            
+
             services.AddRouting(options => options.LowercaseUrls = true);
             services.Configure<MvcOptions>(options => options.Filters.Add(new GlobalExceptionFilter()));            // Global exceptions' filter
             services.Configure<RazorViewEngineOptions>(options => options.FileProviders.Add(new EmbeddedFileProvider(GetType().Assembly, "accounts")));
@@ -152,7 +152,7 @@ namespace accounts
             IJobDispatcher dispatcher = container.Resolve<IJobDispatcher>(IfUnresolved.ReturnDefault);
             dispatcher?.Dispatch<IStartupJob>();
 
-            return container.Resolve<IServiceProvider>();            
+            return container.Resolve<IServiceProvider>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

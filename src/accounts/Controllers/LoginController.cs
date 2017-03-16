@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using domain.Login.Command;
+using domain.TnsNames.Query;
 using IdentityModel;
 using IdentityServer4;
 using IdentityServer4.Services;
@@ -53,7 +54,7 @@ namespace accounts.Controllers
             // default DataSource задан в настройках
             if (string.IsNullOrEmpty(_connectionOptions.DataSource))
             {
-                TnsNamesQueryResult result = _queryDispatcher.Dispatch<TnsNamesQuery, TnsNamesQueryResult>(new TnsNamesQuery() { ProviderInvariantName = _connectionOptions.ProviderName });
+                IEnumerable<string> items = _queryDispatcher.Dispatch<TnsNamesQuery, IEnumerable<string>>(new TnsNamesQuery() { ProviderInvariantName = _connectionOptions.ProviderName });
                 
                 ViewBag.TnsNames = new List<SelectListItem>()
                     {
@@ -65,9 +66,8 @@ namespace accounts.Controllers
                             Disabled = true
                         }
                     }
-                    .Concat(result.Select(t => new SelectListItem() {Text = t, Value = t}));
+                    .Concat(items.Select(t => new SelectListItem() {Text = t, Value = t}));
             }
-            
             
             var context = await _interaction.GetAuthorizationContextAsync(returnUrl);
 
